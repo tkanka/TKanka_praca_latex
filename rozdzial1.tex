@@ -1,0 +1,54 @@
+\chapter{Wprowadzenie}
+\label{cha:wprowadzenie}
+
+Większość systemów wizyjnych służących do rozpoznawania przechodniów są oparte o analizę obrazów z zakresu światła widzialnego, bądź podczerwieni. W przypadku światła widzialnego można uzyskać bardzo dobre wyniki pod warunkiem że wyszukiwane obiekty są dobrze oświetlone i wyróżniają się swoim kolorem od tła. Podczerwień, a szczególnie termowizja, umożliwia detekcję w warunkach nocnych i ograniczonej widoczności. Oba podejścia mają swoje wady i zalety które wzajemnie się uzupełniają np. duże nasłonecznienia powoduje że tło termiczne staje się dużo wyższe co utrudnia wyodrębnienie pieszego, natomiast daje idealne warunki do uzyskania dobrej jakości obrazu w zakresie widzialnym \cite{lee2015robust}. Połączenie tych dwóch obrazów daje możliwość uzyskania jeszcze lepszych metod rozpoznawania ludzi. W pracy \cite{st2007combination} autorzy nazywają ten rozszerzony format jako RGBT (“Red-Green-Blue-Thermal”), natomiast inna praca jako analizę wielospektralną (Multispectral) \cite{hwang2015multispectral}, albo po prostu jako połączony obraz z kamery termowizyjnej i zwykłej\cite{lee2015robust}. 
+
+Podczerwień
+<A cytuje sam siebie>
+
+Metody akwizycja obrazu i kalibracja.
+
+Większość implementacji wykorzystuje układ dwóch równoległych do siebie kamer. Do połączenia obrazów należy zastosować algorytm wyrównujący oba obrazy. Kalibrację wykonuję się specjalnymi  planszami które pozwalają określić położenie punktów kalibracyjnych w obu rejestrowanych zakresach. Plansze mogą być aktywne (posiadają własne źródło ciepła) albo pasywne (przesłaniają obce źródło ciepła). W tym układzie występuję również zjawisko paralaksy które powiększa się wraz z wzrostem odległości obiektu od punktu kalibracji. W pracy  \cite{hwang2015multispectral} autorzy zastosowali zwierciadło półprzezroczyste wykonane z wafla krzemowego pokrytego cynkiem do rozdzielenia obrazu co wyeliminowało wady układu równoległego.
+
+Algorytm detekcji pieszych
+W analizie obrazu można wyróżnić trzy podstawowe etapy.
+\begin{enumerate}%[1)]
+\item Ustalenie regionu zainteresowań (ROI ang. Region of interest) w którym potencjalnie mogą znajdować się przechodnie. Wiele podejść uznaje cały obraz jako ROI i stosuje okno przesuwne sprawdzając każdy możliwy fragment obrazu. Jeżeli obraz jest rejestrowany przez nieruchomą kamerę, ROI można określić poprzez odjęcie zapamiętanego statycznego tła od sceny. Wyodrębnienie ROI jest bardzo istotne w przypadku pracy w czasie rzeczywistym ze względu na ograniczony czas analizy pojedynczego obrazu.
+\item  Wyodrębnienie cech. Do najbardziej popularnych cech można zaliczyć:
+Histogramy zorientowanych gradientów (HOG) zaproponowany przez N.Dalala i B. Triggs w pracy \cite{dalal2005histograms} stała się jedną z najbardziej popularnych techniką w dziedzinie rozpoznawania ludzi. Jest cały czas rozwijana i modyfikowana w wielu pracach naukowych. Technika polega na zliczeniu kierunków gradientów, uzyskanych z 2 masek kierunkowych [-1 0 1] i \begin{itemize} [-1 0 1]^{T}, w komórkach o określonych wymiarach. Komórki te są organizowane w bloki w obrębie których następuję normalizacja. Wektorem cech jest połączony wszystkich histogramów z wszystkich bloków w jeden wektor.
+\item Lokalne wzorce binarne -LBP (ang. Local Binary Paterns). 
+\item Falki Haara.
+\item Kolory w różnych przestrzeniach barw np. RGB, HSV oraz LUV
+\item Lokalna struktura. W odróżnieniu od pojedynczych pikseli można wyznaczyć lokalne struktury o podobnym kolorze. (np. głowa i ręce mają podobne kolory, jednolita koszula, spodnie)
+\item i wiele innych
+\end{itemize}
+\end{enumerate}
+
+3. Klasyfikator
+Otrzymany wektor cech jest poddany klasyfikacji której wynik determinuje czy obraz zawiera człowieka. W pracy \cite{benenson2014ten} autorzy wyróżnili 3 dominujące rodziny:
+1. Rodzina DPM (ang. Deformable Part Detectors) ??? wykrywacze deformowlnych elementów ???. Technika polega na klasyfikacji poszczególnych elementów człowieka (głowa, tułów, nogi). Następnie  jest analizowany układ tych elementów na obrazie i podjęcie decyzji o obecności człowieka.
+2. Deep networks – głębokie sieci neuronowe.
+3. Decision forests – ?? lasy decyzyjne ?? zbiór nieskorelowanych drzew decyzyjnych.
+4. inne: SVN (ang. support vector machine – maszyna wektorów nośnych), AdaBoost itp.
+
+W cyfrowej analizie obrazu rozpoznawanie pieszych jest jedną z najbardziej aktywnych i rozwijanych dziedzin. W przeciągu kilkudziesięciu lat powstało ponad tysiąc artykułów poruszających to zagadnienie \cite{zhang2015filtered} i wiele różnych metod zostało opracowanych. Większość metod opiera się o analizę obrazu tylko w jednym spektrum: widzialnym albo podczerwieni. Praca \cite{hwang2015multispectral} pokazała że połączenie obu obrazów może dać lepsze wyniki. Podobnie w \cite{gonzalez2016pedestrian} ustalono że analiza multispektralna jest skuteczniejsza w dzień niż w nocy (o około 5\% AMR (ang. avrange miss rate)).   W artykule \cite{benenson2014ten} autorzy podsumowują osiągnięcia w dziedzinie detekcji pieszych w latach 2004 – 2014 wyróżniono ponad 40 różnych podejść do problemu. Artykuł jest oparty o bazę danych Caltech-USA która oferuje obrazy w kolorze. Jednym z wniosków jest że przez ostanie dziesięć lat największy postęp został osiągnięty głównie dzięki dopracowaniu cech jakie są wyodrębniane z obrazu niż ulepszanie klasyfikatora. Dodatkowo autorzy połączyli cechy dające najlepsze wyniki i stworzyli własną metodę która uzyska 12\% zysk AMR względem  najlepszej badanej wcześniej metody.
+
+W rodziale~\ref{cha:pierwszyDokument} przedstawiono podstawowe informacje dotyczące struktury dokumentów w \LaTeX u. Alvis~\cite{Alvis2011} jest językiem 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

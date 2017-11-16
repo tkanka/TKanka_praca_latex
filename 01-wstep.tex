@@ -1,0 +1,21 @@
+\chapter{Wstęp}
+\label{cha:wstep}
+
+Cyfrowa analiza obrazów znalazła szerokie zastosowanie w wielu dziedzinach życia. Umożliwia automatyczne uzyskanie istotnych dla podmiotu informacji na podstawie obrazu bez konieczności angażowania człowieka. Niektóre informacje zawarte w obrazie nie są dobrze dostrzegane przez ludzką percepcję np. kolor jest bardzo subiektywnym parametrem dla różnych jednostek. Przez ostanie kilkadziesiąt lat opracowano tysiące różnych technik i algorytmów wyspecjalizowanych do określonych zadań np. kontrola jakości i przebiegu procesu przemysłowego, kontrola dostępu poprzez rozpoznawanie twarzy w iPhone, optymalizacja ruchu na skrzyżowaniach, bezobsługowe systemy bezpieczeństwa i monitoringu, autonomiczne pojazdy, leśne fotopułapki do badania zachowań i migracji zwierząt itp.  Dodatkowym narzędziem w analizie obrazu jest możliwość analizy sceny poza zakresem światła widzialnego ludzkim okiem. Kamery na podczerwień stają się coraz tańsze i coraz bardziej popularne. Dostarczają nam informacje o temperaturze obserwowanych obiektów i jest coraz chętniej wykorzystywane w wielu różnych dziedzinach np. weterynarii do określenia miejsc urazów zwierząt, kontroli jakości artykułów spożywczych, analiza strat cieplnych w budynkach, detekcji gazów, systemy wspomagania kierowcy\cite{gade2014thermal}. 
+
+Większość systemów wizyjnych służących do rozpoznawania przechodniów są oparte o analizę obrazów z zakresu światła widzialnego, bądź podczerwieni. W przypadku światła widzialnego można uzyskać bardzo dobre wyniki pod warunkiem że wyszukiwane obiekty są dobrze oświetlone i wyróżniają się swoim kolorem od tła. Podczerwień, a szczególnie termowizja, umożliwia detekcję w warunkach nocnych i ograniczonej widoczności. Oba podejścia mają swoje wady i zalety które wzajemnie się uzupełniają np. duże nasłonecznienia powoduje że tło termiczne staje się dużo wyższe co utrudnia wyodrębnienie pieszego, natomiast daje idealne warunki do uzyskania dobrej jakości obrazu w zakresie widzialnym \cite{lee2015robust}. Połączenie tych dwóch obrazów daje możliwość uzyskania jeszcze lepszych metod rozpoznawania ludzi. W pracy \cite{st2007combination} autorzy nazywają ten rozszerzony format jako RGBT (“Red-Green-Blue-Thermal”), natomiast inna praca jako analizę wielospektralną (Multispectral) \cite{hwang2015multispectral}, albo po prostu jako połączony obraz z kamery termowizyjnej i zwykłej\cite{lee2015robust}. 
+
+Skuteczna detekcja obiektów jest często okupiona dużym zapotrzebowaniem na zasoby obliczeniowe. W wielu przypadkach nie da się uzyskać satysfakcjonującej wydajności by można było uznać że system za działający w czasie rzeczywistym wykorzystując jedynie komputer klasy PC. Daję to pole do popisu dla układów rekonfigurowalnych które mają możliwość dużego zrównolegnienia obliczeń. Układy FPGA (ang. field-programmable gate array) znalazły już zastosowani w wielu systemach wizyjnych wykonując różnego rodzaju niskopoziomowe operacje kontekstowe, zamiany przestrzeni barw czy też binearyzacji nawet w czasie jednego cyklu zegara. Dodatkową zaletą układów FPGA jest mały pobór mocy co czyni je niezwykle atrakcyjna dla mobilnych aplikacji takich jak drony czy czujniki środowiskowe \cite{garcia2014survey}. 
+
+Niniejsza praca jest kontynuacją pracy inżynierskiej autora.
+
+\section{Cel pracy}
+
+
+Celem pracy jest realizacja wbudowanego systemu wizyjnego do detekcji wybranych obiektów (np. ludzi) na podstawie obrazu z kamery termowizyjnej. Zakłada się, że jako platforma obliczeniowa zostanie użyty układ heterogeniczny (np. Zynq firmy Xilinx), który umożliwia realizację sprzętowo-programową algorytmów.
+
+\section{Struktura pracy}
+
+Struktura pracy
+
+Jak wymyślę to będzie
