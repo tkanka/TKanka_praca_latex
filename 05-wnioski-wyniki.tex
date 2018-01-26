@@ -1,0 +1,7 @@
+\chapter{Wyniki i wnioski}
+
+Aby sprawdzić działanie i dokładność systemu została zaimplementowana możliwość zapisu użytego obliczonego wektora cech na karcie SD. Następnie został obliczony przykładowy błąd względny między wektorem cech wyliczonym w implementacji programowej a uzyskanym z sytemu wizyjnego. Błąd oscyluje w granicy \(10^{-6}\) co czyni go marginalnym i najprawdopodobniej wynika z różnić użytych bibliotek numerycznych.
+
+<TU WSTAW WYKRES>
+
+Na przebadanie jednego okna zaproponowany system procesorowy potrzebuje 75ms  (dla porównania te same obliczenia w pakiecie Matlab zajmują około 23 ms). Dzięki zastosowaniu sprzętowego wyszukiwania ROI zadanie sytemu procesorowego zostało ograniczone do obliczenia jednego okna z największym prawdopodobieństwem zawierania w sobie przechodnia. Kamera termowizyjna będąca źródłem sygnału dla wzorca probabilistycznego pracuję z prędkością 9 klatek na sekundę dając w przybliżeniu 111 ms na zbadanie danego okna więc system procesorowy mieści się w tych ramach czasowych z dużym zapasem. 
