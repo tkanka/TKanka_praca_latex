@@ -146,14 +146,12 @@ W pracy \cite{kolzpoz} autorzy opracowali algorytm pozwalający na szybką i efe
 
 Następnym krokiem jest filtracja wyników. Ma na celu zredukowanie ilości obszarów do końcowej analizy. Autorzy zastosowali filtrację opierającą się na proporcji obszaru zainteresowań. Pozytywnie zakwalifikowane zostały tylko obszary o odpowiednich proporcja wysokości do szerokości (1:1.3 do 1:4). Z racji że badany obraz pochodzi z kamery zamontowanej na stałe na samochodzie autorzy wykorzystali filtrację perspektywiczną. W większej odległości na horyzoncie obiekty są mniejsze. Zakłada ona że w określonych obszarach obrazu istnieje maksymalna możliwa wysokość kandydata. Filtracja jednorodnych regionów pozwoliła na odrzucenie obszarów które często występują jako część szerszych obiektów nie mających nic wspólnego z przechodnimi. Autorzy zaproponowali by obliczenie odchylenia standardowego tych obszarów w odcieniach szarości i odrzucenie części która jest poniżej pewnego progu. 
 
-Ostatnim krokiem algorytmu jest klasyfikacja wytypowanych kandydatów. Autorzy wykorzystują Histogram zorientowanych gradientów jako cechę tworząc wektor 3780 cech które są przetwarzane przez maszynę wektorów nośnych.
+Ostatnim krokiem algorytmu jest klasyfikacja wytypowanych kandydatów. Autorzy wykorzystują Histogram zorientowanych gradientów jako deskryptor tworząc wektor 3780 cech które są przetwarzane przez SVM.
 
 W celu zbadania dokładności algorytmu został przeprowadzony test na zbiorze CVC-14 zawierający obrazy nagrane kamerą FIR podczas nocnego przejazdu samochodem. Testy wykazały że metoda podwójnego progowania daje trzy razy lepsze rezultaty niż przy wykorzystaniu pojedynczego progu. Wraz z zaproponowanymi technikami filtracji zaowocowało bardzo efektywnym mechanizmem segmentacji. Cała procedura detekcji przechodniów osiągnęła wysoki poziom wydajności na poziomie 33 klatek na sekundę przy wykorzystaniu pojedynczego rdzenia CPU.
 
 
-„Pedestrian detection using infrared images and histograms of oriented gradients”
-
-W pracy [] autorzy zaproponowali wykorzystanie dwóch kamer termowizyjnych tworząc system stereowizyjny. By wyodrębnić obszary zainteresowania, potencjalnie zawierający w sobie przechodnie, zgrupowano piksele o wartościach powyżej kilku różnych progów. Porównując te dwa obrazy można określić pozycję i odległość źródła ciepła od kamery. W obrazie termowizyjnym człowieka można zauważyć że najbardziej ciepłym i odsłoniętym obszarem ciała jest głowa. Wykorzystując ten fakt, oraz informację o odległości od kamery, zostają wytyczone obszary wokół tych pikseli o wielkości zależnej od tej odległości. Następnie wszystkie wyodrębnione tak obszary zostają przeskalowane do wymiaru 128x64 piksele i poddane klasyfikacji za pomącą kombinacji HOG+SVM. 
+W pracy \cite{suard2006pedestrian} autorzy zaproponowali wykorzystanie dwóch kamer termowizyjnych tworząc system stereowizyjny. By wyodrębnić obszary zainteresowania, potencjalnie zawierający w sobie przechodnie, zgrupowano piksele o wartościach powyżej kilku różnych progów. Porównując te dwa obrazy można określić pozycję i odległość źródła ciepła od kamery. W obrazie termowizyjnym człowieka można zauważyć że najbardziej ciepłym i odsłoniętym obszarem ciała jest głowa. Wykorzystując ten fakt, oraz informację o odległości od kamery, zostają wytyczone obszary wokół tych pikseli o wielkości zależnej od tej odległości. Następnie wszystkie wyodrębnione tak obszary zostają przeskalowane do wymiaru 128x64 piksele i poddane klasyfikacji za pomącą kombinacji HOG+SVM. 
 W tej pracy autorzy skupili się na optymalnym dobraniem parametrów HOG. Badanie zostały przeprowadzone na bazie obrazów termowizyjnych o wymiarach 128x64. Zestaw zawierał 4400 obrazów: 2200 zawierających przechodnia oraz 2200 nie zawierających. Został wykorzystany następujący zestaw parametrów HOG:
 \begin{enumerate}
 
@@ -181,7 +179,18 @@ Autorzy przeprowadzili po 10 nauczań klasyfikatora dla każdej kombinacji wykor
 Badanie parametrów dla nauczania SVM wynikło że im większy zestaw uczący tym lepszą można uzyskać skuteczność detekcji. Parametr C miał marginalne znaczenie na wyniki.
 
 
+Autorzy pracy \cite{nanda_2002} autorzy przedstawili metodę opartą o wzorzec probabilistyczny i klasyfikator Bayesa. Obraz wejściowy zostaje zbinearyzowany z zadanym progiem. Próg nie jest stały i jest zależny od wielu czynników. Autorzy bazując na danych uczących stanowiących 1000 prostokątnych okien o rozmiarze 48x128 pikseli zawierających przechodnia średnią oraz odchylenie standardowe wartości dla pikseli należących do obrazu przechodnia \( \mu_1 \sigma_1 \) bądź tła \( \mu_2 \sigma_2 \) a następnie obliczyli próg binaryzacji za pomocą równia \ref{eq:treshold_nanda}.
 
+\begin{equation} \label{eq:treshold_nanda}
+threshold =  \frac{\sigma_1 \sigma_2}{ \sigma_1 + \sigma_2} \ln\left ( \frac{\sigma_1}{\sigma_2} \right ) + \frac{\sigma_1\mu_1 + \sigma_2\mu_1}{\sigma_1+\sigma_2}\end{equation}
+
+Aby uzyskać wzorzec prawdopodobieństwa zbiór testowy został zbinearyzowany z uprzednio wyliczonym progiem. Następnie zostało obliczone prawdopodobieństwo przynależności piksela do przechodnia w wzorcu. Mając już wzorzec, został obliczony combinedpropability z wzoru \ref{eq:combo_nanda} dla 1000 okien zawierających i nie zawierających człowieka oraz wyciągnięta średnia i odchylenie standardowe dla nich. Dało to podstawę do obliczenia progu dla wartości combinedpropability z wzoru \ref{eq:treshold_nanda}. 
+
+\begin{equation} \label{eq:combo_nanda} combinedprobability(i,j)=\sum_{x=1}^{48}\sum_{y=1}^{128}(th(x,y)*p(x,y)+(1-th(x,y))*(1-p(x,y)))\end{equation}
+\noindent
+ gdzie \(th(x,y)\) to okno wokół piksela \((i,j)\), a \(p(x,y)\) to wzorzec prawdopodobieństwa wystąpienia pieszego.
+
+ Badana klatka obrazu jest badana poprzez okno przesuwne tworząc mapę prawdopodobieństwa. Wartości które przekroczą próg wskazują że w danym oknie znajduję się człowiek. Autorzy zbadali algorytm na 6 sekwencjach filmowych i uzyskali wynik między 75\%-90\% wykrycia przy jednym fałszywym wykryciu na ramkę.
 
 
 \subsection{Podejście sprzętowo - programowe}
@@ -190,3 +199,28 @@ W pracy \cite{honegger2014real} autorzy wykorzystali układ FPGA oraz CPU małej
 
 W pracy \cite{piao2016real} autorzy wykorzystali układ SoC (ang. System on Chip) do detekcji pieszych dla zaawansowanego systemu wspomagania kierowcy (ADSA ang. advanced driver assistance system). Głównym wyzwaniem było opracowanie metody która działa w czasie rzeczywistym, ma mały pobór mocy oraz niski koszt wykonania. Większość topowych algorytmów  wymaga znacznych zasobów obliczeniowych więc autorzy dokonali relaksacji problemu poprzez zastosowanie prostszego deskryptora jakim jest LBP oraz SVM jako klasyfikatora. Autorzy zamontowali po każdej stronie pojazdu inteligentną kamerę o 180$^\circ$ horyzontalnym kącie widzenia by jak najlepiej monitorować przestrzeń wokół niego. W kamerach została przeprowadzona wstępna obróbka obrazu (rektyfikacja i skalowanie). Przetworzony obraz z kamer był transmitowany do „Fusion-Box” gdzie odbywała się generacja kandydatów, klasyfikacja, weryfikacja oraz śledzenie. Wyniki były przesyłane do wbudowanego komputera PC. Rozwiązanie nie zostało jeszcze w pełni zaimplementowane ale pierwsze testy dawały obiecujące rezultaty.
 
+
+W pracy \cite{xiao_2015} wykorzystali układ FPGA i naiwny klasyfikator Bayesa do detekcji przechodniów w obrazie termowizyjnym. Klasyfikator zakłada że wszystkie predykatory są niezależne od siebie. Szanse na wystąpienie przechodnia w okiennie są 50/50 (jest albo nie ma) problem sprowadza się do za pomocą równania:
+
+\begin{equation} \label{eq:bayes_china}
+\sum_i \ln p(w_i|P) >  \sum_i \ln p(w_i|\bar{P})
+\end{equation}
+
+Gdzie \( p(w_i|P) \) to prawdopodobieństwo że piksel w_i przynależy do obrazu człowieka
+\( p(w_i|\bar{P}) \) przynależy do tła
+Jeżeli wyrażenie jest prawdziwe to w badanym oknie znajduje się człowiek. Autorzy na podstawie 60 pozytywnych próbek utworzyli macierz rozkładu prawdopodobieństwa PDM (ang. \textit{probability distribution matrix} - PDM). W celu usprawnienia obliczeń w układzie FPGA przeskalowali prawdopodobieństwo na wartości całkowite w zakresie od 1 do 127. Następnie obliczono logarytm o podstawie dwa z macierzy i jej odwrotności (uzyskanej poprzez odjęcie od 128 wartości macierzy) a następnie pomnożono przez 32. Utworzono tak dwie macierze: LPDW i LPDB dla białych i czarnych pikslei. (ang. \textit{logarithmic probability matrix} – logarytmiczna macierz prawdopodobieństwa). Przyjęto że prawdopodobieństwo przynależności piksela do tła jest stała i wynosi 50\% co daje wartość 192 po uprzedniach przekształceniach. Ostatecznie obecność człowieka w oknie oblicza się z wzoru: 
+
+\begin{equation}\label{equ:Lp}
+L_{p} = \sum_{x=1}^{j}\sum_{y=1}^{k}(th(x,y)*LPMW(x,y)+(1-th(x,y))*LPMB(x,y))
+\end{equation}
+\begin{equation}\label{equ:Lb}
+L_{b} = j*k*192
+\end{equation}
+\begin{equation} \label{equ:ispedistant}
+IsPedestrian = \left\{ \begin{array}{ll}
+1 & \textrm{gdy $L_{p} 	\geq L_{b} + K$}\\
+0 & \textrm{gdy $L_{p}<L_{b} + K$}
+\end{array} \right.
+\end{equation}
+
+\noindent Gdzie $j$ i $k$ stanowią wysokość i szerokość okna przesuwnego. Wartości $L_p$ i $L_b$ odnoszą się do sum prawdopodobieństw przynależności białegp/czarnego piksela do obrazu człowieka. W praktyce każdy piksel w oknie może przyjąć jedną z dwóch wartości co odwzorowuje jak mocno jest dopasowany do wzorca. 
