@@ -206,9 +206,9 @@ W pracy \cite{xiao_2015} wykorzystali układ FPGA i naiwny klasyfikator Bayesa d
 \sum_i \ln p(w_i|P) >  \sum_i \ln p(w_i|\bar{P})
 \end{equation}
 
-Gdzie \( p(w_i|P) \) to prawdopodobieństwo że piksel w_i przynależy do obrazu człowieka
-\( p(w_i|\bar{P}) \) przynależy do tła
-Jeżeli wyrażenie jest prawdziwe to w badanym oknie znajduje się człowiek. Autorzy na podstawie 60 pozytywnych próbek utworzyli macierz rozkładu prawdopodobieństwa PDM (ang. \textit{probability distribution matrix} - PDM). W celu usprawnienia obliczeń w układzie FPGA przeskalowali prawdopodobieństwo na wartości całkowite w zakresie od 1 do 127. Następnie obliczono logarytm o podstawie dwa z macierzy i jej odwrotności (uzyskanej poprzez odjęcie od 128 wartości macierzy) a następnie pomnożono przez 32. Utworzono tak dwie macierze: LPDW i LPDB dla białych i czarnych pikslei. (ang. \textit{logarithmic probability matrix} – logarytmiczna macierz prawdopodobieństwa). Przyjęto że prawdopodobieństwo przynależności piksela do tła jest stała i wynosi 50\% co daje wartość 192 po uprzedniach przekształceniach. Ostatecznie obecność człowieka w oknie oblicza się z wzoru: 
+Gdzie \( p(w_i|P) \) to prawdopodobieństwo że piksel $w_i$ przynależy do obrazu człowieka
+\(  p(w_i|\bar{P}) \) przynależy do tła
+Jeżeli wyrażenie jest prawdziwe to w badanym oknie znajduje się człowiek. Autorzy na podstawie 60 pozytywnych próbek utworzyli macierz rozkładu prawdopodobieństwa PDM (ang. \textit{probability distribution matrix} - PDM). W celu usprawnienia obliczeń w układzie FPGA przeskalowali prawdopodobieństwo na wartości całkowite w zakresie od 1 do 127. Następnie obliczono logarytm o podstawie dwa z uzyskanej macierzy i jej odwrotności (poprzez odjęcie od 128 wartości macierzy pozytywnej) a następnie pomnożono przez 32. Utworzono tak dwie macierze: LPDW i LPDB dla białych i czarnych pikslei. (ang. \textit{logarithmic probability matrix} – logarytmiczna macierz prawdopodobieństwa). Przyjęto że prawdopodobieństwo przynależności piksela do tła jest stała i wynosi 50\% co daje wartość 192 po uprzedniach przekształceniach. Ostatecznie obecność człowieka w oknie oblicza się z wzoru: 
 
 \begin{equation}\label{equ:Lp}
 L_{p} = \sum_{x=1}^{j}\sum_{y=1}^{k}(th(x,y)*LPMW(x,y)+(1-th(x,y))*LPMB(x,y))

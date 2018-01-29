@@ -46,15 +46,43 @@ System Procesorowy:
 
 \section{Opis modułów}
 \subsection{Kontroler kamery IR}
-Pobiera obraz z kamery poprzez interfejs VoSPI który następnie zostaje zapisany do dwuportowej pamięci BRAM. 
+Pobiera obraz z kamery poprzez interfejs VoSPI który następnie zostaje zapisany do dwuportowej pamięci BRAM. Kontroler na początku pracy wystawia pin CS (ang. Chip Select) w stan niski a po chwili rozpoczyna transmisję poprzez taktowanie zegarem SCK. Kamera na reaguje na opdające zbocze zegara i wystawia kolejny bit danych na swoim porcie MISO. Strumień VoSPI składa się z 63 pakietów na ramkę obrazu. Pakiet rozpoczyna identyfikator składający się z numeru linii oraz sumy CRC pakietu (2 bajty na numer linii i 2 na sumę). Dane pakietu stanowi 160 bajtów – po dwa bajty na piksel w linii. Dane są przesyłane w 14-bitową wartość piksela oraz 2 zera wypełnienia. W przypadku niepoprawnej ramki numer identyfikator przyjmuje wartość xFxx. Ostatnie trzy pakiety stanowią telemetrie i są ignorowane.
+
 \subsection{Transformata projekcyjna}
-Zadaniem modułu jest dostosowanie obrazu IR by pokrywał się z obrazem RGB. Moduł transformaty projekcyjnej zamienia wygenerowane współrzędne w zakresie wielkości przychodzącego obrazu RGB na odpowiadające im punkt na obrazie IR (wraz z częścią ułamkową). Moduł jest konfigurowalny poprzez interfejs AXI-Lite, za pomocą którego można ustawić wartość minimalną i maksymalną współrzędnych wyjściowych U i V oraz macierz transformaty.
+Moduł zamienia współrzędne z układu odniesienia kamery RGB odpowiadającym im na obrazie IR. Na wejściu podawany jest strumień AXI4-Stream zawierający timingi oraz 12 bitowe współrzędne X i Y. Moduł realizuję operację: 
+
+\begin{equation}
+\begin{bmatrix}
+u_n & v_n & n
+\end{bmatrix} 
+= 
+\begin{bmatrix}
+x & y & 1
+\end{bmatrix}
+T
+\end{equation}
+
+\begin{equation}
+u = \frac{u_n}{n}
+\end{equation}
+
+\begin{equation}
+v = \frac{v_n}{n}
+\end{equation}
+
+Moduł wystawia na wyjściu strumień timingów, 12 bitowe wartości U i V oraz ich części ułamkowe w U\_fraction i V\_fraction (14bitów). W module zostały wykorzystane 34 z 80 dostępnych w układzie Zynq procesorów DSP48 do wykonania operacji arytmetycznych. Najwięcej zasobów jest pochłonięte przez IP core dzielarki dostarczony od producenta układu. Do implementacji jednej dzielarki zostało wykorzystane14 modułów DSP. Dzielenie nie odbywa się w pełni potokowo. Użyty w dzielarce algorytm High\_Radix wymaga zatrzymanie strumienia na czas obliczeń. Jednak dzięki zastosowaniu wyższej częstotliwości niż zegar pikseli obrazu RGB oraz bufora (250 MHz) nie stanowi to wąskiego gardła systemu. Macierz T jest zapisana  w dziewięciu 32 bitowych rejestrach i konfigurowalna poprzez interfejs AXI4-Lite. Elementy macierzy są 25 liczbami w notacji stałoprzecinkowej: 1 bit znaku 10 – część całkowita, 14 – część ułamkowa.
+
+
+
 \subsection{Interpolacja bilinearna}
 Prosty moduł przeznaczony głównie do powiększania obrazów. Pobiera wartość 4 otaczających, podanych na wejściu punktu, pikseli z BRAM i na ich bazie jest wykonywana interpolacja. Moduł zapamiętuje 4 ostatnio użyte piksele które są na bieżąco aktualizowane wraz z zmianą położenia punktu wejściowego na obrazie IR.
 \subsection{Łączenie strumieni}
-Moduł posiada dwa wejścia dla obrazu. Jeden strumień jest głównym i do niego jest dołączany drugi strumień. Do synchronizacja strumieni została wykorzystana możliwość AXI-Strem do wstrzymania transmisji. Piksele z dołączanego strumienia są odrzucane do momentu pojawienia się sygnału SOF. W momencie pojawienia się sygnału SOF w strumieniu głównym transmisja zostaje wznowiona pod kontrolą strumienia wyjściowego. 
+Moduł posiada dwa wejścia dla obrazu. Jeden strumień jest głównym i do niego jest dołączany drugi strumień. Do synchronizacja strumieni została wykorzystana możliwość AXI4-Strem do wstrzymania transmisji. Piksele z dołączanego strumienia są odrzucane do momentu pojawienia się sygnału SOF. W momencie pojawienia się sygnału SOF w strumieniu głównym transmisja zostaje wznowiona, pod kontrolą strumienia wyjściowego. Po przejciu całej ramki strumienie są ponownie synchronizowane.  
 \subsection{Koloryzacja i nakładanie}
-Połączone strumienie RGB+IR zostają połączone w jeden obraz. Obraz IR zostaje poddany koloryzacji na podstawie 12-bitowego LUT i nałożony w proporcjach 50 na 50 z obrazem RGB.
+Strumień RGBIR zostaje połączone w jeden obraz. Obraz IR zostaje poddany koloryzacji na podstawie 12-bitowego LUT i nałożony w proporcjach 50 na 50 z obrazem RGB. Na wyjciu jest podany 24 bitowy strumień RGB.
+
+\subsection{Obramowanie wyników}
+Moduł dodaje do obrazu podanego na strumień wejściowy ramkę która następnie jest podawana dalej strumieniem wyjściowym. Parametry ramki są ustawiane przez dwa 32 bitowe rejestry. Pierwszy, -position\_reg-, zawiera pozycję gdzie ma się znajdować ramka na obrazie (lewy górny róg ramki), drugi -parameters\_reg- rejestr odpowiada za kolor i wielkość ramki. Rejestry są konfigurowane poprzez AXI4-Lite.
 
 \section{System procesorowy}
 
