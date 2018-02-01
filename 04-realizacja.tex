@@ -75,7 +75,14 @@ Moduł wystawia na wyjściu strumień timingów, 12 bitowe wartości U i V oraz 
 
 
 \subsection{Interpolacja bilinearna}
-Prosty moduł przeznaczony głównie do powiększania obrazów. Pobiera wartość 4 otaczających, podanych na wejściu punktu, pikseli z BRAM i na ich bazie jest wykonywana interpolacja. Moduł zapamiętuje 4 ostatnio użyte piksele które są na bieżąco aktualizowane wraz z zmianą położenia punktu wejściowego na obrazie IR.
+Prosty moduł przeznaczony głównie do powiększania obrazów. PoModuł ma za zadanie pobrać z pamięci dwuportowej obrazu IR wartość piksela wskazaną na wejściu układu i wystawić na wyjście. Podobnie jak reszta systemu używa AXI4-Stream do przekazywania danych między poszczególnymi modułami. Dane na wejściu to współrzędne U i V oraz ich części ułamkowe U\_fraction i V\_fraction. Moduł został wyposażony w 4 rejestry w których przechowywane są współrzędne oraz wartości 4 ostatnio użytych pikseli. Zabieg ten znacznie redukuje ilość potrzebnych zapytań do pamięci. Podczas powiększania obrazów jest duża szansa że kolejne koordynaty na wejściu UV odwołują się do tych samych czterech otaczających ich pikseli. W module jest sprawdzane czy w pamięci już są wartości z koordynatów [U,V], [U+1,V] [U,V+1], [U+1,V+1]. Jeżeli któregoś piksela brakuje jest on pobierany z pamięci i zapisywany w rejestrze przechowującym niepotrzebny piksel. Jeżeli wszystkie koordynaty się zgadzają , obliczana jest wartość piksela wyjściowego z wzoru \ref{equ:bilinear}.  
+\begin{equation}\label{equ:bilinear}
+Ir = A(1-U_f)(1-V_f)+BU_f(1-V_f)+C(1-U_f)V_f+ D U_fV_f
+\end{equation}
+\noindent gdzie: $ A, B, C ,D $odpowiadają wartościom pikseli w [U,V], [U+1,V] [U,V+1], [U+1,V+1] a $ Ir $ to wartość wyjściowa piksela wyjściowego. $U_f$ i $V_f$ stanowią U\_fraction i V\_fraction.
+
+Moduł działa strumieniowo. W przypadku gdy jest wymagana aktualizacja rejestrów strumień jest wstrzymywany.
+biera wartość 4 otaczających, podanych na wejściu punktu, pikseli z BRAM i na ich bazie jest wykonywana interpolacja. Moduł zapamiętuje 4 ostatnio użyte piksele które są na bieżąco aktualizowane wraz z zmianą położenia punktu wejściowego na obrazie IR.
 \subsection{Łączenie strumieni}
 Moduł posiada dwa wejścia dla obrazu. Jeden strumień jest głównym i do niego jest dołączany drugi strumień. Do synchronizacja strumieni została wykorzystana możliwość AXI4-Strem do wstrzymania transmisji. Piksele z dołączanego strumienia są odrzucane do momentu pojawienia się sygnału SOF. W momencie pojawienia się sygnału SOF w strumieniu głównym transmisja zostaje wznowiona, pod kontrolą strumienia wyjściowego. Po przejciu całej ramki strumienie są ponownie synchronizowane.  
 \subsection{Koloryzacja i nakładanie}

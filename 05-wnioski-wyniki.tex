@@ -5,3 +5,22 @@ Aby sprawdzić działanie i dokładność systemu została zaimplementowana moż
 <TU WSTAW WYKRES>
 
 Na przebadanie jednego okna zaproponowany system procesorowy potrzebuje 75ms  (dla porównania te same obliczenia w pakiecie Matlab zajmują około 23 ms). Dzięki zastosowaniu sprzętowego wyszukiwania ROI zadanie sytemu procesorowego zostało ograniczone do obliczenia jednego okna z największym prawdopodobieństwem zawierania w sobie przechodnia. Kamera termowizyjna będąca źródłem sygnału dla wzorca probabilistycznego pracuję z prędkością 9 klatek na sekundę dając w przybliżeniu 111 ms na zbadanie danego okna więc system procesorowy mieści się w tych ramach czasowych z dużym zapasem. 
+
+\begin{table}[]
+\centering
+\caption{Wykorzystane zasoby logiki programowalnej.}
+\label{tab:resources}
+\begin{tabular}{|l|l|l|l|}
+\hline
+Resource & Utilization & Available & Utilization \% \\ \hline
+LUT & 12583 & 17600 & 71,49 \\ \hline 
+LUTRAM & 617 & 6000 & 10,28 \\ \hline 
+FF & 19924 & 35200 & 56,60 \\ \hline
+BRAM & 25,50 & 60 & 42,50 \\ \hline
+DSP & 36 & 80 & 45,00 \\ \hline
+IO & 43 & 100 & 43,00 \\ \hline
+BUFG & 7 & 32 & 21,88 \\ \hline
+MMCM & 1 & 2 & 50,00 \\ \hline
+PLL & 1 & 2 & 50,00 \\ \hline
+\end{tabular}
+\end{table}
