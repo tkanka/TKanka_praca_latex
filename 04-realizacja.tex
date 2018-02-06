@@ -1,4 +1,5 @@
 \chapter{Realizacja}
+\labal{cha:real}
 W celu rozpoznania przechodnia został użyty połączony obraz termowizyjny (IR) i kolorowy (RGB) nazywany dalej RGBIR. Następnie ten obraz zostaje poddany analizie HOG oraz klasyfikacji za pomocą SVM. W celu ustalenia obszaru zainteresowania na obrazie termowizyjnym za pomocą wzorca probabilistycznego zostają wytypowani kandydaci.
 
 \section{Akwizycja obrazu}
@@ -79,7 +80,7 @@ Prosty moduł przeznaczony głównie do powiększania obrazów. PoModuł ma za z
 \begin{equation}\label{equ:bilinear}
 Ir = A(1-U_f)(1-V_f)+BU_f(1-V_f)+C(1-U_f)V_f+ D U_fV_f
 \end{equation}
-\noindent gdzie: $ A, B, C ,D $odpowiadają wartościom pikseli w [U,V], [U+1,V] [U,V+1], [U+1,V+1] a $ Ir $ to wartość wyjściowa piksela wyjściowego. $U_f$ i $V_f$ stanowią U\_fraction i V\_fraction.
+\noindent gdzie: $ A, B, C ,D $ odpowiadają wartościom pikseli w [U,V], [U+1,V] [U,V+1], [U+1,V+1] a $ Ir $ to wartość wyjściowa piksela wyjściowego. $U_f$ i $V_f$ stanowią U\_fraction i V\_fraction.
 
 Moduł działa strumieniowo. W przypadku gdy jest wymagana aktualizacja rejestrów strumień jest wstrzymywany.
 biera wartość 4 otaczających, podanych na wejściu punktu, pikseli z BRAM i na ich bazie jest wykonywana interpolacja. Moduł zapamiętuje 4 ostatnio użyte piksele które są na bieżąco aktualizowane wraz z zmianą położenia punktu wejściowego na obrazie IR.

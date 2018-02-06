@@ -1,46 +1,32 @@
-\chapter{Wstęp}
-\label{cha:wstep}
+Cyfrowa analiza obrazów znalazła szerokie zastosowanie w wielu dziedzinach życia. Dzięki niej możliwe jest automatyczne uzyskanie istotnych dla użytkownika informacji. Przez ostanie kilkadziesiąt lat opracowano tysiące różnych technik i algorytmów wyspecjalizowanych do określonych zadań np. leśne fotopułapki do badania zachowań i migracji zwierząt, kontrola jakości i przebiegu procesu przemysłowego, kontrola dostępu poprzez rozpoznawanie twarzy m.in. w smartfonach, analiza zdjęć satelitarnych ziemi umożliwia prognozowanie pogody, obraz z kamer zamontowanych nad skrzyżowaniami usprawnia przejazd pojazdów a poprzez badanie przekroju żołędzia można określić czy jest dobrym kandydatem na sadzonkę. 
 
-Cyfrowa analiza obrazów znalazła szerokie zastosowanie w wielu dziedzinach życia. 
-Umożliwia ona automatyczne uzyskanie istotnych dla rozważanego systemu informacji na podstawie obrazu bez konieczności angażowania człowieka.
-%TODO jakiś przykład ?
-Niektóre informacje zawarte w obrazie nie są dobrze dostrzegane przez ludzką percepcję np. kolor jest bardzo subiektywnym parametrem dla różnych ludzi. %TODO pomijając styl, to nie za bardzo rozumiem po co to zdanie - bardziej w nawiązaniu do Pana pracy byłoby pójście w kierunku kamer IR, termo, że percepcja u ludzi jest ograniczona itp.
-Przez ostanie kilkadziesiąt lat opracowano tysiące różnych technik i algorytmów wyspecjalizowanych do określonych zadań np. kontrola jakości i przebiegu procesu przemysłowego, kontrola dostępu poprzez rozpoznawanie twarzy w smartfonach iPhone, optymalizacja ruchu na skrzyżowaniach, bezobsługowe systemy bezpieczeństwa i monitoringu, pojazdy autonomiczne, leśne fotopułapki do badania zachowań i migracji zwierząt itp. 
-%TODO tu bym zastosował "gradację" od prostych do złożonych - a fotopułapka to chyba najprostsza jest.
-Dzisiejsza technologia nie ogranicza nas tylko do stosowania spektrum światła widzialnego ludzkim okiem. 
-Kamery na podczerwień stają się coraz tańsze i coraz bardziej popularne.
-%TODO Proszę uważać, bo IR/na pod czerwień to co innego, a termowizyjne to co innego. Te pierwsze to wizyjne z zwiększoną czułością w paśnie podczerwonym. Ale może Pan o nich też wspomnieć.
-Dostarczają nam informacje o temperaturze obserwowanych obiektów i jest coraz chętniej wykorzystywane w wielu różnych dziedzinach np. weterynarii do określenia miejsc urazów zwierząt, kontroli jakości artykułów spożywczych, analiza strat cieplnych w budynkach, detekcji gazów, systemów wspomagania kierowcy\cite{gade2014thermal}. 
-%TODO dron, poszukiwania, policja, straż graniczna, gruzowsika..
+Wzrok ludzki operuje w pewnym zakresie promieniowania elektromagnetycznego zwanego światłem widzialnym. Dzisiejsza technologia daje możliwość rejestracji obrazów wykraczającym poza to widmo. Kamery termowizyjne stają się coraz tańsze i coraz bardziej popularne. Dostarczają nam informacje o temperaturze obserwowanych obiektów. Jest to coraz chętniej wykorzystywane np. w weterynarii do określenia miejsc urazów zwierząt, w przemyśle do kontroli jakości artykułów spożywczych, w budownictwie do analizi strat cieplnych w budynkach, w sytemahc wspomagania kierowcy, przez ratowników do odnajdywania zasypanych ludzi w gruzowiskach, straż graniczną do monitorowania granic, przez wojsko do odnajdywania celów i zagrożeń podczas misji m.in. z wykorzystaniem do tego celu dronów. \cite{gade2014thermal}. 
 
 Większość systemów wizyjnych służących do rozpoznawania przechodniów jest oparte o analizę obrazów z zakresu światła widzialnego, bądź podczerwieni. 
 W przypadku światła widzialnego można uzyskać bardzo dobre wyniki pod warunkiem że wyszukiwane obiekty są dobrze oświetlone i wyróżniają się swoim kolorem od tła. 
-Podczerwień, a szczególnie termowizja, umożliwia detekcję w warunkach nocnych i ograniczonej widoczności. %TODO tu też ostrożnie
+Podczerwień, a szczególnie termowizja, umożliwia detekcję w warunkach nocnych i ograniczonej widoczności.
 Oba podejścia mają swoje wady i zalety, które wzajemnie się uzupełniają np. duże nasłonecznienia powoduje, że tło termiczne staje się dużo wyższe co utrudnia wyodrębnienie pieszego, natomiast daje idealne warunki do uzyskania dobrej jakości obrazu w zakresie widzialnym \cite{lee2015robust}. 
-Połączenie tych dwóch obrazów daje możliwość uzyskania jeszcze lepszych metod rozpoznawania ludzi. %TODO nie metod, tylko skuteczności.
-W pracy \cite{st2007combination} autorzy nazywają ten rozszerzony format jako RGBT (''Red-Green-Blue-Thermal''), natomiast inna praca jako analizę wielospektralną (Multispectral) \cite{hwang2015multispectral}, albo po prostu jako połączony obraz z kamery termowizyjnej i zwykłej\cite{lee2015robust}. 
+Połączenie tych dwóch obrazów daje możliwość uzyskania jeszcze lepszej skuteczności rozpoznawania ludzi. W pracy \cite{st2007combination} autorzy nazywają ten rozszerzony format jako RGBT (''Red-Green-Blue-Thermal''), natomiast inna praca jako analizę wielospektralną (Multispectral) \cite{hwang2015multispectral}, albo po prostu jako połączony obraz z kamery termowizyjnej i zwykłej\cite{lee2015robust}. 
 
-Skuteczna detekcja obiektów jest często okupiona dużym zapotrzebowaniem na zasoby obliczeniowe. 
-W wielu przypadkach nie da się uzyskać satysfakcjonującej wydajności by można było uznać system za działający w czasie rzeczywistym wykorzystując jedynie typowy komputer wyposażony w~procesor ogólnego przeznaczenia.
-Daję to pole do popisu dla układów rekonfigurowalnych które mają możliwość dużego zrównolegnienia obliczeń. %TODO styl. "pole do popisu". Poza tym, by to bardziej ogólnie podszedł, że anceleracji i zahaczył o ASIC, GPU i FPGA, czy Zynq
-Układy FPGA (ang. \textit{Field-Programmable Gate Array}) znalazły już zastosowanie w wielu systemach wizyjnych wykonując różnego rodzaju niskopoziomowe operacje kontekstowe, zamiany przestrzeni barw czy też binaryzacji nawet w czasie jednego cyklu zegara. 
-%TODO No tu by się Pan bardziej postarał, bo to co Pan wymienił to początniem lat 90 robiono.
-Dodatkową zaletą układów FPGA jest mały pobór mocy, co czyni je niezwykle atrakcyjne dla  aplikacji mobilnych -- takich jak drony czy czujniki środowiskowe \cite{garcia2014survey}. 
+Skuteczna detekcja obiektów jest często okupiona dużym zapotrzebowaniem na zasoby obliczeniowe. W wielu przypadkach nie da się uzyskać satysfakcjonującej wydajności by można było uznać system za działający w czasie rzeczywistym wykorzystując jedynie typowy komputer wyposażony w~procesor ogólnego przeznaczenia. Wykorzystuje się różne metody akceleracji tych obliczeń. Karty graficzne pozwalają na duże zrównoleglenie obliczeń okupione znacznym zużyciem energii. Tworzenie specjalizowanych układów scalonych (ASIC) daje najlepsze rezultaty w implementacji systemu wizyjnego ale ich opracowanie i produkcja wymaga bardzo dużych nakładów finansowych. Dobrym rozwiązaniem stanowią układy rekonfigurowalne które dają podobne możliwości w realizacji wyspecjalizowanych zadań co układy ASIC ale nie wymagają dużych nakładów finansowych w ich tworzeniu.
+
+Układy FPGA (ang. \textit{Field-Programmable Gate Array}) mają ogromną możliwość do zrównoleglenia obliczeń i są chętnie stosowane w systemach wizyjnych. Szczególnie chętnie są wykorzystywane do operacjach niskiego poziomu, przygotowując wstępnie obraz do dalszej analizy na wysokim poziomie takie jak: filtry konwolucyjne, filtry 2D, subsamplowanie, wykrywanie krawędzi, obliczanie SAD z regionu zainteresowania, obliczanie oriętacji krawędzi i histogramów, obliczanie strumieniowo statystyk (wartość maksymalna, minimalna, średnia), zmiana przestrzeni barw./cite{ kisacanin2008embedded}
+Dodatkową zaletą układów FPGA jest mały pobór mocy, co czyni je niezwykle atrakcyjne dla aplikacji mobilnych -- takich jak drony czy czujniki środowiskowe \cite{garcia2014survey}. 
+Układy heterogeniczne łączą w jednej obudowie dwa układy o różanej architekturze i funkcjonalności. Przykładem takiego połączenia jest Zynq-7000 firmy Xilinx który łączy w sobie układ FPGA oraz procesor ARM. Największą zaletą takiego połączenia jest wysoka przepustowość danych między procesorem a logiką programowalną. 
 
 Niniejsza praca stanowi kontynuację i rozwinięcie pracy inżynierskiej autora.
 
 \section{Cel pracy}
 
 
-Celem pracy była realizacja wbudowanego systemu wizyjnego do detekcji wybranych obiektów (np. ludzi) na podstawie obrazu z kamery termowizyjnej. %TODO Tylko termo ?
+Celem pracy była realizacja wbudowanego systemu wizyjnego do detekcji wybranych obiektów (np. ludzi) na podstawie obrazu z kamery termowizyjnej oraz konwencjonalnej. 
 Zakłada się, że jako platforma obliczeniowa zostanie użyty układ heterogeniczny (np. Zynq firmy Xilinx), który umożliwia realizację sprzętowo-programową algorytmów.
 
 \section{Struktura pracy}
 
-%TODO Tutaj standardowe "w rozdziele" + \ref{.}
-
 W pierwszej części została opisana budowa cyfrowego systemu wizyjnego z wykorzystaniem połączonych obrazów RGB oraz IR. 
-Zawiera on [rozdział] teorię stanowiącą podstawę dla realizowanych prac oraz kilka przykładów już zrealizowanych systemów. 
-W następnym rozdziale została podana specyfikacja techniczna zastosowanych urządzeń oraz technologii. %TODO specyfikacja techniczna technologii dziwnie brzmi
-W rozdziale czwartym opisano realizację autorskiego systemu detekcji ludzi. 
+Rozdział \ref{cha:csw}zawiera teorię stanowiącą podstawę dla realizowanych prac oraz kilka 
+przykładów już zrealizowanych systemów. 
+W rozdziale \ref{cha:hw} zostały przedstawione wykorzystane zasoby sprzętowe oraz technologie użyte w opracowaniu systemu wizyjnego.
+W rozdziale \ref{cha:real} zawiera realizację autorskiego systemu detekcji ludzi. 
 Prace zakończono omówieniem uzyskanych wyników, wnioskami oraz wskazaniem dalszych kierunków rozwoju stworzonego systemu.
