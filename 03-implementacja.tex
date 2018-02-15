@@ -1,38 +1,54 @@
-
+%TODO Rozdział to "likwidacji" i rozdysponowania treści na pozostałe
 \chapter{Wykorzystane zasoby sprzętowe i technologie}
 \label{cha:hw}
+
+%TODO To chyba bym przeniosł do rozdziału o kamerach
 \section{Kamera termowizyjna Lepton}
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.6\textwidth]{images/Lepton}
-    \caption{Widok poglądowy na kamere Flir Lepton.}
+    \caption{Widok poglądowy na kamerę FLIR Lepton.}
     \label{fig:lepton}
 \end{figure}
  
-Lepton jest zintegrowaną w pojedynczym układzie kamerą składającą się z soczewki, sensora podczerwieni fal długich (ang. LWIR – long wave infrared) oraz elektroniki sterującej i przetwarzającej sygnał. Checuje siębardzo małymi wymiarami co czyni go idealnym do zastosowań mobilnych. Układ ma możliwość domontowania dodatkowej przesłony która jest wykorzystywana do automatycznej optymalizacji procesu ujednolicania obrazu (kalibracji sensora).
-Prosty do integracji z dowolnym mikrokontrolerem dzięki zastosowaniu standardowych protokołów i interfejsów. Lepton po podłączeniu od razu pracuję w domyślnym trybie pracy, który może zostać zmieniony za pomocą CCI (ang. camera control interface – interfejs kontroli kamery).\cite{lepton}
-Parametry:
+Lepton jest zintegrowaną w pojedynczym układzie kamerą składającą się z soczewki, sensora podczerwieni fal długich (ang. LWIR -- \textit{long wave infrared}) oraz elektroniki sterującej i przetwarzającej sygnał. 
+Cechuje się bardzo małymi wymiarami, co czyni ją idealnym do zastosowań mobilnych. 
+Układ ma możliwość domontowania dodatkowej przesłony, która jest wykorzystywana do automatycznej optymalizacji procesu ujednolicania obrazu (kalibracji sensora).
+Prosty do integracji z dowolnym mikrokontrolerem dzięki zastosowaniu standardowych protokołów i interfejsów. %TODO styl. to nie jest zadnie (brak orzeczenia)
+Lepton po podłączeniu uruchamia się w~domyślnym trybie pracy, który może zostać zmieniony za pomocą CCI (ang. \textit{camera control interface} – interfejs kontroli kamery).\cite{lepton} %TODO za pomocą komend CCI czy czegoś -> coś tu brakuje
+
+Parametry kamery:
 \begin{itemize}
 \item Wymiary: 11,8 x 12,7 x 7,2 mm, 
 \item Sensor: niechłodzony mikrobolometr VOx (tlenek wanadu),
-\item Rejestrowany zakres: fale długie podczerwieni, 8$\mu m$ do 14$\mu m$ ,
+\item Rejestrowany zakres: fale długie podczerwieni, 8$\mu m$ do 14$\mu m$,
 \item Wielkość piksela: 17 $\mu$m,
-\item Rozdzielczosć: 80x60 pikseli,
-\item Ilość klatek na sekundę 8,6,
-\item Zakres rejestrowanych temperatur: -10  $^\circ$  C 140  $^\circ$  C (Tryb wysokiego wzmocnienie),
-\item korekta niejednorodności matrycy: automatyczna na bazie przepływu optycznego
-\item kąt widzenia horyzontalny / diagonalny: 51 $^\circ$ \\ 66 $^\circ$,
-\item Głębia ostrości: od 10cm do nieskończoności
-\item Format wyjściowy: do wyboru: 14-bit, 8-bit (z AGC (ang. automatic gain control – automatyczna kontrola wzocnienia)) 24-bit rgb (z ACG i koloryzacją).
-\item Interfejs video: VoSPI (Video over Serial Peripherial Interface)
-\item Interfejs sterujący: CCI (I2C podobny)
+\item Rozdzielczość: 80x60 pikseli,
+\item Liczba klatek na sekundę: 8,6,  %TODO  ułamek fps ?
+\item Zakres rejestrowanych temperatur: -10  $^\circ$  C 140  $^\circ$  C (tryb wysokiego wzmocnienia),
+\item Korekta niejednorodności matrycy: automatyczna na bazie przepływu optycznego, %TODO a jest o tym coś więcej (on tam sobie liczy OF ?)
+\item Kąt widzenia horyzontalny / diagonalny: 51 $^\circ$ \\ 66 $^\circ$,
+\item Głębia ostrości: od 10cm do nieskończoności,
+\item Format wyjściowy: do wyboru: 14-bit, 8-bit (z AGC (ang. automatic gain control -- automatyczna kontrola wzmocnienia)) 24-bit RGB (z ACG i koloryzacją),
+\item Interfejs wideo: VoSPI (Video over Serial Peripherial Interface),
+\item Interfejs sterujący: CCI (zbliżony do I2C).
 \end{itemize}
+
+%TODO Może jeszzce jakiś przykładowy obraz zarejestrowany tą kamerą.
+
+%TODO To do rozdziału o FPGA (wcześniej pisałem, że tego nie ma)
 \section{Zynq-7000}
 
-Rodzina układów Zynq-7000 bazuje na architekturze SoC (ang. System on Chip). Posiadają zintegrowany kompletny system składający podzielonego na dwie części: systemu procesorowego bazującego na procesorze ARM Cortex-A9 (PS ang. Porcessing System) oraz logikę programowalną (PL ang. programable logic) FPGA w jednym układzie scalonym. Na rysunku \ref{fig:zynq7000} przedstawiono schemat architektury. Prócz procesora cześć procesorowa posiada wbudowaną pamięć, kontroler pamięci zewnętrzne oraz szereg interfejsów dla układów peryferyjnych takich jak USB, GigEthernet, CAN, I2C, SPI. W części logiki programowalnej znajdują się bloki logiki konfigurowalnej (CLB ang. configurable logic block), 36Kb bloki pamięci RAM, procesory sygnałowe DSP48, układ JTAG, układy zarządzania zegarami oraz dwa 12-bitowe przetwornik analogowo-cyfrowy.
+Rodzina układów Zynq-7000 bazuje na architekturze SoC (ang. \textit{System on Chip}). 
+Posiadają zintegrowany kompletny system składający podzielonego na dwie części: systemu procesorowego bazującego na procesorze ARM Cortex-A9 (PS ang. Porcessing System) oraz logikę programowalną (PL ang. programable logic) FPGA w jednym układzie scalonym. %TODO potworek styl. -> poprawić. + nazwy/słowa angielskie zawsze w kursywie
+Na rysunku \ref{fig:zynq7000} przedstawiono schemat architektury. %TODO czego ?
+Prócz procesora cześć procesorowa posiada wbudowaną pamięć, kontroler pamięci zewnętrzne oraz szereg interfejsów dla układów peryferyjnych takich jak USB, GigEthernet, CAN, I2C, SPI. %TODO piwersza część do poprawy (styl.)
+W części logiki programowalnej znajdują się bloki logiki konfigurowalnej (CLB ang. \textit{configurable logic block}), 36Kb bloki pamięci RAM, procesory sygnałowe DSP48, układ JTAG, układy zarządzania zegarami oraz dwa 12-bitowe przetworniki analogowo-cyfrowe.
+%TODO 1. nie nazywałbym tego procesorem sygnałowym. 2. jednak bardziej obszerny opis obu komponentów (tak na 1/2 strony każdy)
 
-Komunikacji między częścią procesorową a logiką programowalną odbywa się za pośrednictwem Interfejsu AXI (ang. Advanced Extensible Interface), oraz bezpośrednio wykorzystując porty generalnego przeznaczenia, przerwania, oraz poprzez bezpośredni dostęp do pamięci (DMA ang. Direct Memory Access) 
+Komunikacja między częścią procesorową, a logiką programowalną odbywa się za pośrednictwem interfejsu AXI (ang. \textit{Advanced Extensible Interface}) oraz bezpośrednio wykorzystując porty ogólnego przeznaczenia, przerwania oraz poprzez bezpośredni dostęp do pamięci (DMA ang. \textit{Direct Memory Access}).
+%TODO 1. powt. oraz, 2 DMA, z tego co wiem, jest via AXI. Może chodziło Panu o ACP ?
 
 \begin{figure}[h]
     \centering
@@ -42,13 +58,16 @@ Komunikacji między częścią procesorową a logiką programowalną odbywa się
 \end{figure}
 
 \section{Interfejs AXI}
- AXI (ang. Advanced eXtensible Interface zawansowany rozszerzalny interfejs) jest częścią ARM AMBA (ang. Advanced Microcontroller Bus Architecture) – otwartego standardu, specyfikacją do zarządzania i połączeń między blokami funkcyjnymi w SoC. Aktualnie jest stosowana AMBA 4.0 która wprowadziła drugą wersję AXI, AXI4. Występują trzy typy interfejsów dla AXI4:
+ AXI (ang. \textit{Advanced eXtensible Interface} --  zaawansowany rozszerzalny interfejs) jest częścią ARM AMBA (ang.\textit{ Advanced Microcontroller Bus Architecture}) -- otwartego standardu, specyfikacją do zarządzania i połączeń między blokami funkcyjnymi w SoC. %TODO gdzie kończy się nawias ?
+ Aktualnie jest stosowana AMBA 4.0 która wprowadziła drugą wersję AXI -- AXI4. 
+ Występują trzy typy interfejsów dla AXI4:
 \begin{itemize}
-\item AXI4 – stosowany w wysokowydajnych transferach w przestrzeni pamięci (ang. memory-mapped)
-\item AXI4-Lite – stosowany dla prostszych operacji w przestrzeni pamięci (na przykład do komunikacji z rejestrami kontrolnymi i statusu)
-\item AXI4-Stream – stosowany do wysokiej prędkości transmisji strumieniowych
+\item AXI4 -- stosowany w wysokowydajnych transferach w przestrzeni pamięci (ang. \textit{memory-mapped}),
+\item AXI4-Lite -- stosowany dla prostszych operacji w przestrzeni pamięci (na przykład do komunikacji z rejestrami kontrolnymi i statusu),
+\item AXI4-Stream --stosowany do transmisji strumieniowych (wysokiej prędkości). 
 \end{itemize}
-Specyfikacja interfejsu zakłada komunikację pomiędzy pojedynczym AXI master i pojedynczym AXI slave, która ma na celu wymianę informacji pomiędzy tymi dwoma blokami funkcyjnymi IP core. Kilkanaście interfejsów AXI master i slave mogą zostać połączone między sobą za pomocą specjalnej struktury zwanej interconnect block (blok międzypołączeniowy) w której odbywa się trasowanie połączeń do poszczególnych bloków. 
+Specyfikacja interfejsu zakłada komunikację pomiędzy pojedynczym AXI master i pojedynczym AXI slave, która ma na celu wymianę informacji. 
+Kilkanaście interfejsów AXI master i slave mogą zostać połączone między sobą za pomocą specjalnej struktury zwanej \textit{interconnect block} (blok międzypołączeniowy), w której odbywa się trasowanie połączeń do poszczególnych bloków. 
 
 AXI4 i AXI4-Lite składają się z 5 różnych kanałów:
 \begin{itemize}
@@ -58,21 +77,39 @@ AXI4 i AXI4-Lite składają się z 5 różnych kanałów:
 \item Kanał danych do zapisania
 \item Kanał potwierdzenia zapisu
 \end{itemize}
-Dane mogą płynąć w obie strony pomiędzy master a slave jednocześnie. Ilość danych które można przesłać w jednej transakcji w przypadku AXI4 wynosi 256 transferów, zaś AXI4-Lite pozwala na tylko 1 transmisję.
+Dane mogą płynąć w obie strony pomiędzy master a slave jednocześnie.
+Ilość danych, które można przesłać w jednej transakcji w przypadku AXI4 wynosi 256 transferów, zaś AXI4-Lite pozwala na tylko 1 transmisję.
+
+%TODO te słowa master i slave to kursywą.
 
 AXI4-Stream nie posiada pola adresowego, a dane mogą być przesyłane nieprzerwanie. 
-\section{Wykorzystanie AXI-Stream do transmisji sygnału video.} 
-W odróżnieniu od klasycznej implementacji przetwarzania strumieniowego video, w AXI-Stream przesyłane są jedynie aktywne piksele. Linie synchronizacji poziomej i pionowej są odrzucane albo są połączane do specjalnego bloku detekcji timingów który mierzy parametry wchodzącego strumienia wizyjnego (ilość pikseli na linie, czas ilość aktywnych linii, czas wyciemnienia itd.). Podobnie informacje o synchronizacji są dodawane przez blok generujący timingi.
+
+%TODO To bym przerzucił to rozdziału, gdzie Pan opisuje system. 
+\section{Wykorzystanie AXI-Stream do transmisji sygnału wideo.} 
+W odróżnieniu od klasycznej implementacji przetwarzania strumieniowego wideo, w AXI-Stream przesyłane są jedynie aktywne piksele. %TODO raczej od standardowego sdposobu przesyłania danych wizyjnych.
+Linie synchronizacji poziomej i pionowej są odrzucane albo są połączane do specjalnego bloku detekcji timingów, który mierzy parametry wchodzącego strumienia wizyjnego (liczba pikseli w~linii, liczba aktywnych linii, czas wyciemnienia itd.). 
+Podobnie informacje o synchronizacji są dodawane przez blok generujący timingi.
+%TODO timining - do wymiany. Musi Pan to lepiej przedstawieć, tzn. że takie przychodzi z kamery, można to usunąć, ale trzeba odtworzyć aby wyświetlić.
 
 Do transmisji wykorzystane jest 6 linii: jedna linia danych i pięć kontrolno-sterujących. 
 \begin{itemize}
+<<<<<<< HEAD
 \item Video Data – linia danych o szerokości jednego (albo dwóch) pikseli. Szerokość tej linii powinna być wielokrotnością liczby oseim (16, 24, 48 itd.)
 \item Valid – Linia podająca czy dane piksela są poprawne,
 \item Ready – Linia kontrolna informująca urządzenie master że slave jest gotowy do transmisji danych,
 \item Start Of Frame – linia która wskazuje pierwszy piksel nowej ramki,
 \item End Of Line – linia wskazująca ostatni piksel w linii.
+=======
+\item Video Data -- linia danych o szerokości jednego (albo dwóch) pikseli. Szerokość tej linii powinna być wielokrotnością liczby osiem (16, 24, 48 itd.)
+\item Valid -- linia określająca czy dane piksela są poprawne,
+\item Ready -- linia kontrolna informująca urządzenie master, że slave jest gotowy do transmisji danych, %TODO kursywa
+\item Start Of Frame -- linia, która wskazuje pierwszy piksel nowej ramki,
+\item End Of Line -- linia wskazująca ostatni piksel w linii. %TODO tu i wyżej "wskazuje" to złe słowo.
+>>>>>>> 96cf635f16be28cef22e57844bf7928d4067803a
 \end{itemize}
-Aby mógł wystąpić poprawny transfer danych linie Valid i Ready muszą być w stanie wysokim podczas rosnącego zbocza zegara. Przykładowe nawiązanie transmisji przedstawia rysunek \ref{fig:handshake}
+%TODO Ogólnie nazwy tych linii (wszystkich) kursywą
+Aby mógł wystąpić poprawny transfer danych linie Valid i Ready muszą być w stanie wysokim podczas rosnącego zbocza zegara. 
+Przykładowe nawiązanie transmisji przedstawia rysunek \ref{fig:handshake}
 
 \begin{figure}[h]
     \centering
@@ -81,5 +118,14 @@ Aby mógł wystąpić poprawny transfer danych linie Valid i Ready muszą być w
     \label{fig:handshake}
 \end{figure}
 
+%TODO To też to tej cześci implementacyjnej
 \section{AXI VDMA}
-Wiele aplikacji wizyjnych wymaga przechowania całej ramki obrazu w celu jej dalszej obróbki np. podczas skalowania, przycinania bądź dopasowania ilości klatek na sekundę. Część programowalna układu Zynq zazwyczaj nie posiada wystarczającej liczby zasobów do przechowanie klatki obrazu w swojej strukturze. W tym celu jest wykorzystywany mechanizm bezpośredniego dostępu do pamięci który pozwala na przesłanie i wczytanie danych z logiki programowalnej do pamięci RAM bez konieczności angażowania procesora. Realizuje się to poprzez IP-Core AXI VDMA. Zapewnia on przejście między interfejsem AXI4-Stream a AXI4 Memory Map w obu kierunkach. Przed rozpoczęciem przesyłania IP-Core jest konfigurowany poprzez interfejs AXI4-Lite. Konfiguracja zawiera adres w pamięci RAM do którego ma być zapisana bądź wczytana ramka obrazu. Po wgraniu do pamięci ramki kontroler może wywołać przerwanie dla systemu procesorowego.
+
+Wiele aplikacji wizyjnych wymaga przechowania całej ramki obrazu w celu jej dalszej obróbki np. podczas skalowania, przycinania bądź dopasowania liczby klatek na sekundę. 
+Część programowalna układu Zynq zazwyczaj nie posiada wystarczającej liczby zasobów pamięciowych do przechowanie klatki obrazu w swojej strukturze. 
+W tym celu jest wykorzystywany mechanizm bezpośredniego dostępu do pamięci, który pozwala na przesłanie i wczytanie danych z logiki programowalnej do pamięci RAM bez konieczności angażowania procesora. %TODO tym - tzn. jakim (niejasne)
+Realizuje się to poprzez IP-Core AXI VDMA. 
+Zapewnia on przejście między interfejsem AXI4-Stream, a AXI4 Memory Map w obu kierunkach. 
+Przed rozpoczęciem przesyłania IP-Core jest konfigurowany poprzez interfejs AXI4-Lite. 
+Konfiguracja zawiera adres w pamięci RAM do którego ma być zapisana bądź wczytana ramka obrazu. 
+Po wgraniu do pamięci ramki kontroler może wywołać przerwanie dla systemu procesorowego.

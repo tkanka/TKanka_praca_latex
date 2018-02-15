@@ -1,33 +1,55 @@
 \chapter{Wprowadzenie}
-Cyfrowa analiza obrazów znalazła szerokie zastosowanie w wielu dziedzinach życia. Dzięki niej możliwe jest automatyczne uzyskanie istotnych dla użytkownika informacji. Przez ostanie kilkadziesiąt lat opracowano tysiące różnych technik i algorytmów wyspecjalizowanych do określonych zadań np. leśne fotopułapki do badania zachowań i migracji zwierząt, kontrola jakości i przebiegu procesu przemysłowego, kontrola dostępu poprzez rozpoznawanie twarzy m.in. w smartfonach, analiza zdjęć satelitarnych ziemi umożliwia prognozowanie pogody, obraz z kamer zamontowanych nad skrzyżowaniami usprawnia przejazd pojazdów a poprzez badanie przekroju żołędzia można określić czy jest dobrym kandydatem na sadzonkę. 
+%TODO TK - ponowana lektura
 
-Wzrok ludzki operuje w pewnym zakresie promieniowania elektromagnetycznego zwanego światłem widzialnym. Dzisiejsza technologia daje możliwość rejestracji obrazów wykraczającym poza to widmo. Kamery termowizyjne stają się coraz tańsze i coraz bardziej popularne. Dostarczają nam informacje o temperaturze obserwowanych obiektów. Jest to coraz chętniej wykorzystywane np. w weterynarii do określenia miejsc urazów zwierząt, w przemyśle do kontroli jakości artykułów spożywczych, w budownictwie do analizi strat cieplnych w budynkach, w sytemahc wspomagania kierowcy, przez ratowników do odnajdywania zasypanych ludzi w gruzowiskach, straż graniczną do monitorowania granic, przez wojsko do odnajdywania celów i zagrożeń podczas misji m.in. z wykorzystaniem do tego celu dronów. \cite{gade2014thermal}. 
+Cyfrowa analiza obrazów znalazła szerokie zastosowanie w wielu dziedzinach życia. 
+Dzięki niej możliwe jest automatyczne uzyskanie istotnych dla użytkownika informacji. 
+Przez ostanie kilkadziesiąt lat opracowano tysiące różnych technik i algorytmów wyspecjalizowanych do określonych zadań np. leśne fotopułapki do badania zachowań i migracji zwierząt, systemu kontroli jakości i przebiegu procesu przemysłowego, metody kontroli dostępu poprzez rozpoznawanie twarzy m.in. w smartfonach, algorytmu analizy zdjęć satelitarnych ziemi umożliwiające prognozowanie pogody, sterowanie ruchem drogowym na podstawie obrazu z kamer zamontowanych nad skrzyżowaniami, a także systemy do badania przekroju żołędzia pozwalające określić czy jest dobrym kandydatem na sadzonkę.
+%TODO Proszę jeszzce raz sprawdzić czy to zdanie "dobrze się czyta" 
 
-Większość systemów wizyjnych służących do rozpoznawania przechodniów jest oparte o analizę obrazów z zakresu światła widzialnego, bądź podczerwieni. 
+
+Wzrok ludzki operuje w pewnym zakresie promieniowania elektromagnetycznego zwanego światłem widzialnym. 
+Dzisiejsza technologia daje możliwość rejestracji obrazów wykraczających poza to widmo. 
+Kamery termowizyjne stają się coraz tańsze i przez to bardziej popularne. 
+Dostarczają one informację o temperaturze obserwowanych obiektów. 
+Jest to coraz chętniej wykorzystywane np. w weterynarii do określenia miejsc urazów zwierząt, w przemyśle do kontroli jakości artykułów spożywczych, w budownictwie do analizy strat cieplnych w budynkach, w systemach wspomagania kierowcy, przez ratowników do odnajdywania zasypanych ludzi w gruzowiskach, straż graniczną do monitorowania granic, przez wojsko do odnajdywania celów i zagrożeń podczas misji m.in. z wykorzystaniem dronów. \cite{gade2014thermal}. 
+
+Większość systemów wizyjnych służących do rozpoznawania przechodniów jest oparta o~analizę obrazów z zakresu światła widzialnego, bądź podczerwieni. 
 W przypadku światła widzialnego można uzyskać bardzo dobre wyniki pod warunkiem że wyszukiwane obiekty są dobrze oświetlone i wyróżniają się swoim kolorem od tła. 
 Podczerwień, a szczególnie termowizja, umożliwia detekcję w warunkach nocnych i ograniczonej widoczności.
+%TODO Proszę jednak opisać czym różni się podczerwień od termo (w senie czujnika)
 Oba podejścia mają swoje wady i zalety, które wzajemnie się uzupełniają np. duże nasłonecznienia powoduje, że tło termiczne staje się dużo wyższe co utrudnia wyodrębnienie pieszego, natomiast daje idealne warunki do uzyskania dobrej jakości obrazu w zakresie widzialnym \cite{lee2015robust}. 
-Połączenie tych dwóch obrazów daje możliwość uzyskania jeszcze lepszej skuteczności rozpoznawania ludzi. W pracy \cite{st2007combination} autorzy nazywają ten rozszerzony format jako RGBT (''Red-Green-Blue-Thermal''), natomiast inna praca jako analizę wielospektralną (Multispectral) \cite{hwang2015multispectral}, albo po prostu jako połączony obraz z kamery termowizyjnej i zwykłej\cite{lee2015robust}. 
+Połączenie tych dwóch obrazów daje możliwość uzyskania jeszcze lepszej skuteczności rozpoznawania ludzi. 
+W pracy \cite{st2007combination} autorzy nazywają ten rozszerzony format jako RGBT (''Red-Green-Blue-Thermal''), natomiast inna praca jako analizę wielospektralną (Multispectral) \cite{hwang2015multispectral}, albo po prostu jako połączony obraz z kamery termowizyjnej i wizyjnej \cite{lee2015robust}. 
 
-Skuteczna detekcja obiektów jest często okupiona dużym zapotrzebowaniem na zasoby obliczeniowe. W wielu przypadkach nie da się uzyskać satysfakcjonującej wydajności by można było uznać system za działający w czasie rzeczywistym wykorzystując jedynie typowy komputer wyposażony w~procesor ogólnego przeznaczenia. Wykorzystuje się różne metody akceleracji tych obliczeń. Karty graficzne pozwalają na duże zrównoleglenie obliczeń okupione znacznym zużyciem energii. Tworzenie specjalizowanych układów scalonych (ASIC) daje najlepsze rezultaty w implementacji systemu wizyjnego ale ich opracowanie i produkcja wymaga bardzo dużych nakładów finansowych. Dobrym rozwiązaniem stanowią układy rekonfigurowalne które dają podobne możliwości w realizacji wyspecjalizowanych zadań co układy ASIC ale nie wymagają dużych nakładów finansowych w ich tworzeniu.
+Skuteczna detekcja obiektów często wymaga dużego zapotrzebowania na zasoby obliczeniowe. 
+W wielu przypadkach nie da się uzyskać satysfakcjonującej wydajności -- tak by można było uznać system za działający w czasie rzeczywistym -- wykorzystując jedynie typowy komputer wyposażony w~procesor ogólnego przeznaczenia. 
+Stosuje się zatem różne metody akceleracji obliczeń. 
+Karty graficzne pozwalają na duże zrównoleglenie obliczeń, jednak charakteryzują się znacznym zużyciem energii. %TODO dodać skrót i rozwinięcie GPU
+Tworzenie specjalizowanych układów scalonych (ASIC) daje najlepsze rezultaty w implementacji systemu wizyjnego, ale ich opracowanie i produkcja wymaga bardzo dużych nakładów finansowych. %TODO rozwinąc ASIC
+Dobre rozwiązanie stanowią układy rekonfigurowalne, które charakteryzują się podobnymi możliwościami w realizacji wyspecjalizowanych zadań co układy ASIC, ale nie wymagają dużych nakładów finansowych w ich tworzeniu. %TODO ta końcówka średnio szczęśliwa, proszę to doprecyzować. (tworznie układów FPGA to wymaga sporetych nakładów - w końcu to też ASIC)
 
-Układy FPGA (ang. \textit{Field-Programmable Gate Array}) mają ogromną możliwość do zrównoleglenia obliczeń i są chętnie stosowane w systemach wizyjnych. Szczególnie chętnie są wykorzystywane do operacjach niskiego poziomu, przygotowując wstępnie obraz do dalszej analizy na wysokim poziomie takie jak: filtry konwolucyjne, filtry 2D, subsamplowanie, wykrywanie krawędzi, obliczanie SAD z regionu zainteresowania, obliczanie oriętacji krawędzi i histogramów, obliczanie strumieniowo statystyk (wartość maksymalna, minimalna, średnia), zmiana przestrzeni barw./cite{ kisacanin2008embedded}
+Układy FPGA (ang. \textit{Field-Programmable Gate Array}) umożliwiają zrównoleglenie obliczeń i są szeroko stosowane w systemach wizyjnych. 
+Szczególnie chętnie są wykorzystywane do realizacji operacji niskiego poziomu, przygotowując wstępnie obraz do dalszej analizy na wysokim poziomie. 
+Przykłady takich operacji to: filtry konwolucyjne, filtry 2D, podpróbkowanie, wykrywanie krawędzi, obliczanie SAD z regionu zainteresowania, obliczanie orientacji krawędzi i histogramów, obliczanie strumieniowo statystyk (wartość maksymalna, minimalna, średnia), zmiana przestrzeni barw \cite{ kisacanin2008embedded}. %TODO dodać wyjasnienie SAD
 Dodatkową zaletą układów FPGA jest mały pobór mocy, co czyni je niezwykle atrakcyjne dla aplikacji mobilnych -- takich jak drony czy czujniki środowiskowe \cite{garcia2014survey}. 
-Układy heterogeniczne łączą w jednej obudowie dwa układy o różanej architekturze i funkcjonalności. Przykładem takiego połączenia jest Zynq-7000 firmy Xilinx który łączy w sobie układ FPGA oraz procesor ARM. Największą zaletą takiego połączenia jest wysoka przepustowość danych między procesorem a logiką programowalną. 
+Układy heterogeniczne łączą w jednej obudowie dwa układy o różanej architekturze i funkcjonalności. 
+Przykładem takiego połączenia jest Zynq-7000 firmy Xilinx, który integruje w sobie układ FPGA oraz procesor ARM. 
+Największą zaletą takiego rozwiązania jest wysoka przepustowość transferu danych między procesorem a logiką programowalną. 
 
 Niniejsza praca stanowi kontynuację i rozwinięcie pracy inżynierskiej autora.
 
 \section{Cel pracy}
 
-
+%TODO Coś więcej na podsatwie "specyfikacji" pracy ?
 Celem pracy była realizacja wbudowanego systemu wizyjnego do detekcji wybranych obiektów (np. ludzi) na podstawie obrazu z kamery termowizyjnej oraz konwencjonalnej. 
 Zakłada się, że jako platforma obliczeniowa zostanie użyty układ heterogeniczny (np. Zynq firmy Xilinx), który umożliwia realizację sprzętowo-programową algorytmów.
 
 \section{Struktura pracy}
 
-W pierwszej części została opisana budowa cyfrowego systemu wizyjnego z wykorzystaniem połączonych obrazów RGB oraz IR. 
+W pierwszej części pracy została opisana budowa cyfrowego systemu wizyjnego z wykorzystaniem połączonych obrazów RGB oraz IR. 
 Rozdział \ref{cha:csw}zawiera teorię stanowiącą podstawę dla realizowanych prac oraz kilka 
 przykładów już zrealizowanych systemów. 
 W rozdziale \ref{cha:hw} zostały przedstawione wykorzystane zasoby sprzętowe oraz technologie użyte w opracowaniu systemu wizyjnego.
 W rozdziale \ref{cha:real} zawiera realizację autorskiego systemu detekcji ludzi. 
 Prace zakończono omówieniem uzyskanych wyników, wnioskami oraz wskazaniem dalszych kierunków rozwoju stworzonego systemu.
+
