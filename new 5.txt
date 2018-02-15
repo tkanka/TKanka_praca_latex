@@ -1,0 +1,16 @@
+1 VDMA status
+2 Start detection
+3 Restart DMA
+
+5 read T matrix
+6 write T matrix
+7 wtrite bin threshold
+8 update LP threshold
+
+w seve next ROI
+s save centered ROI
+x save center ROI and hog discriptor
+d save whole frame
+m mount sdcard
+q get calibration image
+ehllo
