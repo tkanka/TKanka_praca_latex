@@ -110,6 +110,15 @@ maxbibnames=3,
 \newcolumntype{C}[1]{>{\hsize=#1\hsize\centering\arraybackslash}X}
 
 
+\newenvironment{abstractpage}
+{\cleardoublepage\vspace*{\fill}\thispagestyle{empty} }
+{\vfill\cleardoublepage}
+\renewenvironment{abstract}[1]
+{\bigskip\selectlanguage{#1}%
+	\begin{center}\bfseries\abstractname\end{center}}
+{\par\bigskip}
+
+
 %---------------------------------------------------------------------------
 
 \author{Tomasz Kańka}
@@ -154,6 +163,22 @@ maxbibnames=3,
 \begin{document}
 
 \titlepages
+
+\begin{abstractpage}
+	\begin{abstract}{polish}
+
+		
+		\textbf{Słowa kluczowe:} 
+		
+	\end{abstract}
+	
+	\begin{abstract}{english}
+	
+		
+		\textbf{Keywords:} 
+		
+	\end{abstract}
+\end{abstractpage}
 
 % Ponowne zdefiniowanie stylu `plain`, aby usunąć numer strony z pierwszej strony spisu treści i poszczególnych rozdziałów.
 \fancypagestyle{plain}
