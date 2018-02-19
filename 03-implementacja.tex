@@ -93,19 +93,13 @@ Podobnie informacje o synchronizacji są dodawane przez blok generujący timingi
 
 Do transmisji wykorzystane jest 6 linii: jedna linia danych i pięć kontrolno-sterujących. 
 \begin{itemize}
-<<<<<<< HEAD
-\item Video Data – linia danych o szerokości jednego (albo dwóch) pikseli. Szerokość tej linii powinna być wielokrotnością liczby oseim (16, 24, 48 itd.)
-\item Valid – Linia podająca czy dane piksela są poprawne,
-\item Ready – Linia kontrolna informująca urządzenie master że slave jest gotowy do transmisji danych,
-\item Start Of Frame – linia która wskazuje pierwszy piksel nowej ramki,
-\item End Of Line – linia wskazująca ostatni piksel w linii.
-=======
+
 \item Video Data -- linia danych o szerokości jednego (albo dwóch) pikseli. Szerokość tej linii powinna być wielokrotnością liczby osiem (16, 24, 48 itd.)
 \item Valid -- linia określająca czy dane piksela są poprawne,
 \item Ready -- linia kontrolna informująca urządzenie master, że slave jest gotowy do transmisji danych, %TODO kursywa
 \item Start Of Frame -- linia, która wskazuje pierwszy piksel nowej ramki,
 \item End Of Line -- linia wskazująca ostatni piksel w linii. %TODO tu i wyżej "wskazuje" to złe słowo.
->>>>>>> 96cf635f16be28cef22e57844bf7928d4067803a
+
 \end{itemize}
 %TODO Ogólnie nazwy tych linii (wszystkich) kursywą
 Aby mógł wystąpić poprawny transfer danych linie Valid i Ready muszą być w stanie wysokim podczas rosnącego zbocza zegara. 
