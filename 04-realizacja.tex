@@ -11,6 +11,46 @@ W celu ustalenia obszaru zainteresowania na obrazie termowizyjnym za pomocą wzo
 
 %TODO To jest jakaś koncepcja, ale trzeba to rozwinąć i dodać schemat. Także opisać co, jak i gdzie i dlaczego zosało zaimplementowane (FPGA/ARM)
 
+%TODO To bym przerzucił to rozdziału, gdzie Pan opisuje system. 
+\section{Wykorzystanie AXI-Stream do transmisji sygnału wideo.} 
+W odróżnieniu od klasycznej implementacji przetwarzania strumieniowego wideo, w AXI-Stream przesyłane są jedynie aktywne piksele. %TODO raczej od standardowego sdposobu przesyłania danych wizyjnych.
+Linie synchronizacji poziomej i pionowej są odrzucane albo są połączane do specjalnego bloku detekcji timingów, który mierzy parametry wchodzącego strumienia wizyjnego (liczba pikseli w~linii, liczba aktywnych linii, czas wyciemnienia itd.). 
+Podobnie informacje o synchronizacji są dodawane przez blok generujący timingi.
+%TODO timining - do wymiany. Musi Pan to lepiej przedstawieć, tzn. że takie przychodzi z kamery, można to usunąć, ale trzeba odtworzyć aby wyświetlić.
+
+Do transmisji wykorzystane jest 6 linii: jedna linia danych i pięć kontrolno-sterujących. 
+\begin{itemize}
+
+\item Video Data -- linia danych o szerokości jednego (albo dwóch) pikseli. Szerokość tej linii powinna być wielokrotnością liczby osiem (16, 24, 48 itd.)
+\item Valid -- linia określająca czy dane piksela są poprawne,
+\item Ready -- linia kontrolna informująca urządzenie master, że slave jest gotowy do transmisji danych, %TODO kursywa
+\item Start Of Frame -- linia, która wskazuje pierwszy piksel nowej ramki,
+\item End Of Line -- linia wskazująca ostatni piksel w linii. %TODO tu i wyżej "wskazuje" to złe słowo.
+
+\end{itemize}
+%TODO Ogólnie nazwy tych linii (wszystkich) kursywą
+Aby mógł wystąpić poprawny transfer danych linie Valid i Ready muszą być w stanie wysokim podczas rosnącego zbocza zegara. 
+Przykładowe nawiązanie transmisji przedstawia rysunek \ref{fig:handshake}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{images/axi-stream_hendshake}
+    \caption{Przykład rozpoczęcia transmisji Reday/Valid.}
+    \label{fig:handshake}
+\end{figure}
+
+%TODO To też to tej cześci implementacyjnej
+\section{AXI VDMA}
+
+Wiele aplikacji wizyjnych wymaga przechowania całej ramki obrazu w celu jej dalszej obróbki np. podczas skalowania, przycinania bądź dopasowania liczby klatek na sekundę. 
+Część programowalna układu Zynq zazwyczaj nie posiada wystarczającej liczby zasobów pamięciowych do przechowanie klatki obrazu w swojej strukturze. 
+W tym celu jest wykorzystywany mechanizm bezpośredniego dostępu do pamięci, który pozwala na przesłanie i wczytanie danych z logiki programowalnej do pamięci RAM bez konieczności angażowania procesora. %TODO tym - tzn. jakim (niejasne)
+Realizuje się to poprzez IP-Core AXI VDMA. 
+Zapewnia on przejście między interfejsem AXI4-Stream, a AXI4 Memory Map w obu kierunkach. 
+Przed rozpoczęciem przesyłania IP-Core jest konfigurowany poprzez interfejs AXI4-Lite. 
+Konfiguracja zawiera adres w pamięci RAM do którego ma być zapisana bądź wczytana ramka obrazu. 
+Po wgraniu do pamięci ramki kontroler może wywołać przerwanie dla systemu procesorowego.
+
 \section{Akwizycja obrazu}
 
 Obraz kolorowy służy jako obraz bazowy. %TODO raczej z kamery wizyjnej

@@ -2,7 +2,7 @@
 \chapter{Wykorzystane zasoby sprzętowe i technologie}
 \label{cha:hw}
 
-%TODO To chyba bym przeniosł do rozdziału o kamerach
+%TODO OK To chyba bym przeniosł do rozdziału o kamerach
 \section{Kamera termowizyjna Lepton}
 
 \begin{figure}[h]
@@ -40,14 +40,13 @@ Parametry kamery:
 %TODO To do rozdziału o FPGA (wcześniej pisałem, że tego nie ma)
 \section{Zynq-7000}
 
-Rodzina układów Zynq-7000 bazuje na architekturze SoC (ang. \textit{System on Chip}). 
-Posiadają zintegrowany kompletny system składający podzielonego na dwie części: systemu procesorowego bazującego na procesorze ARM Cortex-A9 (PS ang. Porcessing System) oraz logikę programowalną (PL ang. programable logic) FPGA w jednym układzie scalonym. %TODO potworek styl. -> poprawić. + nazwy/słowa angielskie zawsze w kursywie
-Na rysunku \ref{fig:zynq7000} przedstawiono schemat architektury. %TODO czego ?
-Prócz procesora cześć procesorowa posiada wbudowaną pamięć, kontroler pamięci zewnętrzne oraz szereg interfejsów dla układów peryferyjnych takich jak USB, GigEthernet, CAN, I2C, SPI. %TODO piwersza część do poprawy (styl.)
-W części logiki programowalnej znajdują się bloki logiki konfigurowalnej (CLB ang. \textit{configurable logic block}), 36Kb bloki pamięci RAM, procesory sygnałowe DSP48, układ JTAG, układy zarządzania zegarami oraz dwa 12-bitowe przetworniki analogowo-cyfrowe.
+Rodzina układów Zynq-7000 bazuje na architekturze SoC (ang. \textit{System on Chip}). W pojedynczym układzie scalonym został zawarty kompletny system w skład którego wchodzą układy spełniające różne funkcje. Został on podzielony na dwie główne części: systemu procesorowy (PS ang. \textit{Porcessing System}) bazujący na procesorze ARM Cortex-A9 oraz logikę programowalną (PL ang. \textit{Programable Logic}) - FPGA. %TODO OK potworek styl. -> poprawić. + nazwy/słowa angielskie zawsze w kursywie
+Na rysunku \ref{fig:zynq7000} przedstawiono schemat architektury układu. %TODO OK czego ?
+Część procesorowa, oprócz samego ARM-a, posiada wbudowaną pamięć, kontroler pamięci zewnętrznej oraz szereg interfejsów dla układów peryferyjnych takich jak USB, GigEthernet, CAN, I2C, SPI. %TODO OK piwersza część do poprawy (styl.)
+W części logiki programowalnej znajdują się bloki logiki konfigurowalnej (CLB ang. \textit{configurable logic block}), 36Kb bloki pamięci RAM, DSP48 \textit{slice}, układ JTAG, układy zarządzania zegarami oraz dwa 12-bitowe przetworniki analogowo-cyfrowe.
 %TODO 1. nie nazywałbym tego procesorem sygnałowym. 2. jednak bardziej obszerny opis obu komponentów (tak na 1/2 strony każdy)
 
-Komunikacja między częścią procesorową, a logiką programowalną odbywa się za pośrednictwem interfejsu AXI (ang. \textit{Advanced Extensible Interface}) oraz bezpośrednio wykorzystując porty ogólnego przeznaczenia, przerwania oraz poprzez bezpośredni dostęp do pamięci (DMA ang. \textit{Direct Memory Access}).
+Komunikacja między częścią procesorową, a logiką programowalną odbywa się za pośrednictwem interfejsu AXI (ang. \textit{Advanced Extensible Interface}) oraz bezpośrednio wykorzystując porty ogólnego przeznaczenia, przerwania i bezpośredni dostęp do pamięci (DMA ang. \textit{Direct Memory Access}).
 %TODO 1. powt. oraz, 2 DMA, z tego co wiem, jest via AXI. Może chodziło Panu o ACP ?
 
 \begin{figure}[h]
@@ -58,7 +57,8 @@ Komunikacja między częścią procesorową, a logiką programowalną odbywa si�
 \end{figure}
 
 \section{Interfejs AXI}
- AXI (ang. \textit{Advanced eXtensible Interface} --  zaawansowany rozszerzalny interfejs) jest częścią ARM AMBA (ang.\textit{ Advanced Microcontroller Bus Architecture}) -- otwartego standardu, specyfikacją do zarządzania i połączeń między blokami funkcyjnymi w SoC. %TODO gdzie kończy się nawias ?
+ AXI (ang. \textit{Advanced eXtensible Interface} --  zaawansowany rozszerzalny interfejs) jest częścią ARM AMBA (ang.\textit{ Advanced Microcontroller Bus Architecture}) -- otwartego standardu, będącego specyfikacją do zarządzania połączeniami między blokami funkcyjnymi w SoC. 
+%TODO OK gdzie kończy się nawias ?
  Aktualnie jest stosowana AMBA 4.0 która wprowadziła drugą wersję AXI -- AXI4. 
  Występują trzy typy interfejsów dla AXI4:
 \begin{itemize}
@@ -77,10 +77,11 @@ AXI4 i AXI4-Lite składają się z 5 różnych kanałów:
 \item Kanał danych do zapisania
 \item Kanał potwierdzenia zapisu
 \end{itemize}
-Dane mogą płynąć w obie strony pomiędzy master a slave jednocześnie.
+Dane mogą płynąć w obie strony pomiędzy \textit{master} a \textit{slave} jednocześnie.
 Ilość danych, które można przesłać w jednej transakcji w przypadku AXI4 wynosi 256 transferów, zaś AXI4-Lite pozwala na tylko 1 transmisję.
 
 %TODO te słowa master i slave to kursywą.
+
 
 AXI4-Stream nie posiada pola adresowego, a dane mogą być przesyłane nieprzerwanie. 
 
