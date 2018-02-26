@@ -1,4 +1,5 @@
 \chapter{Przegląd literatury}
+\label{cha:przegLiter}
 
 %TODO OK ponieważ te opisy są dość obszerne proszę jednak dać to w osobne podrozdziały subsub (czy jak to wyjdzie)
 
@@ -31,7 +32,7 @@ Ostatnim krokiem algorytmu jest klasyfikacja wytypowanych kandydatów.
 Autorzy wykorzystują histogram zorientowanych gradientów jako deskryptor tworząc wektor 3780 cech, które są następnie klasyfikowane przez SVM.
 
 W celu zbadania dokładności algorytmu został przeprowadzony test na zbiorze CVC-14, który zawiera obrazy nagrane kamerą FIR podczas nocnego przejazdu samochodem. 
-Testy wykazały, że metoda podwójnego progowania daje trzy razy lepsze rezultaty, niż przy wykorzystaniu pojedynczego progu.  Wraz z zaproponowanymi technikami filtracji zaowocowało to bardzo efektywnym mechanizmem segmentacji. Ponad 95% występujących przechodniów zostało poprawnie wytypowanych jako kandydaci do klasyfikacji. 
+Testy wykazały, że metoda podwójnego progowania daje trzy razy lepsze rezultaty, niż przy wykorzystaniu pojedynczego progu.  Wraz z zaproponowanymi technikami filtracji zaowocowało to bardzo efektywnym mechanizmem segmentacji. Ponad 95\% występujących przechodniów zostało poprawnie wytypowanych jako kandydaci do klasyfikacji. 
 %TODO ok no właśnie segmentacji czy klasyfikacji
 Cała procedura detekcji przechodniów osiągnęła wysoki poziom wydajności na poziomie 33 klatek (o wymiarach 640x471 px) na sekundę przy wykorzystaniu pojedynczego rdzenia CPU. Dokładność detekcji wyniosła 37,3\% AMR
 (ang. \textit{ average miss rate }), co jest porównywalna do innych metod opartych o HOG+SVM.
@@ -39,7 +40,7 @@ Cała procedura detekcji przechodniów osiągnęła wysoki poziom wydajności na
 %TT nie jest napisane wprost w artykule ale mam tą samą bazę i tam są 640 x 471.
 
 \section{Stereotermowizja}
-W pracy \cite{suard2006pedestrian} autorzy zaproponowali wykorzystanie dwóch kamer termowizyjnych tworząc system stereowizyjny. W obrazie termowizyjnym człowieka najcieplejszym obszarem jest zazwyczaj głowa. By wyodrębnić obszary zainteresowania, w~których potencjalnie znajdują się przechodnie, zgrupowano piksele o wartościach powyżej kilku różnych progów. Każdy z tych obszarów zostaje następnie uznany za głowę i stanowi górną część okna detekcyjnego. Wielkość okna jest estymowana na podstawie odległości źródła ciepła od kamer.. Odległość jest ustalana na podstawie mapy dysparycji (ang. \textit{disparity map}). Do obliczani dysparycji okna, porównywana różnica między oryginalnym oknem al. Oknem przesuwnym w drugim obrazie. Dysparycja jest uzyskiwana gdy ta różnica jest minimalna. Na koniec każde okno zostaje przeskalowane do wielkości 128x64 i poddane klasyfikacji . %TODO OK znowu za mało szczegółów...
+W pracy \cite{suard2006pedestrian} autorzy zaproponowali wykorzystanie dwóch kamer termowizyjnych tworząc system stereowizyjny. W obrazie termowizyjnym człowieka najcieplejszym obszarem jest zazwyczaj głowa. By wyodrębnić obszary zainteresowania, w~których potencjalnie znajdują się przechodnie, zgrupowano piksele o wartościach powyżej kilku różnych progów. Każdy z tych obszarów zostaje następnie uznany za głowę i stanowi górną część okna detekcyjnego. Wielkość okna jest estymowana na podstawie odległości źródła ciepła od kamer.. Odległość jest ustalana na podstawie mapy dysparycji (ang. \textit{disparity map}). Do obliczani dysparycji okna, porównywana różnica między oryginalnym oknem a oknem przesuwnym w drugim obrazie. Dysparycja jest uzyskiwana gdy ta różnica jest minimalna. Na koniec każde okno zostaje przeskalowane do wielkości 128x64 i poddane klasyfikacji . %TODO OK znowu za mało szczegółów...
 %TODO OK to raczej, z tego że ZWYKLE głowa (stricte twarz) ew. dłonie sa odsłoniete, wynika, że są widoczne jako najcieplejsze... bo tak ogólnie to chyba temperatura jest względnie równomiarna.
 
 W tej pracy autorzy skupili się na optymalnym doborze parametrów deskryptora HOG. 
@@ -75,36 +76,36 @@ Badanie parametrów dla klasyfikacji SVM wykazało, że im większy zestaw uczą
 
 
 
-%TODO Opis tego trzeciego algorytmu jest to poprawki !!!
-\section{Do wywalenia}
-Autorzy pracy \cite{nanda_2002} przedstawili metodę opartą o wzorzec probabilistyczny i klasyfikator Bayesa. 
-Obraz wejściowy zostaje zbinaryzowany z zadanym progiem. 
-Próg ten nie jest stały i zależy od wielu czynników. 
-%TODO a można konkretniej ? Np., że zostało to omóione poniżej
-Autorzy bazując na danych uczących stanowiących 1000 prostokątnych okien o rozmiarze 48x128 pikseli zawierających przechodnia średnią oraz odchylenie standardowe wartości dla pikseli należących do obrazu przechodnia \( \mu_1 \sigma_1 \) bądź tła \( \mu_2 \sigma_2 \) a następnie obliczyli próg binaryzacji za pomocą równia \eqref{eq:treshold_nanda}. %TODO OK odwołania do równiań poprzez eqref. , te symbole jakoś w tekście nie są w nawiasie
-%TODO To zadnie to jest jakiś "potworek" proszę poprawić.
-
-\begin{equation} \label{eq:treshold_nanda}
-threshold = \frac{\sigma_1 \sigma_2}{ \sigma_1 + \sigma_2} \ln\left ( \frac{\sigma_1}{\sigma_2} \right ) + \frac{\sigma_1\mu_1 + \sigma_2\mu_1}{\sigma_1+\sigma_2}\end{equation}
-
-Aby uzyskać wzorzec prawdopodobieństwa, zbiór testowy został zbinaryzowany z uprzednio wyliczonym progiem. 
-Następnie zostało obliczone prawdopodobieństwo przynależności piksela do przechodnia we wzorcu. %TODO To jest ciut niejasne.
-Mając już wzorzec, został obliczony combinedpropability ze wzoru \eqref{eq:combo_nanda} dla 1000 okien zawierających i nie zawierających człowieka oraz wyciągnięta średnia i odchylenie standardowe dla nich. 
-
-%TODO To com.... to trzeba na coś zamienić !!!
-
-Dało to podstawę do obliczenia progu dla wartości combinedpropability z wzoru \eqref{eq:treshold_nanda}. 
-%TODO to jest jakieś niejasne.
-
-\begin{equation} \label{eq:combo_nanda} combinedprobability(i,j)=\sum_{x=1}^{48}\sum_{y=1}^{128}(th(x,y)*p(x,y)+(1-th(x,y))*(1-p(x,y)))\end{equation}
-\noindent
-gdzie \(th(x,y)\) to okno wokół piksela \((i,j)\), a \(p(x,y)\) to wzorzec prawdopodobieństwa wystąpienia pieszego.
-
-Badana klatka obrazu jest badana poprzez okno przesuwne tworząc mapę prawdopodobieństwa. %TODO badana klatka jest badana ? 
-Wartości które przekroczą próg wskazują, że w danym oknie znajduje się człowiek. 
-
-%TODO ale jakie wartości ? 
-Autorzy zbadali algorytm na 6 sekwencjach filmowych i uzyskali wynik między 75\%-90\% wykrycia przy jednym fałszywym wykryciu na ramkę. %TODO chyba średnio jednym...
+%TODO Opis tego trzeciego algorytmu jest to poprawki !!! %TT jest zbędny więc usunięty
+% \section{Do wywalenia}
+% Autorzy pracy \cite{nanda_2002} przedstawili metodę opartą o wzorzec probabilistyczny i klasyfikator Bayesa. 
+% Obraz wejściowy zostaje zbinaryzowany z zadanym progiem. 
+% Próg ten nie jest stały i zależy od wielu czynników. 
+% %TODO a można konkretniej ? Np., że zostało to omóione poniżej
+% Autorzy bazując na danych uczących stanowiących 1000 prostokątnych okien o rozmiarze 48x128 pikseli zawierających przechodnia średnią oraz odchylenie standardowe wartości dla pikseli należących do obrazu przechodnia \( \mu_1 \sigma_1 \) bądź tła \( \mu_2 \sigma_2 \) a następnie obliczyli próg binaryzacji za pomocą równia \eqref{eq:treshold_nanda}. %TODO OK odwołania do równiań poprzez eqref. , te symbole jakoś w tekście nie są w nawiasie
+% %TODO To zadnie to jest jakiś "potworek" proszę poprawić.
+% 
+% \begin{equation} \label{eq:treshold_nanda}
+% threshold = \frac{\sigma_1 \sigma_2}{ \sigma_1 + \sigma_2} \ln\left ( \frac{\sigma_1}{\sigma_2} \right ) + \frac{\sigma_1\mu_1 + \sigma_2\mu_1}{\sigma_1+\sigma_2}\end{equation}
+% 
+% Aby uzyskać wzorzec prawdopodobieństwa, zbiór testowy został zbinaryzowany z uprzednio wyliczonym progiem. 
+% Następnie zostało obliczone prawdopodobieństwo przynależności piksela do przechodnia we wzorcu. %TODO To jest ciut niejasne.
+% Mając już wzorzec, został obliczony combinedpropability ze wzoru \eqref{eq:combo_nanda} dla 1000 okien zawierających i nie zawierających człowieka oraz wyciągnięta średnia i odchylenie standardowe dla nich. 
+% 
+% %TODO To com.... to trzeba na coś zamienić !!!
+% 
+% Dało to podstawę do obliczenia progu dla wartości combinedpropability z wzoru \eqref{eq:treshold_nanda}. 
+% %TODO to jest jakieś niejasne.
+% 
+% \begin{equation} \label{eq:combo_nanda} combinedprobability(i,j)=\sum_{x=1}^{48}\sum_{y=1}^{128}(th(x,y)*p(x,y)+(1-th(x,y))*(1-p(x,y)))\end{equation}
+% \noindent
+% gdzie \(th(x,y)\) to okno wokół piksela \((i,j)\), a \(p(x,y)\) to wzorzec prawdopodobieństwa wystąpienia pieszego.
+% 
+% Badana klatka obrazu jest badana poprzez okno przesuwne tworząc mapę prawdopodobieństwa. %TODO badana klatka jest badana ? 
+% Wartości które przekroczą próg wskazują, że w danym oknie znajduje się człowiek. 
+% 
+% %TODO ale jakie wartości ? 
+% Autorzy zbadali algorytm na 6 sekwencjach filmowych i uzyskali wynik między 75\%-90\% wykrycia przy jednym fałszywym wykryciu na ramkę. %TODO chyba średnio jednym...
 
 %TODO Tutaj omówienie tych algorytmów z Poznania
 
@@ -116,14 +117,14 @@ System analizował obraz stereoskopowy z dwóch kamer wizyjnych tworząc mapę g
     \centering
     \includegraphics[width=1\textwidth]{images/honegger2014real_Fig1}
     \caption{Schemat systemu wizyjnego zaproponowanego w pracy\cite{honegger2014real}.}
-    \label{fig: honegger2014real_Fig1}
+    \label{fig:honegger2014real_Fig1}
 \end{figure}
 %TODO OK wizyjnych, czy termo
 Obie kamery zostały bezpośrednio podpięte do układu FPGA za pomocą interfejsu LVDS (ang. \textit{low-voltage differental signal} – niskonapięciowy sygnał różnicowy), w którym obrazy były następnie przetwarzane. 
 
 %TODO OK proszę zwrócić uwagę na czas -> były (bo wcześniej wykorzystali) ogólnie takie badania opisuje się w czasie przeszłym.
 
-Schemat systemu jest przedstawiony na rysunku \ref{honegger2014real_Fig1}. W pierwszej kolejności obrazy z kamer są synchronizowane z wykorzystaniem bufora opóźniającego jedną linie danych. 
+Schemat systemu jest przedstawiony na rysunku \ref{fig:honegger2014real_Fig1}. W pierwszej kolejności obrazy z kamer są synchronizowane z wykorzystaniem bufora opóźniającego jedną linie danych. 
 Korekcja zniekształceń soczewkowych oraz rektyfikacja zostały połączone w jedną operację. Przychodzące zsynchronizowane piksel są zapisywane do bufora. Po obliczaniu współrzędnych piksela, uwzględniającym korektę, jego wartość jest pobrana z właściwej lokalizacji w buforze wejściowym. Kolejnym krokiem było obliczanie dysparycji. W tym celu kontekst piksela z lewego obrazu jest porównywany z okolicznymi kontekstami pikseli w prawym obrazie. Kandydat jest wyłaniany na podstawie lokalnej funkcji kosztu i stałych globalnych bazujących na algorytmie SGM (ang. \textit{Semi-Global Matching}). 
 
 Następnie dwa oryginalne obrazy oraz mapa głębi są przesyłane do CPU za pomocą specjalnej magistrali.
@@ -143,7 +144,7 @@ Głównym wyzwaniem było opracowanie systemu, która działa w czasie rzeczywis
 %TODO OK raczej systemu/rozwiązania (szczególnie koszt wykonania dla algorytmu jest dyskusyjny)
 Najbardziej skuteczne algorytmy wymagają znacznych zasobów obliczeniowych. %TODO topowych -> słowo potoczne i do zmiany
 Autorzy dokonali zatem relaksacji problemu poprzez zastosowanie prostszego deskryptora jakim jest LBP oraz klasyfikatora SVM. 
-Po każdej stronie pojazdu została zamontowana inteligentną kamerę o szeroki, 180$^\circ$ horyzontalnym kącie widzenia by jak najlepiej monitorować przestrzeń wokół niego. 
+Po każdej stronie pojazdu została zamontowana inteligentną kamerę o szerokim, 180$^\circ$ horyzontalnym kącie widzenia by jak najlepiej monitorować przestrzeń wokół niego. 
 %TODO wyeliminiować powt. autorzy
 W kamerach została przeprowadzona wstępna obróbka obrazu (rektyfikacja i skalowanie). 
 %TODO rektyfikacja ? czyli to był system stetero ?
@@ -170,10 +171,7 @@ Obrazy wykorzystane w systemie są binarne, co oznacza że \( p(w_{x,y}|P) \) pr
 Autorzy utworzyli PDM na podstawie 60 pozytywnych próbek. 
 
 W celu usprawnienia obliczeń w układzie FPGA macierz została przeskalowana na wartości całkowitoliczbowe w zakresie od 1 do 127. 
-Następnie obliczono logarytm o podstawie dwa z uzyskanego wzorca i jej odwrotności (poprzez odjęcie od 128 wartości macierzy pozytywnej) i pomnożono przez 32. 
-
-%TODO OK powt. następne
-
+Następnie obliczono logarytm o podstawie dwa z uzyskanego wzorca i jej odwrotności (poprzez odjęcie od 128 wartości macierzy pozytywnej) i pomnożono przez 32. %TODO OK powt. następne
 Utworzono tak dwie macierze: LPDW i LPDB dla białych i czarnych pikseli. (ang. \textit{logarithmic probability matrix} – logarytmiczna macierz prawdopodobieństwa). 
 Przyjęto, że prawdopodobieństwo przynależności piksela do tła jest stałe i wynosi 50\%, co daje wartość 192 po uprzednich przekształceniach. 
 Ostatecznie klasyfikacji dokonuje się z wzoru: 
@@ -196,7 +194,7 @@ IsPedestrian = \left\{ \begin{array}{ll}
 
 W omawianej pracy autorzy opracowali wzorce dla 3 różnych wielkości okna: 10x15, 8x12 i 6x9 pikseli. Do stworzenia wykorzystali jedynie górne połówki obrazu termicznego ludzkiej sylwetki, co miało na celu bardziej niezawodnego wzorca wobec różnych postur przechodniów. 
 \section{Poprzednie prace}
-Praca inżynierska \cite{kankaing}, oraz artykuł na jej podstawie\cite{kanka2016fpga}, której kontynuacją jest mniejsza praca, rozwinęła koncepcję zaproponowaną w sekcji \ref{sec:xiao_2015}. Zastosowano 4 wzorce o wymiarach 48x120, 32x80, 24x60,19x48. Wzorzec został podzielony na 4 części: górną, dolną , prawą lewą. Następnie, podobnie jak w DPM, układ tych 4 części decydował o jego klasyfikacji. Każda część tworzyła maskę wielkości całego okna. Jeżeli co najmniej 3 takie maski pokrywały się obszar ten był klasyfikowany pozytywnie. Pozwoliło to na znaczną poprawę działania algorytmu, co pokazuje wykres ROC na rysunku \ref{fig:analiza_wykres}. 
+Praca inżynierska \cite{kankaing}, oraz artykuł na jej podstawie\cite{kanka2016fpga}, której kontynuacją jest mniejsza praca, rozwinęła koncepcję zaproponowaną w sekcji \ref{sec:xiao_2015}. Zastosowano 4 wzorce o wymiarach 48x120, 32x80, 24x60,19x48. Wzorzec został podzielony na 4 części: górną, dolną , prawą lewą. Następnie, podobnie jak w DPM, układ tych 4 części decydował o jego klasyfikacji. Każda część tworzyła maskę wielkości całego okna. Jeżeli co najmniej 3 takie maski pokrywały się obszar ten był klasyfikowany pozytywnie. Pozwoliło to na znaczną poprawę działania algorytmu, co pokazuje wykres ROC przedstawiony na rysunku \ref{fig:analiza_wykres}. 
 
 	\begin{figure}
 	\centering
@@ -205,7 +203,7 @@ Praca inżynierska \cite{kankaing}, oraz artykuł na jej podstawie\cite{kanka201
 	\label{fig:analiza_wykres}
 	\end{figure}
 
-Poprawiło to również detekcję w różnych skalach. Poprzednio \textit{muliscale} osiągnięto dzięki zastosowaniu kilku wzorców, co wymuszało konieczność zmniejszenia parametru $K$ by w pojedynczym oknie było możliwe wykrycie mniejszych i większych sylwetek. Powodowało to również zwiększenie ilości fałszywych detekcji. Teraz każdy część ma możliwość deformacji co w dynamiczny sposób pozwala na zmianę wysokości wzorca.
+Poprawiło to również detekcję w różnych skalach. Poprzednio \textit{muliscale} osiągnięto dzięki zastosowaniu kilku wzorców. Pojedyńczy wzorzec zapewniał detekcję w pewnym zakresie wysokoci przechodniów. Im dalej odniegiał od swojej nominalnej wysokoci tym bardziej należało zmniejszyć parametr $K$ by w pojedynczym oknie było możliwe wykrycie mniejszych i większych sylwetek. Powodowało to również zwiększenie ilości fałszywych detekcji. Po wprowadzeniu modyfikacja każda część ma możliwość deformacji co w dynamiczny sposób pozwala na zmianę wysokości wzorca.
 
 %TODO OK ogólnie ta metoda (z p. inż. też jest jakoś nie do końca fajnie opisana) - proszę to dopracować.
 %TODO OK dalej - proszę "pochwalić" się artykułem na ten temat - przecież powstał

@@ -1,10 +1,10 @@
 \chapter{Wykorzystanie FPGA w analizie obrazu}
-
+\label{fpga}
 Tradycyjne systemy wizyjne zwykle bazują na architekturze sekwencyjnej.
 W tym rozwiązaniu obraz jest sukcesywnie poddawany kolejnym przekształceniom, a~wyniki pośrednie zapisywane są w pamięci operacyjnej. 
 W aplikacji procesorowej operacje te są wykonywane przez układ arytmetyczno-logiczny. 
 Kolejne kroki algorytmu są kompilowane w ciąg instrukcji dla procesora ,który oprócz operacji matematycznych dużą część pracy poświęca na pobieranie i dekodowanie rozkazów oraz na odczytywanie i zapisywanie danych do pamięci. 
-By taka aplikacja mogła pracować w czasie rzeczywistym, cała procedura musi wykonać się szybciej niż przychodzące dane obrazu, co wymusza wysokie taktowanie procesora sięgające kilku GHz. To podejście jednak ma swoje ograniczenia. Wraz z wzrostem częstotliwości pracy procesora wzrasta jego moc a tym samym ilość ciepła które która musi zostać rozproszone. Najszybsze CPU są taktowane z częstotliwością zegara sięgającą nawet 4,4 GHz (choć przy zastosowaniu chłodzenia ciekłym azotem jest możliwe uzyskanie ponad 8 GHz). Wzrost szybkości obliczeń uzyskuje poprzez zwiększanie ilości rdzeni procesora. %TODO dodać, że to i tak nie zawsze pomaga. Poza tym wypada jakoś skomentować fakt istnienie procesorów wielordzeniowych.
+By taka aplikacja mogła pracować w czasie rzeczywistym, cała procedura musi wykonać się szybciej niż przychodzące dane obrazu, co wymusza wysokie taktowanie procesora sięgające kilku GHz. To podejście jednak ma swoje ograniczenia. Wraz z wzrostem częstotliwości pracy procesora wzrasta jego moc a tym samym ilość ciepła które która musi zostać rozproszone. Najszybsze CPU są taktowane z częstotliwością zegara sięgającą nawet 4,4 GHz (choć przy zastosowaniu chłodzenia ciekłym azotem jest możliwe uzyskanie ponad 8 GHz). Wzrost szybkości obliczeń  uzyskuje się coraz częsciej poprzez zwiększanie ilości rdzen wi procesorze. %TODO dodać, że to i tak nie zawsze pomaga. Poza tym wypada jakoś skomentować fakt istnienie procesorów wielordzeniowych.
 
 W przypadku podejścia równoległego, implementacja poszczególnych kroków algorytmu odbywa się w osobnych procesach. Jeżeli wykonywany algorytm jest głównie sekwencyjny tzn. kolejne kroki algorytmu wymagałyby danych otrzymanych z poprzednich, to zysk takiego zabiegu byłby równy zero. W celu uzyskania dobrej implementacji w układzie równoległym, istotne jest by znaczna cześć algorytmu mogła być wykonywana równolegle. 
 %TODO OK to jest dość niejednoznaczne. Musi Pan to opatrzyć jakimś lepszym komentarzem/przykładem.
@@ -38,7 +38,7 @@ Z tego powodu przetwarzanie obrazu bezpośrednio z sensora w czasie jego akwizyc
 Rodzina układów Zynq-7000 bazuje na architekturze SoC (ang. \textit{System on Chip}). W pojedynczym układzie scalonym został zawarty kompletny system w skład którego wchodzą układy spełniające różne funkcje. Został on podzielony na dwie główne części: systemu procesorowy (PS ang. \textit{Porcessing System}) bazujący na procesorze ARM Cortex-A9 oraz logikę programowalną (PL ang. \textit{Programable Logic}) - FPGA. %TODO OK potworek styl. -> poprawić. + nazwy/słowa angielskie zawsze w kursywie
 Na rysunku \ref{fig:zynq7000} przedstawiono schemat architektury układu. %TODO OK czego ?
 Część procesorowa, oprócz samego ARM-a, posiada wbudowaną pamięć, kontroler pamięci zewnętrznej oraz szereg interfejsów dla układów peryferyjnych takich jak USB, GigEthernet, CAN, I2C, SPI. %TODO OK piwersza część do poprawy (styl.)
-W części logiki programowalnej znajdują się bloki logiki konfigurowalnej (CLB ang. \textit{configurable logic block}), 36Kb bloki pamięci RAM, DSP48 \textit{slice}, układ JTAG, układy zarządzania zegarami oraz dwa 12-bitowe przetworniki analogowo-cyfrowe.
+W części logiki programowalnej znajdują się bloki logiki konfigurowalnej (CLB ang. \textit{configurable logic block}), 36Kb bloki pamięci RAM, moduły DSP48, układ JTAG, układy zarządzania zegarami oraz dwa 12-bitowe przetworniki analogowo-cyfrowe.
 %TODO 1. nie nazywałbym tego procesorem sygnałowym. 2. jednak bardziej obszerny opis obu komponentów (tak na 1/2 strony każdy)
 
 Komunikacja między częścią procesorową, a logiką programowalną odbywa się za pośrednictwem interfejsu AXI (ang. \textit{Advanced Extensible Interface}) oraz bezpośrednio wykorzystując porty ogólnego przeznaczenia, przerwania i bezpośredni dostęp do pamięci (DMA ang. \textit{Direct Memory Access}).
@@ -61,8 +61,8 @@ Komunikacja między częścią procesorową, a logiką programowalną odbywa si�
 \item AXI4-Lite -- stosowany dla prostszych operacji w przestrzeni pamięci (na przykład do komunikacji z rejestrami kontrolnymi i statusu),
 \item AXI4-Stream --stosowany do transmisji strumieniowych (wysokiej prędkości). 
 \end{itemize}
-Specyfikacja interfejsu zakłada komunikację pomiędzy pojedynczym AXI master i pojedynczym AXI slave, która ma na celu wymianę informacji. 
-Kilkanaście interfejsów AXI master i slave mogą zostać połączone między sobą za pomocą specjalnej struktury zwanej \textit{interconnect block} (blok międzypołączeniowy), w której odbywa się trasowanie połączeń do poszczególnych bloków. 
+Specyfikacja interfejsu zakłada komunikację pomiędzy pojedynczym AXI \textit{master} i pojedynczym AXI \textit{slave}, która ma na celu wymianę informacji. 
+Kilkanaście interfejsów AXI \textit{master} i \textit{slave} mogą zostać połączone między sobą za pomocą specjalnej struktury zwanej \textit{interconnect block} (blok międzypołączeniowy), w której odbywa się trasowanie połączeń do poszczególnych bloków. 
 
 AXI4 i AXI4-Lite składają się z 5 różnych kanałów:
 \begin{itemize}
