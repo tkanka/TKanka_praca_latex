@@ -31,7 +31,7 @@ Dobre rozwiązanie stanowią układy rekonfigurowalne, które charakteryzują si
 
 Układy FPGA (ang. \textit{Field-Programmable Gate Array}) umożliwiają zrównoleglenie obliczeń i są szeroko stosowane w systemach wizyjnych. 
 Szczególnie chętnie są wykorzystywane do realizacji operacji niskiego poziomu, przygotowując wstępnie obraz do dalszej analizy na wysokim poziomie. 
-Przykłady takich operacji to: filtry konwolucyjne, filtry 2D, podpróbkowanie, wykrywanie krawędzi, obliczanie SAD (ang. \textit{sum of absolute differences}) z regionu zainteresowania, obliczanie orientacji krawędzi i histogramów, obliczanie strumieniowo statystyk (wartość maksymalna, minimalna, średnia), zmiana przestrzeni barw \cite{ kisacanin2008embedded}. %TODO OK dodać wyjasnienie SAD
+Przykłady takich operacji to: filtry konwolucyjne, filtry 2D, podpróbkowanie, wykrywanie krawędzi, obliczanie SAD (ang. \textit{sum of absolute differences}) z regionu zainteresowania, obliczanie orientacji krawędzi i histogramów, obliczanie strumieniowo statystyk (wartość maksymalna, minimalna, średnia), zmiana przestrzeni barw \cite{kisacanin2008embedded}. %TODO OK dodać wyjasnienie SAD
 Dodatkową zaletą układów FPGA jest mały pobór mocy, co czyni je niezwykle atrakcyjne dla aplikacji mobilnych -- takich jak drony czy czujniki środowiskowe \cite{garcia2014survey}. 
 Układy heterogeniczne łączą w jednej obudowie dwa układy o różanej architekturze i funkcjonalności. 
 Przykładem takiego połączenia jest Zynq-7000 firmy Xilinx, który integruje w sobie układ FPGA oraz procesor ARM. 
@@ -42,15 +42,21 @@ Niniejsza praca stanowi kontynuację i rozwinięcie pracy inżynierskiej autora.
 \section{Cel pracy}
 
 %TODO Coś więcej na podsatwie "specyfikacji" pracy ?
-Celem pracy była realizacja wbudowanego systemu wizyjnego do detekcji wybranych obiektów (np. ludzi) na podstawie obrazu z kamery termowizyjnej oraz konwencjonalnej. 
-Zakłada się, że jako platforma obliczeniowa zostanie użyty układ heterogeniczny (np. Zynq firmy Xilinx), który umożliwia realizację sprzętowo-programową algorytmów. W pierwszym etapie 
+Celem pracy byłą realizacja wbudowanego systemu wizyjnego do detekcji wybranych obiektów (np. ludzi) na podstawie obrazu z kamery termowizyjnej. Zakłada się, że jako platforma obliczeniowa zostanie użyty układ heterogeniczny (np. Zynq firmy Xilinx), który umożliwia implementację sprzętowo-programową algorytmów.
+W pierwszym etapie pracy należało dokonać przeglądu i oceny zrealizowanego w ramach pracy inżynierskiej algorytmu, a także przeprowadzić pogłębioną analizę literatury związanej z tematem. Należało zwrócić szczególną uwagę na systemy detekcji pieszych (wspomaganie kierowcy) oraz systemy dla autonomicznych pojazdów latających (dronów). Warto także rozważyć możliwość wykorzystania kontekstu czasowego tj. informacji zawartej w sekwencji obrazów. Na tej podstawie należy wytypować algorytmy, które zostaną zaimplementowane i przetestowane w aplikacji programowej (Matlab/C++/Python/OpenCV). Należało również zgromadzić bazę zdjęć lub sekwencji testowych.
+
+W drugim etapie należało wybrane wspólnie z opiekunem pracy algorytmy zaimplementować w systemie programowo sprzętowym, uruchomić oraz sprawdzić ich skuteczność w różnych scenariuszach testowych.
+
+Oczekiwanym rezultatem pracy był: opis wykorzystania informacji termowizyjnej w detekcji pieszych (systemy wspomagania kierowcy) oraz detekcji ludzi z wykorzystaniem dronów, implementacja i analiza kilku podejść (w aplikacji programowej), implementacja sprzętowo-programowo wybranych algorytmów detekcji.
 
 \section{Struktura pracy}
 
-W pierwszej części pracy została opisana budowa cyfrowego systemu wizyjnego z wykorzystaniem połączonych obrazów RGB oraz IR. 
-Rozdział \ref{cha:multispectral}zawiera teorię stanowiącą podstawę dla realizowanych prac oraz kilka 
-przykładów już zrealizowanych systemów. 
-W rozdziale \ref{cha:hw} zostały przedstawione wykorzystane zasoby sprzętowe oraz technologie użyte w opracowaniu systemu wizyjnego.
-W rozdziale \ref{cha:real} zawiera realizację autorskiego systemu detekcji ludzi. 
-Prace zakończono omówieniem uzyskanych wyników, wnioskami oraz wskazaniem dalszych kierunków rozwoju stworzonego systemu.
+Pracę rozpoczyna wstęp w którym przestawiono możliwości i zastosowania kamer termowizyjnych. Wskazano również zalety wykorzystania poczerwieni do rozszerzenia spektrum konwencjonalnej kamery wizyjnej – analizy multispektralnej. 
+W rozdziale \ref{cha:multispectral} zostały omówione sposoby uzyskania obrazu multisektralnego. Rodziła rozpoczyna się od scharakteryzowania promieniowania podczerwonego oraz metody jego rejestracji. Następnie został zaprezentowany model kamery otworkowej oraz transformacja projekcyjna, które stanowią podstawę teoretyczną do prawidłowego połączenia obrazów z dwóch różnych kamer. 
+W rozdziale \ref{cha:algoDetPiesz} przedstawiono ogólny zarys algorytmów służących do detekcji pieszych. W poszczególnych sekcjach zostały omówione poszczególne etapy przetwarzania obrazu i klasyfikacji wraz z ogólnie stosowanymi rozwiązaniami.
+Następnie w rozdziale \ref{cha:fpga} zostały omówione sposoby zrównoleglenia obliczeń i możliwość FPGA na przykładzie układu heterogenicznego Zynq-7000 firmy Xilinx.
+Kolejny rozdział \ref{cha:przegLiter} zawiera streszczenia kilku wybranych artykułów które poruszają tematykę związaną z niniejszą pracą.
+W rozdziale \ref{cha:propSysWiz} przedstawiono koncepcję zaproponowanego rozwiązania wraz z szczegółami dotyczącymi jego wykonania.
+Całość zakończono podsumowaniem.
+
 

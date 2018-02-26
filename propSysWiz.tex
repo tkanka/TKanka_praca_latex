@@ -1,4 +1,5 @@
 \chapter{Proponowany system wizyjny}
+\label{cha:propSysWiz}
 
 
 \begin{figure}
@@ -17,7 +18,7 @@
 
 
 
-\section{koncepcja systemu}
+\section{Koncepcja systemu}
 Zadaniem systemu jest detekcja osób w obrazie multispektralnym. Do uzyskania obrazu multisprktralnego została wykorzystana kamera wizyjna, dająca obraz parametrach 640x480px i 50 klatek na sekundę oraz termowizyjna: Lepton – 80x60px i 8,9 klatki na sekundę. Obraz z kamery termowizyjnej (IR) jest dopasowywany do wizyjnego (RGB) za pomocą projekcji perspektywicznej. Wynikiem ich połączenia jest obraz multispektralny (RGBIR). Wybór ROI odbywa się tylko z wykorzystaniem obrazu termowizyjnego. W tym celu został wykorzystany moduł PDM (ang \textit{Probability Density Matrix}) zaczerpnięty z pracy inżynierskiej autora \cite{kankaing}.Tworzy on listę kandydatów z której jest wybierany najbardziej prawdopodobny wynik. Następnie z ROI o wymiarach 80x192px są wyodrębniane deskryptory HOG oraz odbywa się klasyfikacja z wykorzystaniem SVM. Wynik detekcji jest prezentowany na ekranie, poprzez obramowanie sylwetki przechodnia.
 Do realizacji tego systemu została wykorzystana płytka deweloperska ZYBO firmy Digilent. Bazuje ona na omówionym wcześniej w rozdziale \ref{fpga} układzie Zynq-7000. Jest to układ heterogeniczny co daje możliwość realizacji poszczególnych elementów systemu wizyjnego w logice programowalnej (PL) lub systemie procesorowym (PS) 
 Zaproponowano następujący podział zadań:
