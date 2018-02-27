@@ -1,0 +1,47 @@
+\chapter{Dodatek B - Instrukcja obsługi systemu}
+
+Po podpięciu platformy Zybo przez złącze mikro USB uzyskujemy dostęp do terminalu poprzez UART. Parametry portu: baud rate 115200, 8 bitów, jeden bit stopu, brak kontroli parzystości.
+
+wciśnięcie klawisza 'h' powoduje pokazania się karty pomocy:
+
+\begin{lstlisting}
+HELP:
+1 VDMA status
+2 Start detection
+3 Restart DMA
+
+5 read T matrix
+6 write T matrix
+7 write bin threshold
+8 update LP threshold
+
+w save next detected ROI
+s save centered ROI
+x save center ROI and HOG discriptor
+d save whole frame
+m mount SD card
+q get calibration image
+
+\end{lstlisting}
+ 
+\noindent wprowadenie znaku z powyższej listy do konsoli powoduje wykonanie następującej akcji:
+ 
+\begin{itemize}
+\item 1 - wyświtlenie statusu VDMA,
+\item 2 – rozpoczęcie detekcji przechodniów,
+\item 3 – restart DMA,
+\item 5 – wyświetlenie parametrów macierzy transformacji projekcyjnej,
+\item 6 – pozwala na wprowadzenie nowej macierzy T. Dane należy wprowadzić w postaci 9 liczb z przecinkiem (kropką) np.: wprowadzenie ''1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0'' zamienia macierz T na macierz jednostkową,
+\item 7 - pozwala na wprowadzenie progu binaryzacji dla modułu DPM,
+\item 8 - pozwala na wprowadzenie progu LP dla modułu DPM,
+\item w - zapisanie następnego wykrytego ROI w postaci pliku ROInnn.CIR gdze nnn to kolejne numery plików.
+\item s - zapisanie ROI znajdującego się na środku obrazu w postaci pliku ROInnn.CIR gdzie nnn to kolejne numery plików.
+\item x - zapisanie ROI znajdującego się na środku obrazu w postaci pliku ROInnn.CIR  oraz wektora cech w postaci pliku FVnnn.FLO nnn to kolejne numery plików.
+\item d - zapisanie całej ramki obrazu w postaci pliku FRAMEnnn.CIR gdzie nnn to kolejne numery plików.
+\item m - zamontowanie karty SD w celu zapisu plików,
+\item m - zapis obrazu kalibracyjnego w postaci pliku CALIBR.CIR. Spowoduje to zapisanie obrazu wizyjnego wraz z niepoddanym transformacji obrazem termowizyjnym.
+\end{itemize}
+
+Pliki .CIR można otworzyć za pomocą funkcji [IrImage, rgbImage] = cir2image( filename ) w pakiecie MatLab (znjdującym się na płycie CD w folderze /src). Zwraca ona dwie macierze: IrImage - zapisany obraz w podczerwieni oraz rgbImage zapisany obraz wizyjny.
+
+Pliki .FLO składa się z 1584 32-bitowych liczb zmiennoprzecinkowych typu float. Reprezentuje on obliczony przez procesor wektor cech związanego z nim ROI.

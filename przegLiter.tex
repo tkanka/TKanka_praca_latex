@@ -3,7 +3,7 @@
 
 %TODO OK ponieważ te opisy są dość obszerne proszę jednak dać to w osobne podrozdziały subsub (czy jak to wyjdzie)
 
-\section{Koledzy z Poznania}
+\section{Zaawaoswana binaryzacja i segmentacja + HOG SVM} %TT albo inaczej koledzy z poznania
 W pracy \cite{kolzpoz} autorzy opracowali algorytm pozwalający na szybką i efektywną detekcję przechodniów w czasie rzeczywistym. 
 Termowizja pozwala na uzyskanie dobrego kontrastu między poszukiwanym przechodniem a otoczeniem. 
 Zaproponowany system jest dedykowany do pracy w nocy, kiedy kontrast między człowiekiem a otoczeniem pozwala na jednoznaczne ich rozróżnienie. %TODO OK między człowiekiem, a czym ?
@@ -35,12 +35,12 @@ W celu zbadania dokładności algorytmu został przeprowadzony test na zbiorze C
 Testy wykazały, że metoda podwójnego progowania daje trzy razy lepsze rezultaty, niż przy wykorzystaniu pojedynczego progu.  Wraz z zaproponowanymi technikami filtracji zaowocowało to bardzo efektywnym mechanizmem segmentacji. Ponad 95\% występujących przechodniów zostało poprawnie wytypowanych jako kandydaci do klasyfikacji. 
 %TODO ok no właśnie segmentacji czy klasyfikacji
 Cała procedura detekcji przechodniów osiągnęła wysoki poziom wydajności na poziomie 33 klatek (o wymiarach 640x471 px) na sekundę przy wykorzystaniu pojedynczego rdzenia CPU. Dokładność detekcji wyniosła 37,3\% AMR
-(ang. \textit{ average miss rate }), co jest porównywalna do innych metod opartych o HOG+SVM.
+(ang. \textit{ Average Miss Rate }), co jest porównywalna do innych metod opartych o HOG+SVM.
 %TODO A dla jakich parametrów strumienia wizyjnego. 
 %TT nie jest napisane wprost w artykule ale mam tą samą bazę i tam są 640 x 471.
 
 \section{Stereotermowizja}
-W pracy \cite{suard2006pedestrian} autorzy zaproponowali wykorzystanie dwóch kamer termowizyjnych tworząc system stereowizyjny. W obrazie termowizyjnym człowieka najcieplejszym obszarem jest zazwyczaj głowa. By wyodrębnić obszary zainteresowania, w~których potencjalnie znajdują się przechodnie, zgrupowano piksele o wartościach powyżej kilku różnych progów. Każdy z tych obszarów zostaje następnie uznany za głowę i stanowi górną część okna detekcyjnego. Wielkość okna jest estymowana na podstawie odległości źródła ciepła od kamer.. Odległość jest ustalana na podstawie mapy dysparycji (ang. \textit{disparity map}). Do obliczani dysparycji okna, porównywana różnica między oryginalnym oknem a oknem przesuwnym w drugim obrazie. Dysparycja jest uzyskiwana gdy ta różnica jest minimalna. Na koniec każde okno zostaje przeskalowane do wielkości 128x64 i poddane klasyfikacji . %TODO OK znowu za mało szczegółów...
+W pracy \cite{suard2006pedestrian} autorzy zaproponowali wykorzystanie dwóch kamer termowizyjnych tworząc system stereowizyjny. W obrazie termowizyjnym człowieka najcieplejszym obszarem jest zazwyczaj głowa. By wyodrębnić obszary zainteresowania, w~których potencjalnie znajdują się przechodnie, zgrupowano piksele o wartościach powyżej kilku różnych progów. Każdy z tych obszarów zostaje następnie uznany za głowę i stanowi górną część okna detekcyjnego. Wielkość okna jest estymowana na podstawie odległości źródła ciepła od kamer.. Odległość jest ustalana na podstawie mapy dysparycji (ang. \textit{Disparity Map}). Do obliczani dysparycji okna, porównywana różnica między oryginalnym oknem a oknem przesuwnym w drugim obrazie. Dysparycja jest uzyskiwana gdy ta różnica jest minimalna. Na koniec każde okno zostaje przeskalowane do wielkości 64x128 i poddane klasyfikacji . %TODO OK znowu za mało szczegółów...
 %TODO OK to raczej, z tego że ZWYKLE głowa (stricte twarz) ew. dłonie sa odsłoniete, wynika, że są widoczne jako najcieplejsze... bo tak ogólnie to chyba temperatura jest względnie równomiarna.
 
 W tej pracy autorzy skupili się na optymalnym doborze parametrów deskryptora HOG. 
@@ -120,7 +120,7 @@ System analizował obraz stereoskopowy z dwóch kamer wizyjnych tworząc mapę g
     \label{fig:honegger2014real_Fig1}
 \end{figure}
 %TODO OK wizyjnych, czy termo
-Obie kamery zostały bezpośrednio podpięte do układu FPGA za pomocą interfejsu LVDS (ang. \textit{low-voltage differental signal} – niskonapięciowy sygnał różnicowy), w którym obrazy były następnie przetwarzane. 
+Obie kamery zostały bezpośrednio podpięte do układu FPGA za pomocą interfejsu LVDS (ang. \textit{Low-Voltage Differental Signal} – niskonapięciowy sygnał różnicowy), w którym obrazy były następnie przetwarzane. 
 
 %TODO OK proszę zwrócić uwagę na czas -> były (bo wcześniej wykorzystali) ogólnie takie badania opisuje się w czasie przeszłym.
 
@@ -139,7 +139,7 @@ Całkowita latencja podana przez autorów rozwiązania wynosi około 2ms.
 %TT niestety nie, po prostu szybko liczyło obraz stereo z wykorzystaniem fpga
 
 \section{Podejście sprzętowo-programowe. System wspomagania kierowcy}
-W pracy \cite{piao2016real} autorzy wykorzystali układ SoC (ang. System on Chip) do detekcji pieszych dla zaawansowanego systemu wspomagania kierowcy (ADAS ang. \textit{advanced driver assistance system}). 
+W pracy \cite{piao2016real} autorzy wykorzystali układ SoC (ang. System on Chip) do detekcji pieszych dla zaawansowanego systemu wspomagania kierowcy (ADAS ang. \textit{Advanced Driver Assistance System}). 
 Głównym wyzwaniem było opracowanie systemu, która działa w czasie rzeczywistym, ma mały pobór mocy oraz niski koszt wykonania. 
 %TODO OK raczej systemu/rozwiązania (szczególnie koszt wykonania dla algorytmu jest dyskusyjny)
 Najbardziej skuteczne algorytmy wymagają znacznych zasobów obliczeniowych. %TODO topowych -> słowo potoczne i do zmiany
@@ -190,21 +190,31 @@ IsPedestrian = \left\{ \begin{array}{ll}
 \end{array} \right.
 \end{equation}
 
-\noindent gdzie $j$ i $k$ stanowią wysokość i szerokość okna przesuwnego. Wartości $L_p$ i $L_b$ odnoszą się do sum prawdopodobieństw przynależności białego/czarnego piksela do obrazu człowieka. $K$ jest parametrem którym określono minimalną wartość dla której klasyfikator daje poprawne pozytywne wyniki.
+\noindent gdzie $j$ i $k$ stanowią wysokość i szerokość okna przesuwnego. Wartości $L_p$ i $L_b$ odnoszą się do sum prawdopodobieństw przynależności białego/czarnego piksela do obrazu człowieka. $K$~jest parametrem którym określono minimalną wartość dla której klasyfikator daje poprawne pozytywne wyniki.
 
 W omawianej pracy autorzy opracowali wzorce dla 3 różnych wielkości okna: 10x15, 8x12 i 6x9 pikseli. Do stworzenia wykorzystali jedynie górne połówki obrazu termicznego ludzkiej sylwetki, co miało na celu bardziej niezawodnego wzorca wobec różnych postur przechodniów. 
-\section{Poprzednie prace}
+\section{Praca Inżynierska}
 Praca inżynierska \cite{kankaing}, oraz artykuł na jej podstawie\cite{kanka2016fpga}, której kontynuacją jest mniejsza praca, rozwinęła koncepcję zaproponowaną w sekcji \ref{sec:xiao_2015}. Zastosowano 4 wzorce o wymiarach 48x120, 32x80, 24x60,19x48. Wzorzec został podzielony na 4 części: górną, dolną , prawą lewą. Następnie, podobnie jak w DPM, układ tych 4 części decydował o jego klasyfikacji. Każda część tworzyła maskę wielkości całego okna. Jeżeli co najmniej 3 takie maski pokrywały się obszar ten był klasyfikowany pozytywnie. Pozwoliło to na znaczną poprawę działania algorytmu, co pokazuje wykres ROC przedstawiony na rysunku \ref{fig:analiza_wykres}. 
 
 	\begin{figure}
 	\centering
 	\includegraphics[width=0.8\linewidth]{images/Analiza_wykres}
-	\caption[Wykres REC]{Wyniki symulacji przy różnych wartościach parametru K.}
+	\caption[Wykres REC]{Wyniki symulacji przy różnych wartościach parametru K.\cite{kankaing}}
 	\label{fig:analiza_wykres}
 	\end{figure}
 
-Poprawiło to również detekcję w różnych skalach. Poprzednio \textit{muliscale} osiągnięto dzięki zastosowaniu kilku wzorców. Pojedyńczy wzorzec zapewniał detekcję w pewnym zakresie wysokoci przechodniów. Im dalej odniegiał od swojej nominalnej wysokoci tym bardziej należało zmniejszyć parametr $K$ by w pojedynczym oknie było możliwe wykrycie mniejszych i większych sylwetek. Powodowało to również zwiększenie ilości fałszywych detekcji. Po wprowadzeniu modyfikacja każda część ma możliwość deformacji co w dynamiczny sposób pozwala na zmianę wysokości wzorca.
+Poprawiło to również detekcję w różnych skalach. Poprzednio \textit{muliscale} osiągnięto dzięki zastosowaniu kilku wzorców. Pojedyńczy wzorzec zapewniał detekcję w pewnym zakresie wysokoci przechodniów. Im dalej odbiegiał od swojej nominalnej wysokości tym bardziej należało zmniejszyć parametr $K$ by w pojedynczym oknie było możliwe wykrycie mniejszych i większych sylwetek. Powodowało to również zwiększenie ilości fałszywych detekcji. Po wprowadzeniu modyfikacja każda część ma możliwość deformacji co w dynamiczny sposób pozwala na zmianę wysokości wzorca.
 
+DOdatkową ciekawą włąciwowoć można zauwać na 
+
+\begin{figure}
+\centering
+\includegraphics[width=0.8\linewidth]{images/sim_window.png}
+\caption[Proces detekcji wzorcem probabilistycznym.]{Proces detekcji wzorcem probabilistycznym. \cite{kankaing}}
+\label{fig:sim_window}
+\end{figure}
+
+Dodatkową ciekawą właściwość można zauważyć na rysunku \ref{fig:sim_window} przedstawiającym implementację systemu w programie MatLab. Okno przedstawiające ‘’moc klasyfikacji’’ ($L_p – (L_b + K)$ ) wyraźnie widać dwa maksima lokalne wskazujące, dokładną pozycję przechodniów. Ta właściwość została wykorzystana w niniejszej pracy w celu ustalenia ROI.
 %TODO OK ogólnie ta metoda (z p. inż. też jest jakoś nie do końca fajnie opisana) - proszę to dopracować.
 %TODO OK dalej - proszę "pochwalić" się artykułem na ten temat - przecież powstał
 

@@ -20,15 +20,16 @@ n_{w} & liczba elementów obliczeniowych.
 \end{conditions}
 
 Algorytmy przetwarzania obrazów są w dużej mierze równoległe, szczególnie te niskiego i średniego poziomu. W wielu przypadkach każdy piksel obrazu można obliczyć niezależnie, np. w wszelkich operacjach kontekstowych, przekształceniach przestrzeni barw, binaryzacji itp. Między innymi dlatego układy FPGA są chętnie stosowane w systemach wizyjnych. Teoretycznie jedynym ograniczaniem w możliwości zrównoleglenia obliczeń jest liczba dostępnych zasobów w układzie, jednak innym istotnym aspektem jest sposób dostarczania danych do modułów obliczeniowych. 
-%TODO procesorów, czy modułów obliczeniowych no bo w sumie to musi się Pan ogólnie zdecydować, czy pisze to Pan ogólnie, czy z uwzględnieniem architektury.
+%TODO OKprocesorów, czy modułów obliczeniowych no bo w sumie to musi się Pan ogólnie zdecydować, czy pisze to Pan ogólnie, czy z uwzględnieniem architektury.
 
 Dostęp do pamięci często wymaga czasu a ilość danych przekazana podczas jednego transferu jest ograniczona. Stanowi to wąskie gardło w tego rodzaju rozwiązaniach.
 
 % USUNIĘTE Czas i przepustowość jaka jest potrzebna do odczytania i zapisu obrazu po przetworzeniu pomiędzy pamięci jest najczęściej wąskim gardłem systemu wizyjnego. %TODO OK to z i do źle wygląda
 Z tego powodu przetwarzanie obrazu bezpośrednio z sensora w czasie jego akwizycji jest chętnie wykorzystywane, gdyż zmniejsza to liczbę operacji odczytu i zapisu. \cite{garcia2014survey}
 
+Karty GPU (ang. \textit{Graphics Processing Unit} też dają możliwość zrównoleglania obliczeń. W odróżnieniu od FPGA mają sztywną strukturę. Swoją architekturę przypominają SIMD (ang. \textit{Single Instruction Multiple Data}) z tą różnicą że zamiast pojedynczego rozkazu wykonywany jest ten sam kodu (tzw. kernel) na dużej ilości mniejszych procesorów.
 %TODO OK No i w ten sposób to Pan w rodziale o FPGA, ani razu nie użył słowa FPGA.
-%TODO Druga sprawa to jest GPU - tez się tu powinno pojawić.
+%TODO OK Druga sprawa to jest GPU - tez się tu powinno pojawić.
 
 
 %TODO OK To trzeba wkomponować w rozdział o algorytmach. Ew. rozdział FPGA można dać przed algorytmy i wtedy omówić metody programowe oraz sprzętowe.
@@ -41,8 +42,8 @@ Część procesorowa, oprócz samego ARM-a, posiada wbudowaną pamięć, kontrol
 W części logiki programowalnej znajdują się bloki logiki konfigurowalnej (CLB ang. \textit{configurable logic block}), 36Kb bloki pamięci RAM, moduły DSP48, układ JTAG, układy zarządzania zegarami oraz dwa 12-bitowe przetworniki analogowo-cyfrowe.
 %TODO 1. nie nazywałbym tego procesorem sygnałowym. 2. jednak bardziej obszerny opis obu komponentów (tak na 1/2 strony każdy)
 
-Komunikacja między częścią procesorową, a logiką programowalną odbywa się za pośrednictwem interfejsu AXI (ang. \textit{Advanced Extensible Interface}) oraz bezpośrednio wykorzystując porty ogólnego przeznaczenia, przerwania i bezpośredni dostęp do pamięci (DMA ang. \textit{Direct Memory Access}).
-%TODO 1. powt. oraz, 2 DMA, z tego co wiem, jest via AXI. Może chodziło Panu o ACP ?
+Komunikacja między częścią procesorową, a logiką programowalną odbywa się za pośrednictwem interfejsu AXI (ang. \textit{Advanced Extensible Interface}) oraz bezpośrednio wykorzystując porty ogólnego przeznaczenia oraz przerwania.
+%TODO 1. powt. oraz, 2 DMA, z tego co wiem, jest via AXI. Może chodziło Panu o ACP ? %%TT Chodziło o AXI DMA oczywicie
 
 \begin{figure}[h]
     \centering

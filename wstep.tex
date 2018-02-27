@@ -20,19 +20,19 @@ Podczerwień, a szczególnie termowizja, umożliwia detekcję w warunkach nocnyc
 %TT w dalszej części rozwinąłem temat
 Oba podejścia mają swoje wady i zalety, które wzajemnie się uzupełniają np. duże nasłonecznienia powoduje, że tło termiczne staje się dużo wyższe co utrudnia wyodrębnienie pieszego, natomiast daje idealne warunki do uzyskania dobrej jakości obrazu w zakresie widzialnym \cite{lee2015robust}. 
 Połączenie tych dwóch obrazów daje możliwość uzyskania jeszcze lepszej skuteczności rozpoznawania ludzi. 
-W pracy \cite{st2007combination} autorzy nazywają ten rozszerzony format jako RGBT (''Red-Green-Blue-Thermal''), natomiast inna praca jako analizę wielospektralną (ang. \textit{Multispectral}) \cite{hwang2015multispectral}, albo po prostu jako połączony obraz z kamery termowizyjnej i wizyjnej \cite{lee2015robust}. 
+W pracy\cite{st2007combination} autorzy nazywają ten rozszerzony format jako RGBT (''Red-Green-Blue-Thermal''), natomiast inna praca jako analizę multispektralną (ang. \textit{Multispectral}) \cite{hwang2015multispectral}, albo po prostu jako połączony obraz z kamery termowizyjnej i wizyjnej \cite{lee2015robust}. 
 
 Skuteczna detekcja obiektów często wymaga dużego zapotrzebowania na zasoby obliczeniowe. 
 W wielu przypadkach nie da się uzyskać satysfakcjonującej wydajności -- tak by można było uznać system za działający w czasie rzeczywistym -- wykorzystując jedynie typowy komputer wyposażony w~procesor ogólnego przeznaczenia. 
 Stosuje się zatem różne metody akceleracji obliczeń. 
-Karty graficzne (GPU ang. \textit{graphics processing unit}) pozwalają na duże zrównoleglenie obliczeń, jednak charakteryzują się znacznym zużyciem energii. %TODO dodać skrót i rozwinięcie GPU
-Tworzenie specjalizowanych układów scalonych (ASIC ang. \textit{application-specific integrated circuit}) daje najlepsze rezultaty w implementacji systemu wizyjnego, ale ich opracowanie i produkcja wymaga bardzo dużych nakładów finansowych. %TODO rozwinąc ASIC
-Dobre rozwiązanie stanowią układy rekonfigurowalne, które charakteryzują się podobnymi możliwościami w realizacji wyspecjalizowanych zadań co układy ASIC, ale nie wymagają dużych nakładów finansowych w ich tworzeniu. %TODO ta końcówka średnio szczęśliwa, proszę to doprecyzować. (tworznie układów FPGA to wymaga sporetych nakładów - w końcu to też ASIC)
+Karty graficzne (GPU ang. \textit{Graphics Processing Unit}) pozwalają na duże zrównoleglenie obliczeń, jednak charakteryzują się znacznym zużyciem energii. %TODO dodać skrót i rozwinięcie GPU
+Tworzenie specjalizowanych układów scalonych (ASIC ang. \textit{Application-Specific Integrated Circuit}) daje najlepsze rezultaty w implementacji systemu wizyjnego, ale ich opracowanie i produkcja wymaga bardzo dużych nakładów finansowych. %TODO OK rozwinąc ASIC
+Dobre rozwiązanie stanowią układy rekonfigurowalne, które charakteryzują się podobnymi możliwościami w realizacji wyspecjalizowanych zadań co układy ASIC, ale nie wymagają tworzenia całkiem nowych układów scalonych. %TODO OK ta końcówka średnio szczęśliwa, proszę to doprecyzować. (tworznie układów FPGA to wymaga sporetych nakładów - w końcu to też ASIC)
 
 Układy FPGA (ang. \textit{Field-Programmable Gate Array}) umożliwiają zrównoleglenie obliczeń i są szeroko stosowane w systemach wizyjnych. 
 Szczególnie chętnie są wykorzystywane do realizacji operacji niskiego poziomu, przygotowując wstępnie obraz do dalszej analizy na wysokim poziomie. 
-Przykłady takich operacji to: filtry konwolucyjne, filtry 2D, podpróbkowanie, wykrywanie krawędzi, obliczanie SAD (ang. \textit{sum of absolute differences}) z regionu zainteresowania, obliczanie orientacji krawędzi i histogramów, obliczanie strumieniowo statystyk (wartość maksymalna, minimalna, średnia), zmiana przestrzeni barw \cite{kisacanin2008embedded}. %TODO OK dodać wyjasnienie SAD
-Dodatkową zaletą układów FPGA jest mały pobór mocy, co czyni je niezwykle atrakcyjne dla aplikacji mobilnych -- takich jak drony czy czujniki środowiskowe \cite{garcia2014survey}. 
+Przykłady takich operacji to: filtry konwolucyjne, filtry 2D, podpróbkowanie, wykrywanie krawędzi, obliczanie SAD (ang. \textit{Sum Of Absolute Differences}) z regionu zainteresowania, obliczanie orientacji krawędzi i histogramów, obliczanie strumieniowo statystyk (wartość maksymalna, minimalna, średnia), zmiana przestrzeni barw \cite{kisacanin2008embedded}. %TODO OK dodać wyjasnienie SAD
+Dodatkową zaletą układów FPGA jest mały pobór mocy, co czyni je niezwykle atrakcyjne dla aplikacji mobilnych -- takich jak drony czy czujniki środowiskowe~\cite{garcia2014survey}. 
 Układy heterogeniczne łączą w jednej obudowie dwa układy o różanej architekturze i funkcjonalności. 
 Przykładem takiego połączenia jest Zynq-7000 firmy Xilinx, który integruje w sobie układ FPGA oraz procesor ARM. 
 Największą zaletą takiego rozwiązania jest wysoka przepustowość transferu danych między procesorem a logiką programowalną. 
