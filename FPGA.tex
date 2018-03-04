@@ -3,8 +3,8 @@
 Tradycyjne systemy wizyjne zwykle bazują na architekturze sekwencyjnej.
 W tym rozwiązaniu obraz jest sukcesywnie poddawany kolejnym przekształceniom, a~wyniki pośrednie zapisywane są w pamięci operacyjnej. 
 W aplikacji procesorowej operacje te są wykonywane przez układ arytmetyczno-logiczny. 
-Kolejne kroki algorytmu są kompilowane w ciąg instrukcji dla procesora ,który oprócz operacji matematycznych dużą część pracy poświęca na pobieranie i dekodowanie rozkazów oraz na odczytywanie i zapisywanie danych do pamięci. 
-By taka aplikacja mogła pracować w czasie rzeczywistym, cała procedura musi wykonać się szybciej niż przychodzące dane obrazu, co wymusza wysokie taktowanie procesora sięgające kilku GHz. To podejście jednak ma swoje ograniczenia. Wraz z wzrostem częstotliwości pracy procesora wzrasta jego moc a tym samym ilość ciepła które która musi zostać rozproszone. Najszybsze CPU są taktowane z częstotliwością zegara sięgającą nawet 4,4 GHz (choć przy zastosowaniu chłodzenia ciekłym azotem jest możliwe uzyskanie ponad 8 GHz). Wzrost szybkości obliczeń  uzyskuje się coraz częsciej poprzez zwiększanie ilości rdzen wi procesorze. %TODO dodać, że to i tak nie zawsze pomaga. Poza tym wypada jakoś skomentować fakt istnienie procesorów wielordzeniowych.
+Kolejne kroki algorytmu są kompilowane w ciąg instrukcji dla procesora, który oprócz operacji matematycznych dużą część pracy poświęca na pobieranie i dekodowanie rozkazów oraz na odczytywanie i zapisywanie danych do pamięci. 
+By taka aplikacja mogła pracować w czasie rzeczywistym, cała procedura musi wykonać się szybciej niż przychodzące dane obrazu, co wymusza wysokie taktowanie procesora sięgające kilku GHz. To podejście jednak ma swoje ograniczenia. Wraz z wzrostem częstotliwości pracy procesora wzrasta jego moc a tym samym ilość ciepła które która musi zostać rozproszone. Najszybsze CPU są taktowane z częstotliwością zegara sięgającą nawet 4,4 GHz (choć przy zastosowaniu chłodzenia ciekłym azotem jest możliwe uzyskanie ponad 8 GHz). Wzrost szybkości obliczeń  uzyskuje się coraz częsciej poprzez zwiększanie ilości rdzeni w procesorze. %TODO dodać, że to i tak nie zawsze pomaga. Poza tym wypada jakoś skomentować fakt istnienie procesorów wielordzeniowych.
 
 W przypadku podejścia równoległego, implementacja poszczególnych kroków algorytmu odbywa się w osobnych procesach. Jeżeli wykonywany algorytm jest głównie sekwencyjny tzn. kolejne kroki algorytmu wymagałyby danych otrzymanych z poprzednich, to zysk takiego zabiegu byłby równy zero. W celu uzyskania dobrej implementacji w układzie równoległym, istotne jest by znaczna cześć algorytmu mogła być wykonywana równolegle. 
 %TODO OK to jest dość niejednoznaczne. Musi Pan to opatrzyć jakimś lepszym komentarzem/przykładem.
@@ -21,13 +21,11 @@ n_{w} & liczba elementów obliczeniowych.
 
 Algorytmy przetwarzania obrazów są w dużej mierze równoległe, szczególnie te niskiego i średniego poziomu. W wielu przypadkach każdy piksel obrazu można obliczyć niezależnie, np. w wszelkich operacjach kontekstowych, przekształceniach przestrzeni barw, binaryzacji itp. Między innymi dlatego układy FPGA są chętnie stosowane w systemach wizyjnych. Teoretycznie jedynym ograniczaniem w możliwości zrównoleglenia obliczeń jest liczba dostępnych zasobów w układzie, jednak innym istotnym aspektem jest sposób dostarczania danych do modułów obliczeniowych. 
 %TODO OKprocesorów, czy modułów obliczeniowych no bo w sumie to musi się Pan ogólnie zdecydować, czy pisze to Pan ogólnie, czy z uwzględnieniem architektury.
-
 Dostęp do pamięci często wymaga czasu a ilość danych przekazana podczas jednego transferu jest ograniczona. Stanowi to wąskie gardło w tego rodzaju rozwiązaniach.
-
 % USUNIĘTE Czas i przepustowość jaka jest potrzebna do odczytania i zapisu obrazu po przetworzeniu pomiędzy pamięci jest najczęściej wąskim gardłem systemu wizyjnego. %TODO OK to z i do źle wygląda
 Z tego powodu przetwarzanie obrazu bezpośrednio z sensora w czasie jego akwizycji jest chętnie wykorzystywane, gdyż zmniejsza to liczbę operacji odczytu i zapisu. \cite{garcia2014survey}
 
-Karty GPU (ang. \textit{Graphics Processing Unit} też dają możliwość zrównoleglania obliczeń. W odróżnieniu od FPGA mają sztywną strukturę. Swoją architekturę przypominają SIMD (ang. \textit{Single Instruction Multiple Data}) z tą różnicą że zamiast pojedynczego rozkazu wykonywany jest ten sam kodu (tzw. kernel) na dużej ilości mniejszych procesorów.
+Karty GPU (ang. \textit{Graphics Processing Unit} też dają możliwość zrównoleglania obliczeń. W odróżnieniu od FPGA mają sztywną strukturę. Swoją architekturę przypominają SIMD (ang. \textit{Single Instruction Multiple Data}) z tą różnicą że zamiast pojedynczego rozkazu wykonywany jest ten sam kod (tzw. kernel) na dużej ilości mniejszych procesorów.
 %TODO OK No i w ten sposób to Pan w rodziale o FPGA, ani razu nie użył słowa FPGA.
 %TODO OK Druga sprawa to jest GPU - tez się tu powinno pojawić.
 

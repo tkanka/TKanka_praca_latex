@@ -11,10 +11,16 @@ Rozwiązanie bazuje na ulepszonym algorytmie progowania i segmentacji obrazu.
 
 Pierwszym etapem jest wyodrębnienie obszarów zainteresowań (ROI).
 Pozwala to na znaczne ograniczenie obszaru analizowanych fragmentów obrazu. %TODO OK rozmiaru analizowanych fragmentów obrazu (czy jakoś tak)
-
 Obraz w odcieniach szarości zostaję poddany binaryzacji z użyciem dwóch progów: mniejszym i większym. Pozwala to na detekcję przechodniów w różnych rejonach obrazu o różnym kontraście. 
 Progi zmieniają się wraz z dynamiką obrazu wejściowego. 
-W obrazie termicznym człowieka często w okolicy bioder znajduje się chłodniejszy obszar który jest poniżej progu binaryzacji co skutkuje przerwę między dwoma połówkami człowieka. Aby połączyć je w jedną całość dodatkowo dla każdego obszaru wyłonionego podczas binaryzacji zostają wytypowane dodatkowe ROI, które obejmuje ten obszar wraz z innymi znajdującymi się nad lub pod. 
+W obrazie termicznym człowieka często w okolicy bioder znajduje się chłodniejszy obszar który jest poniżej progu binaryzacji co skutkuje przerwę między dwoma połówkami człowieka. Aby połączyć je w jedną całość dodatkowo dla każdego obszaru wyłonionego podczas binaryzacji zostają wytypowane dodatkowe ROI, które obejmuje ten obszar wraz z innymi znajdującymi się nad lub pod. Przykładowy wynik segmentacji jest zaprezentowany na rysunku \ref{fig:S_IR}. 
+
+\begin{figure}
+\centering
+\includegraphics[width=0.4\linewidth]{images/S_IR}
+\caption[Obraz IR po binaryzacji i segmentacji.]{Obraz IR po binaryzacji i segmentacji \cite{kolzpoz}}
+\label{fig:S_IR}
+\end{figure}
 %TODO OK OK1. powt. dod, 2. niejasen
 %TODO OK Proszę to kwestię dwóch progów lepiej opisać. Bo nie wiadomo jak co i po co jest robione.
 %TODO OK to "tworząc" coś nie pasuje
@@ -24,7 +30,7 @@ W obrazie termicznym człowieka często w okolicy bioder znajduje się chłodnie
 Następnym krokiem jest filtracja wyników. 
 Ma ona na celu zredukowanie liczby obszarów przed końcową analizą. 
 Autorzy zastosowali filtrację opierającą się na proporcji obszaru zainteresowań. 
-Pozytywnie zakwalifikowane zostały tylko obszary o odpowiednich proporcja wysokości do szerokości (1:1.3 do 1:4). 
+Pozytywnie zakwalifikowane zostały jedynie obszary o odpowiednich proporcja wysokości do szerokości (1:1.3 do 1:4). 
 Z racji, że badany obraz pochodzi z kamery zamontowanej na stałe na samochodzie, autorzy wykorzystali filtrację perspektywiczną która uwzględnia możliwą wysokość ROI w różnych fragmentach obrazu. %TODO OK tu jest coś nie tak...
 Filtracja jednorodnych regionów pozwoliła na odrzucenie kandydatów będących częścią szerszych obiektów nie mających nic wspólnego z przechodnimi. Obraz człowieka cechuje się dużą rozpiętością wartości temperatur. Obliczając odchylenie standardowe ROI w odcieniach szarości można wyeliminować obszary które są poniżej progu określonego przez autorów.  %TODO OK To jest niejasne...
 
@@ -35,17 +41,16 @@ W celu zbadania dokładności algorytmu został przeprowadzony test na zbiorze C
 Testy wykazały, że metoda podwójnego progowania daje trzy razy lepsze rezultaty, niż przy wykorzystaniu pojedynczego progu.  Wraz z zaproponowanymi technikami filtracji zaowocowało to bardzo efektywnym mechanizmem segmentacji. Ponad 95\% występujących przechodniów zostało poprawnie wytypowanych jako kandydaci do klasyfikacji. 
 %TODO ok no właśnie segmentacji czy klasyfikacji
 Cała procedura detekcji przechodniów osiągnęła wysoki poziom wydajności na poziomie 33 klatek (o wymiarach 640x471 px) na sekundę przy wykorzystaniu pojedynczego rdzenia CPU. Dokładność detekcji wyniosła 37,3\% AMR
-(ang. \textit{ Average Miss Rate }), co jest porównywalna do innych metod opartych o HOG+SVM.
+(ang. \textit{ Average Miss Rate }), który jest porównywalny do innych metod opartych o HOG+SVM.
 %TODO A dla jakich parametrów strumienia wizyjnego. 
 %TT nie jest napisane wprost w artykule ale mam tą samą bazę i tam są 640 x 471.
 
 \section{Stereotermowizja}
-W pracy \cite{suard2006pedestrian} autorzy zaproponowali wykorzystanie dwóch kamer termowizyjnych tworząc system stereowizyjny. W obrazie termowizyjnym człowieka najcieplejszym obszarem jest zazwyczaj głowa. By wyodrębnić obszary zainteresowania, w~których potencjalnie znajdują się przechodnie, zgrupowano piksele o wartościach powyżej kilku różnych progów. Każdy z tych obszarów zostaje następnie uznany za głowę i stanowi górną część okna detekcyjnego. Wielkość okna jest estymowana na podstawie odległości źródła ciepła od kamer.. Odległość jest ustalana na podstawie mapy dysparycji (ang. \textit{Disparity Map}). Do obliczani dysparycji okna, porównywana różnica między oryginalnym oknem a oknem przesuwnym w drugim obrazie. Dysparycja jest uzyskiwana gdy ta różnica jest minimalna. Na koniec każde okno zostaje przeskalowane do wielkości 64x128 i poddane klasyfikacji . %TODO OK znowu za mało szczegółów...
+W pracy \cite{suard2006pedestrian} autorzy zaproponowali wykorzystanie dwóch kamer termowizyjnych tworząc system stereowizyjny. W obrazie termowizyjnym człowieka najcieplejszym obszarem jest zazwyczaj głowa. By wyodrębnić obszary zainteresowania, w~których potencjalnie znajdują się przechodnie, zgrupowano piksele o wartościach powyżej kilku różnych progów. Każdy z tych obszarów zostaje następnie uznany za głowę i stanowi górną część okna detekcyjnego. Wielkość okna jest estymowana na podstawie odległości źródła ciepła od kamer. Odległość jest ustalana na podstawie mapy dysparycji (ang. \textit{Disparity Map}). Do obliczani dysparycji okna, porównywana jest różnica między oryginalnym oknem a oknem przesuwnym w drugim obrazie. Dysparycja jest uzyskiwana gdy ta różnica jest minimalna. Na koniec każde okno zostaje przeskalowane do wielkości 64x128 i poddane klasyfikacji za pomocą liniowego SVM. %TODO OK znowu za mało szczegółów...
 %TODO OK to raczej, z tego że ZWYKLE głowa (stricte twarz) ew. dłonie sa odsłoniete, wynika, że są widoczne jako najcieplejsze... bo tak ogólnie to chyba temperatura jest względnie równomiarna.
 
-W tej pracy autorzy skupili się na optymalnym doborze parametrów deskryptora HOG. 
-Zestaw zawierał 4400 obrazów: 2200 próbek z pieszymi oraz 2200 bez pieszych. 
-Został wykorzystany następujący zestaw parametrów HOG:
+W pracy autorzy skupili się na optymalnym doborze parametrów deskryptora HOG. Wykorzystany zestaw danych zawierał 4400 obrazów: 2200 próbek z pieszymi oraz 2200 bez pieszych. Autorzy przeprowadzili po 10 procedur uczenia klasyfikatora dla każdej kombinacji wykorzystując różne kombinacje danych do nauki i testów. W tabeli \ref{tab:parametryhog} zaprezentowane są wyniki tych testów. Badanie parametrów dla klasyfikacji SVM wykazało, że im większy zestaw uczący tym lepszą można uzyskać skuteczność detekcji.
+
 \begin{table}[!h]
 \centering 
 \begin{threeparttable}
@@ -69,14 +74,12 @@ Został wykorzystany następujący zestaw parametrów HOG:
 \end{table} 
 
 %TODO Wnioskuję, że to liniowy SVM był - proszę to jawnie napisać.
-Autorzy przeprowadzili po 10 procedur uczenia klasyfikatora dla każdej kombinacji wykorzystując różne kombinacje danych do nauki i testów. W tabeli \ref{tab:parametryhog} zaprezentowane są wyniki badań.
-
-Badanie parametrów dla klasyfikacji SVM wykazało, że im większy zestaw uczący tym lepszą można uzyskać skuteczność detekcji. 
 
 
 
 
-%TODO Opis tego trzeciego algorytmu jest to poprawki !!! %TT jest zbędny więc usunięty
+
+%TODO Opis tego trzeciego algorytmu jest to poprawki !!! %TT  usunięty
 % \section{Do wywalenia}
 % Autorzy pracy \cite{nanda_2002} przedstawili metodę opartą o wzorzec probabilistyczny i klasyfikator Bayesa. 
 % Obraz wejściowy zostaje zbinaryzowany z zadanym progiem. 
@@ -125,9 +128,9 @@ Obie kamery zostały bezpośrednio podpięte do układu FPGA za pomocą interfej
 %TODO OK proszę zwrócić uwagę na czas -> były (bo wcześniej wykorzystali) ogólnie takie badania opisuje się w czasie przeszłym.
 
 Schemat systemu jest przedstawiony na rysunku \ref{fig:honegger2014real_Fig1}. W pierwszej kolejności obrazy z kamer są synchronizowane z wykorzystaniem bufora opóźniającego jedną linie danych. 
-Korekcja zniekształceń soczewkowych oraz rektyfikacja zostały połączone w jedną operację. Przychodzące zsynchronizowane piksel są zapisywane do bufora. Po obliczaniu współrzędnych piksela, uwzględniającym korektę, jego wartość jest pobrana z właściwej lokalizacji w buforze wejściowym. Kolejnym krokiem było obliczanie dysparycji. W tym celu kontekst piksela z lewego obrazu jest porównywany z okolicznymi kontekstami pikseli w prawym obrazie. Kandydat jest wyłaniany na podstawie lokalnej funkcji kosztu i stałych globalnych bazujących na algorytmie SGM (ang. \textit{Semi-Global Matching}). 
+ Przychodzące, zsynchronizowane piksele są zapisywane do bufora. Korekcja zniekształceń soczewkowych oraz rektyfikacja zostały połączone w jedną operację. Po obliczaniu współrzędnych piksela, uwzględniającym korektę, jego wartość jest pobrana z właściwej lokalizacji w buforze wejściowym. Kolejnym krokiem było obliczanie dysparycji. W tym celu kontekst piksela z lewego obrazu jest porównywany z okolicznymi kontekstami pikseli w prawym obrazie. Kandydat jest wyłaniany na podstawie lokalnej funkcji kosztu i stałych globalnych bazujących na algorytmie SGM (ang. \textit{Semi-Global Matching}). 
 
-Następnie dwa oryginalne obrazy oraz mapa głębi są przesyłane do CPU za pomocą specjalnej magistrali.
+Następnie dwa oryginalne obrazy oraz obliczona mapa głębi są przesyłane do CPU za pomocą specjalnej magistrali.
 %TODO OK może magistrali
 Moduł \textit{frame grabbera} przechwytywał ten obraz i wykorzystując DMA (ang. \textit{Direct Memeory Acces}) zapisywał do pamięci systemu.
 %TODO OKno to jest niejasne... tzn. ta pierwsza część zdania.
@@ -155,7 +158,7 @@ Rozwiązanie nie zostało jeszcze w pełni zaimplementowane, ale pierwsze testy 
 
 \section{Wzorzec probabilistyczny}
 \label{sec:xiao_2015}
-W pracy \cite{xiao_2015} autorzy wykorzystali układ FPGA i naiwny klasyfikator Bayesa do detekcji przechodniów w obrazie termowizyjnym. Klasyfikator zakłada, że wszystkie predykatory są niezależne od siebie co znacznie upraszcza obliczenia. Za pomocą tego klasyfikatora można określić przynależność obrazu w badanym oknie do jednej z dwóch klas: zawierającego przechodnia albo nie zawiera (czyli tła). W tym przypadku predykatorami są poszczególne piksele. Dla każdego piksela w oknie określa się prawdopodobieństwo jego przynależności do danej klasy. Klasyfikacja sprowadza się do zależności \eqref{eq:bayes_china}.
+W pracy \cite{xiao_2015} autorzy wykorzystali układ FPGA i naiwny klasyfikator Bayesa do detekcji przechodniów w obrazie termowizyjnym. Klasyfikator zakłada, że wszystkie predykatory są niezależne od siebie co znacznie upraszcza obliczenia. Za pomocą tego klasyfikatora można określić przynależność obrazu w badanym oknie do jednej z dwóch klas: zawierającego przechodnia albo który nie zawiera (czyli tła). W tym przypadku predykatorami są poszczególne piksele. Dla każdego piksela w oknie określa się prawdopodobieństwo jego przynależności do danej klasy. Klasyfikacja sprowadza się do zależności \eqref{eq:bayes_china}.
 %TODO OK do za ??? poza tym to jest coś niejasne}
 %TT opis poprawiony
 
@@ -172,7 +175,7 @@ Autorzy utworzyli PDM na podstawie 60 pozytywnych próbek.
 
 W celu usprawnienia obliczeń w układzie FPGA macierz została przeskalowana na wartości całkowitoliczbowe w zakresie od 1 do 127. 
 Następnie obliczono logarytm o podstawie dwa z uzyskanego wzorca i jej odwrotności (poprzez odjęcie od 128 wartości macierzy pozytywnej) i pomnożono przez 32. %TODO OK powt. następne
-Utworzono tak dwie macierze: LPDW i LPDB dla białych i czarnych pikseli. (ang. \textit{logarithmic probability matrix} – logarytmiczna macierz prawdopodobieństwa). 
+Utworzono tak dwie macierze: LPDW i LPDB dla białych i czarnych pikseli. (ang. \textit{Logarithmic Probability Matrix} – logarytmiczna macierz prawdopodobieństwa). 
 Przyjęto, że prawdopodobieństwo przynależności piksela do tła jest stałe i wynosi 50\%, co daje wartość 192 po uprzednich przekształceniach. 
 Ostatecznie klasyfikacji dokonuje się z wzoru: 
 %TODO OK raczej klasyfikacji dokonuje się...
@@ -205,8 +208,6 @@ Praca inżynierska \cite{kankaing}, oraz artykuł na jej podstawie\cite{kanka201
 
 Poprawiło to również detekcję w różnych skalach. Poprzednio \textit{muliscale} osiągnięto dzięki zastosowaniu kilku wzorców. Pojedyńczy wzorzec zapewniał detekcję w pewnym zakresie wysokoci przechodniów. Im dalej odbiegiał od swojej nominalnej wysokości tym bardziej należało zmniejszyć parametr $K$ by w pojedynczym oknie było możliwe wykrycie mniejszych i większych sylwetek. Powodowało to również zwiększenie ilości fałszywych detekcji. Po wprowadzeniu modyfikacja każda część ma możliwość deformacji co w dynamiczny sposób pozwala na zmianę wysokości wzorca.
 
-DOdatkową ciekawą włąciwowoć można zauwać na 
-
 \begin{figure}
 \centering
 \includegraphics[width=0.8\linewidth]{images/sim_window.png}
@@ -214,7 +215,7 @@ DOdatkową ciekawą włąciwowoć można zauwać na
 \label{fig:sim_window}
 \end{figure}
 
-Dodatkową ciekawą właściwość można zauważyć na rysunku \ref{fig:sim_window} przedstawiającym implementację systemu w programie MatLab. Okno przedstawiające ‘’moc klasyfikacji’’ ($L_p – (L_b + K)$ ) wyraźnie widać dwa maksima lokalne wskazujące, dokładną pozycję przechodniów. Ta właściwość została wykorzystana w niniejszej pracy w celu ustalenia ROI.
+Dodatkową ciekawą właściwość można zauważyć na rysunku \ref{fig:sim_window} przedstawiającym implementację systemu w programie MatLab. Okno przedstawiające ''moc klasyfikacji'' ($L_p - (L_b + K)$ ) wyraźnie widać dwa maksima lokalne wskazujące dokładną pozycję przechodniów. Ta właściwość została wykorzystana w niniejszej pracy w celu ustalenia ROI.
 %TODO OK ogólnie ta metoda (z p. inż. też jest jakoś nie do końca fajnie opisana) - proszę to dopracować.
 %TODO OK dalej - proszę "pochwalić" się artykułem na ten temat - przecież powstał
 

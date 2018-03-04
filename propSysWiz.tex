@@ -20,7 +20,7 @@
 
 \section{Koncepcja systemu}
 Zadaniem systemu jest detekcja osób w obrazie multispektralnym. Do uzyskania obrazu multisprktralnego została wykorzystana kamera wizyjna, dająca obraz parametrach 640x480px i 50 klatek na sekundę oraz termowizyjna: Lepton – 80x60px i 9 klatek na sekundę. Obraz z kamery termowizyjnej (IR) jest dopasowywany do wizyjnego (RGB) za pomocą projekcji perspektywicznej. Wynikiem ich połączenia jest obraz multispektralny (RGBIR). Wybór ROI odbywa się tylko z wykorzystaniem obrazu termowizyjnego. W tym celu został wykorzystany moduł PDM (ang \textit{Probability Density Matrix}) zaczerpnięty z pracy inżynierskiej autora \cite{kankaing}.Tworzy on listę kandydatów z której jest wybierany najbardziej prawdopodobny wynik. Następnie z ROI o wymiarach 80x192px są wyodrębniane deskryptory HOG oraz odbywa się klasyfikacja z wykorzystaniem SVM. Wynik detekcji jest prezentowany na ekranie, poprzez obramowanie sylwetki przechodnia.
-Do realizacji tego systemu została wykorzystana płytka deweloperska ZYBO firmy Digilent. Bazuje ona na omówionym wcześniej w rozdziale \ref{cha:fpga} układzie Zynq-7000. Jest to układ heterogeniczny co daje możliwość realizacji poszczególnych elementów systemu wizyjnego w logice programowalnej (PL) lub systemie procesorowym (PS) 
+Do realizacji tego systemu została wykorzystana płytka deweloperska ZYBO firmy Digilent. Bazuje ona na omówionym wcześniej w rozdziale \ref{cha:fpga} układzie Zynq-7000. Jest to układ heterogeniczny, co daje możliwość realizacji poszczególnych elementów systemu wizyjnego w logice programowalnej (PL) lub systemie procesorowym (PS) 
 Zaproponowano następujący podział zadań:
 
 Logika programowalna :
@@ -46,11 +46,56 @@ System procesorowy:
 
 Na rysunku \ref{fig:systemwizyjny} został przestawiony ogólny schemat rozwiązania.
 %TODO OK To bym przerzucił to rozdziału, gdzie Pan opisuje system. 
+
+\section{Model programowy}
+W celu sprawdzenia koncepcji systemu została wykonana jego implementacja w pakiecie MatLab. Do testów został wykorzystany zestaw filmów pochodzący z pracy \cite{bilodeau2014thermal}.   Przestawia on pomieszczenie po którym porusza się od 1 do 5 aktorów. Obraz został nagrany dwoma kamerami: termowizyjną FLIR Thermovision A40M oraz wizyjną Sony XCD-710CR. Rozdzielczość obu klipów wynosi 480x360px. W pierwszym etapie obraz z kamery termowizyjnej został pomniejszony do rozmiarów 80x60px. Następnie za pomocą wzorca prawdopodobieństwa  o wymiarze 30x12px została obliczona mapa rozkładu LP na obrazie jak na rysunku \ref{fig:sampleLP}. Maksima lokalne występujące w tym rozkładzie stanową środki ROI do dalszej analizy (rysunek \ref{fig:sampleTemplateDetection}). 
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}{0.32\textwidth}
+		\centering
+		\includegraphics[width=0.9\linewidth]{images/sampleTemplateDetection}
+		\subcaption{\label{fig:sampleTemplateDetection}}
+	\end{subfigure}
+	\begin{subfigure}{0.32\textwidth}
+		\centering
+		\includegraphics[width=0.9\linewidth]{images/sampleLP}
+		\subcaption{\label{fig:sampleLP}}
+	\end{subfigure}
+
+	\caption[Poszukiwanie kandydatów za pomocą wzorca probabilistycznego.]{Poszukiwanie kandydatów za pomocą wzorca probabilistycznego. \protect\subref{fig:sampleTemplateDetection} wytypowani kandydaci \protect\subref{fig:sampleLP} mapa LP.}
+\end{figure}
+Obraz termowizyjny został dopasowany do obrazu wizyjnego tworząc obraz multispektralny. Punkty kalibracyjne zostały wyznaczone na podstawie elementów sylwetek (stopy, dłonie i głowa) od aktorów których wysokość na obrazie wynosiła około 180px. Zmniejsza to do minimum dysparycję dla obiektów poszukiwanych wzorcem o wysokości 30px . Następnie punkty znalezione podczas badania wzorcem probabilistycznym zostały przeniesione na obraz multispektralny z wykorzystaniem parametrów transformacji uzyskanej podczas kalibracji. Wokół tych punktów zostały wyznaczone ROI o wymiarach 80x192px. Dalej został obliczony wektor cech HOG w każdym z okien które następnie zostały poddane klasyfikacji za pomocą liniowego SVM. 
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}{0.32\textwidth}
+		\centering
+		\includegraphics[width=0.9\linewidth]{images/sampleIR}
+		\subcaption{\label{fig:sampleIR}}
+	\end{subfigure}
+	\begin{subfigure}{0.32\textwidth}
+		\centering
+		\includegraphics[width=0.9\linewidth]{images/sampleRGB}
+		\subcaption{\label{fig:sampleRGB}}
+	\end{subfigure}
+	\begin{subfigure}{0.32\textwidth}
+		\centering
+		\includegraphics[width=0.9\linewidth]{images/sampleHOGSVM}
+		\subcaption{\label{fig:sampleHOGSVM}}
+	\end{subfigure}
+	
+	\caption[Detekcja]{\protect\subref{fig:sampleIR} Obraz z kamery termowizyjnej, \protect\subref{fig:sampleRGB} obraz z kamery wizyjnej, \protect\subref{fig:sampleHOGSVM} połączone obrazy z zaznaczonymi wynikami detekcji. Zielona ramka oznacza pozytywny wynik klasyfikacji HOG SVM, czerwona - negatywnie skalsyfikowani kandydaci.}
+\end{figure}
+
+Do nauczenia SVM zostały wykorzystane 141 ROI wytypowanych przez wzorzec probabilistyczny. Każdemu ROI została przypisana klasa: 1 – jeżeli zawiera obraz człowieka o wysokości około 160+/- 20 px , 0 – jeżeli jest to element tła bądź część człowieka (np. sama głowa, nogi). 
+
+Na  141 próbek 78 stanowiły próbki pozytywne a 62 negatywne. SVM sklasyfikował poprawnie pozytywnie 88,9\% próbek zaś poprawnie negatywnie 88,5\%. 
+
+
 \section{Wykorzystanie AXI-Stream do transmisji sygnału wideo.} 
 W odróżnieniu od standardowego sposobu przetwarzania strumieniowego wideo, w AXI4-Stream przesyłane są jedynie aktywne piksele. 
 %TODO raczej od standardowego sdposobu przesyłania danych wizyjnych.
 Linie synchronizacji poziomej i pionowej są odrzucane albo przekierowywane do specjalnego bloku w którym są mierzone parametry wchodzącego strumienia wizyjnego (liczba pikseli w~linii, liczba aktywnych linii, czas wyciemnienia itd.). 
-W celu wyświetlenia obrazu, wykorzystuje się ten sam blok w celu generacji nowych sygnałów synchronizacji. 
+W celu wyświetlenia obrazu wykorzystuje się ten sam blok kóry ma możliwość generacji nowych sygnałów synchronizacji. 
 %TODO OK timining - do wymiany. Musi Pan to lepiej przedstawieć, tzn. że takie przychodzi z kamery, można to usunąć, ale trzeba odtworzyć aby wyświetlić.
 
 Do transmisji wykorzystane jest 6 sygnałów: dane i pięć kontrolno-sterujących. W nawiasach są podane linie które wykorzystuje dany sygnał w interfejsie AXI4-Stream.
@@ -87,7 +132,7 @@ Po wgraniu do pamięci ramki kontroler może wywołać przerwanie dla systemu pr
 \section{Opis modułów w logice programowalnej}
 \subsection{Kontroler kamery IR}
 Kamera Lepton przesyła obraz za pomocą interfejsu VoSPI (ang. \textit{Video over Serial Peripheral Interface}). Kamera jest urządzeniem typu \textit{slave}, zaś układ ZYNQ jest \textit{master}. Są wykorzystywane 3 z 4 linii typowego kanału SPI: SCK (ang. \textit{Serial Cloack} – zegar), /CS (ang. \textit{Chip Select} -- wybór układu)(aktywny stanem nikim) oraz MISO (ang. {Master In/Slave Out} – wejście master/wyjście slave).
-Transmisja rozpoczyna się od podania stanu niskiego przez kontroler na linii /CS. Powoduje to aktywację linii. Następnie, \textit{master} rozpoczyna taktowanie zegarem na linii SCK. \textit{Slave} wystawia kolejne bity danych począwszy od MSB (ang. \textit{most significant bit}) na linię MISO. Kontroler szczytuje te bity przy każdym rosnącym zboczu zegara do 16 bitowego rejestru przesuwnego.
+Transmisja rozpoczyna się od podania stanu niskiego przez kontroler na linii /CS. Powoduje to aktywację linii. Następnie, \textit{master} rozpoczyna taktowanie zegarem na linii SCK. \textit{Slave} wystawia kolejne bity danych począwszy od MSB (ang. \textit{Most Significant Bit}) na linię MISO. Kontroler szczytuje te bity przy każdym rosnącym zboczu zegara do 16 bitowego rejestru przesuwnego.
 Dane przesyłane z kamery są zorganizowane w pakiety po 164 bajty. Rozpoczęty jest nagłówkiem składającym się z 2 bajtów pola identyfikacyjnego oraz 2 bajtami sumy CRC. Pole identyfikacyjne spełnia dwa zadania. Po pierwsze, stanowi 12 bitowy numer pakietu (a zarazem numer linii obrazu), po drugie, w przypadku błędnego pakietu zawiera wartość 0xXFXX (X to obojętna wartość) co wskazuje że nadchodzący pakiet powinien zostać zignorowany przez kontroler. Zawartość pakietu stanowi 160 bajtów zawierających wartości 80 pikseli linii. W systemie wykorzystywany jest format RAW14, więc każdy piksel jest przesyłany w postaci 2 bajtów zawierających 14 bitową wartość piksela. 
 Cała ramka obrazu składa się z 63 pakietów. 60 pierwszych pakietów stanowią linie obrazu zaś ostatnie 3 są przeznaczone na telemetrię, która zawiera m.in. temperaturę FPA i obudowy, 32-bitowy licznik ramek obrazu i bity stanu. 
 Pierwsze 3 przesłane pakiety są błędne i służą do synchronizacji transmisji. 
@@ -125,7 +170,7 @@ v = \frac{v_n}{n}
 Moduł wystawia na wyjściu strumień wizyjny AXI4-Stream, 12 bitowe wartości U i V oraz ich części ułamkowe w U\_fraction i V\_fraction (14 bitów). %TODO OK tez to timinigów.
 W module zostały wykorzystane 34 z 80 dostępnych w układzie Zynq modułów DSP48 do wykonania operacji arytmetycznych, z czego większość została zutylizowana przez IP-Core dzielarki dostarczony od producenta układu. %TODO OK modułów DSP48 
 %% Do implementacji jednej dzielarki zostało wykorzystane 14 modułów DSP. %TODO OK powt. to jakoś trzeba złączyć z poprzednim 
-Dzielenie nie odbywa się w pełni potokowo. Użyty w dzielarce algorytm High\_Radix wymaga zatrzymania strumienia na czas obliczeń. Zmniejszenie ilości instancji dzielarek pozwoliło na zaoszczędzenie pewnej ilości (jak się później okazało istotnej) zasobów logicznych.
+Dzielenie nie odbywa się w pełni potokowo. Użyty w dzielarce algorytm \textit{High\_Radix} wymaga zatrzymania strumienia na czas obliczeń. Zmniejszenie ilości instancji dzielarek pozwoliło na zaoszczędzenie pewnej ilości (jak się później okazało istotnej) zasobów logicznych.
 Jednak dzięki zastosowaniu wyższej częstotliwości niż zegar pikseli obrazu RGB oraz bufora (250 MHz) nie stanowi to wąskiego gardła systemu. %TODO a w innym trybie to nie działa w pełni potokow ? Swoją drogą, czy nie można jakoś tego uniknąć ? %% TT Początkowo działo w pełni potokowo ale musiałem to zmienić bo mi brakło zasobów(może nie brakło ale nie dało się zsyntezować)
 Macierz transformacji T jest zapisana w dziewięciu 32 bitowych rejestrach i konfigurowalna poprzez interfejs AXI4-Lite. 
 Elementy macierzy są 25 liczbami w notacji stałoprzecinkowej: 1 bit znaku 10 – część całkowita, 14 – część ułamkowa. Taka dokładność pozwala na maksymalne wykorzystanie pojedynczych modułów DSP48 (gdyż wejćie B jest 25-bitowe). Rysunek \ref{fig:transfProjek} przedstawia schemat modułu.
@@ -143,7 +188,7 @@ Podobnie jak reszta systemu używa AXI4-Stream do przekazywania danych między p
 Dane na wejściu to współrzędne U i V oraz ich części ułamkowe U\_fraction ($U_f$) i V\_fraction ($V_f$). 
 Moduł został wyposażony w 4 rejestry, w których przechowywane są współrzędne oraz wartości 4 ostatnio użytych pikseli. 
 Zabieg ten znacznie redukuje liczbę potrzebnych zapytań do pamięci. 
-Podczas powiększania obrazów jest duża szansa, że kolejne koordynaty na wejściu U, V odwołają się do tych samych czterech otaczających ich pikseli. Podczas transformacji dużego obrazu na mniejszy kolejne piksele obrazu wejściowego (np.(0,0), (1,0), (2,0), ...) odwołują się do przestrzeni pomiędzy czteroma pikselami małego obrazu (np. podczas zmniejszenia 10-krotnego wynikiem transformacji byłyby punkty: (0,0), (0.1,0), (0.2,0), ...) więc w celu interpolacji odwoływały by się do wartości pikseli (0,0) , (1,0), (0,1), (1,1)). 
+Podczas powiększania obrazów jest duża szansa, że kolejne koordynaty na wejściu U, V odwołają się do tych samych czterech otaczających ich pikseli (np.[0,0], [1,0], [2,0],  podczas zwiększania 10-krotnego, wynikiem transformacji byłyby punkty: [0,0], [0.1,0], [0.2,0], ... więc w celu interpolacji odwoływały by się do wartości otaczających ich pikseli: [0,0] , [1,0], [0,1], [1,1]). 
 %TODO OK napisac dlaczego tak jest
 W module jest sprawdzane, czy w pamięci są już wartości z koordynatów [U,V], [U+1,V] [U,V+1], [U+1,V+1]. 
 Jeżeli któregoś piksela brakuje, jest on pobierany z pamięci i zapisywany w rejestrze przechowującym niepotrzebny piksel. 
@@ -165,8 +210,8 @@ Piksele z dołączanego obrazu są odrzucane do momentu pojawienia się sygnału
 Po przejściu całej ramki strumienie są ponownie synchronizowane.  
 \subsection{Koloryzacja i nakładanie}
 Strumień RGBIR zostaje połączony w jeden obraz. 
-Obraz IR zostaje poddany koloryzacji na podstawie wartości zapisanych w 12-bitowym LUT(ang. \textit{Lookup table}). Rysunek \ref{fig:jetPalet} przedstawia użytą paletę do wizualizacji temperatury. Obrazy nakładają się w proporcjach 50 na 50. Jeżeli wartość piksela IR jest równa zero to nie jest wyświetlany.
-Na wyjściu jest podany 24 bitowy strumień RGB. Wynik operacji jest przedstawiono na rysunku \ref{fig:koloryzacja}.
+Obraz IR zostaje poddany koloryzacji na podstawie wartości zapisanych w 12-bitowym LUT(ang. \textit{Lookup table}). Rysunek \ref{fig:jetPalet} przedstawia użytą paletę do wizualizacji temperatury. Obrazy nakładają się w proporcjach 50 na 50. Jeżeli wartość piksela IR jest równa zero to nie jest on wyświetlany.
+Na wyjściu jest podany 24 bitowy strumień RGB. Przykładowy wynik operacji jest przedstawiono na rysunku \ref{fig:koloryzacja}.
 \begin{figure}
 \centering
 \includegraphics[width=0.3\linewidth]{images/koloryzacja.jpg}
@@ -184,13 +229,13 @@ Na wyjściu jest podany 24 bitowy strumień RGB. Wynik operacji jest przedstawio
 \subsection{Obramowanie wyników}
 Moduł ma na celu wskazanie na obrazie lokalizacji wykrytego przechodnia, poprzez obramowanie tego obszaru ramką określonego koloru. Kolor, rozmiar i lokalizacja ramki jest zapisana w dwóch 32-bitowych rejestrach, konfigurowalnych poprzez interfejs AXI4-Lite. 
 \subsection{Moduł DPM}
-Moduł został zaczerpnięty z pracy inżynierskiej autora w celu selekcji kandydatów w obrazie multispektralnym i jest opisany w rozdziale \ref {sec:xiao_2015}.  Do detekcji wykorzystuje bezpośredni strumień pikseli kamery termowizyjnej. Pomocniczy moduł \textit{data grabber} znajdujący się tuż za kontrolerem kamery IR ma za zadanie rozdzielenie sygnału do dwóch komponentów: bufora ramki oraz, po zbinaryzowaniu, do modułu DPM wraz z jego koordynatami. Moduł składa się z okna kontekstowego o wymiarach 16x40 px, gdzie odbywa się porównanie z macierzą wzorcową. Do każdego piksela w oknie jest przypisywana jest wartość z wzorca LPBW – jeżeli piksel jest biały, albo LPMB w przypadku czarnego. Następnie wszystkie wartości są sumowane za pomocą drzewa sumacyjnego, wynikiem czego jest wartość wyjściowa LP (ang. \textit{Logarithmic Probability}). Jeżeli ta wartość przekroczy (ustaloną na podstawie sumy LP policzoną dla tła i parametru K) wartość progową zostaje przesłana do listy kandydatów wraz z współrzędnymi tego okna (w układzie odniesienia kamery IR). Lista kandydatów jest na bieżąco przesyłana za pomocą AXI4-Stream do pamięci systemu procesorowego poprzez AXI DMA. Po sprawdzeniu ostatniego okna zostaje przesłany sygnał \textit{tlast} i moduł AXI DMA wygeneruje przerwanie w systemie procesorowym. Wartość progowa binaryzacji i LP jest konfigurowalna za pomocą AXI4-Lite.
+Moduł został zaczerpnięty z pracy inżynierskiej autora w celu selekcji kandydatów w obrazie multispektralnym i jest opisany w rozdziale \ref {sec:xiao_2015}.  Do detekcji wykorzystuje bezpośredni strumień pikseli kamery termowizyjnej. Pomocniczy moduł \textit{data grabber} znajdujący się tuż za kontrolerem kamery IR ma za zadanie rozdzielenie sygnału do dwóch komponentów: bufora ramki oraz, po zbinaryzowaniu, do modułu DPM wraz z jego koordynatami. Moduł składa się z okna kontekstowego o wymiarach 16x40 px, gdzie odbywa się porównanie z macierzą wzorcową. Do każdego piksela w oknie przypisywana jest wartość z wzorca LPBW – jeżeli piksel jest biały, albo LPMB w przypadku czarnego. Następnie wszystkie wartości są sumowane za pomocą drzewa sumacyjnego, wynikiem czego jest wartość wyjściowa LP (ang. \textit{Logarithmic Probability}). Jeżeli ta wartość przekroczy (ustaloną na podstawie sumy LP policzoną dla tła i parametru K) wartość progową zostaje przesłana do listy kandydatów wraz z współrzędnymi tego okna (w układzie odniesienia kamery IR). Lista kandydatów jest na bieżąco przesyłana za pomocą AXI4-Stream do pamięci systemu procesorowego poprzez AXI DMA. Po sprawdzeniu ostatniego okna zostaje przesłany sygnał \textit{tlast} i moduł AXI DMA wygeneruje przerwanie w systemie procesorowym. Wartość progowa binaryzacji i LP jest konfigurowalna za pomocą AXI4-Lite.
 \section{System procesorowy}
 Program działający w części procesorowej układu Zynq spełnia dwa podstawowe zadania. Po pierwsze pozwala na konfigurację modułów znajdujących się w PL za pomocą AXI4-Lite. Użytkownik za pośrednictwem konsoli może wprowadzać własne parametry dla każdego z modułów. Pozwala również na zapis na karcie SD pojedynczej klatki obrazu multispektralnego, następnego wykrytego ROI oraz ROI znajdującego się pośrodku sceny. Ta opcja ułatwiła tworzenie bazy do nauczenia klasyfikatora SVM. 
 
-Drugim zadaniem jest klasyfikacja wytypowanego przez DPM kandydata. Po otrzymaniu przerwania przez moduł AXI DMA powiązany z DPM, sprawdzana jest lista kandydatów i wybierany jest ten o największej wartości LP. Współrzędne kandydata są podane w układzie odniesienia kamery IR. Po przeliczaniu ich, za pomocą macierzy transformacji projekcyjnej, i dodaniu pewnego \textit{offsetu} w buforze ramki obrazu RGBIR jest wskazany ROI o wymiarach 80x192. Następnie jest obliczany wektor cech HOG z tego obszaru. Potem na jego podstawie odbywa się klasyfikacja przy użyciu wytrenowanego SVM. Wynik klasyfikacji jest wyświetlany w konsoli wraz z jego współrzędnymi na obrazie i wartością LP. Dodatkowo obszar ten zostanie zaznaczony zieloną ramką na wyjściu monitora. Jeżeli najlepszy kandydat nie zostanie zakwalifikowany pozytywnie przez SVM ramka przybierze kolor czerwony. Brak kandydatów wskazuje czarna ramka w miejscu ostatniej detekcji. 
+Drugim zadaniem jest klasyfikacja wytypowanego przez DPM kandydata. Po otrzymaniu przerwania przez moduł AXI DMA powiązany z DPM, sprawdzana jest lista kandydatów i wybierany jest ten o największej wartości LP. Współrzędne kandydata są podane w układzie odniesienia kamery IR. Po przeliczaniu ich, za pomocą macierzy transformacji projekcyjnej, i dodaniu pewnego \textit{offsetu} w buforze ramki obrazu RGBIR zostaje wskazane ROI o wymiarach 80x192. Następnie jest obliczany wektor cech HOG z tego obszaru. Potem na jego podstawie odbywa się klasyfikacja przy użyciu wytrenowanego SVM. Wynik klasyfikacji jest wyświetlany w konsoli wraz z jego współrzędnymi na obrazie i wartością LP. Dodatkowo obszar ten zostanie zaznaczony zieloną ramką na wyjściu monitora. Jeżeli kandydat nie zostanie zakwalifikowany pozytywnie przez SVM ramka przybierze kolor czerwony. Brak kandydatów wskazuje czarna ramka w miejscu ostatniej detekcji. 
 \section{Proces kalibracji}
-W celu kalibracji, zostaje wykonane zdjęcie specjalnej planszy kalibracyjnej za pomocą obu kamer (rysunki \ref{fig:calibrationThermal}, \ref{fig:calibrationRGB}). Pozwala to na identyfikację czterech punktów kalibracyjnych w obu przestrzeniach: RGB i IR. Następnie na ich podstawie zostaje obliczona macierz transformacji projekcyjnej. Na rysunku \ref{fig:calibrationCorrectedGrey} przedstawiono obraz z kamery termowizyjnej po transformacji, który po krywa się z obrazem wizyjnym (rysunek \ref{fig:calibrationSum})
+W celu kalibracji, zostaje wykonane zdjęcie specjalnej planszy kalibracyjnej za pomocą obu kamer (rysunki \ref{fig:calibrationThermal}, \ref{fig:calibrationRGB}). Pozwala to na identyfikację czterech punktów kalibracyjnych w obu przestrzeniach: RGB i IR. Następnie na ich podstawie zostaje obliczona macierz transformacji projekcyjnej. Na rysunku \ref{fig:calibrationCorrectedGrey} przedstawiono obraz z kamery termowizyjnej po transformacji, który pokrywa się z obrazem wizyjnym (rysunek \ref{fig:calibrationSum})
 
 \begin{figure}[h]
 	\centering
@@ -219,8 +264,8 @@ W celu kalibracji, zostaje wykonane zdjęcie specjalnej planszy kalibracyjnej za
 \end{figure}
 
 \section{HOG i SVM}
-Okno decyzyjne jest podzielone na 60 komórek o wielkości 16x16 pikseli. 
-Następnie obliczone są gradienty dla poszczególnych pikseli. Pojedynczy gradient składa się z kierunku oraz wartości wypadkowej gradientu. Wykorzystany jest histogram ważony o 9 przedziałach. Oznacza to że wartość wypadkowa gradientu jest dzielona na dwa przedziały pomiędzy którymi się znajduje w proporcjach określonych wzorem \eqref{equ:bin1},  \eqref{equ:bin2}. 
+Okno decyzyjne zostaje podzielone na 60 komórek o wielkości 16x16 pikseli. 
+Następnie obliczone są gradienty dla poszczególnych pikseli. Pojedynczy gradient składa się z kierunku oraz wartości wypadkowej. Wykorzystany jest histogram ważony o 9 przedziałach. Oznacza to że wartość wypadkowa gradientu jest dzielona na dwa przedziały pomiędzy którymi się znajduje w proporcjach określonych wzorem \eqref{equ:bin1},  \eqref{equ:bin2}. 
 \begin{equation}\label{equ:bin0}
 Bin1_{dir} < G_{dir} < Bin2_{dir}
 \end{equation}
@@ -255,7 +300,7 @@ Błąd oscyluje w granicy \(10^{-6}\) co czyni go marginalnym i najprawdopodobni
 Na przebadanie jednego okna zaproponowany system potrzebuje 75ms  (dla porównania te same obliczenia w pakiecie Matlab zajmują około 23 ms przy użyciu komputera z procesorem Pentium Core i7 i 8GB ramu).
 %TODO OK podać na jakim sprzęcie 
 Dzięki zastosowaniu sprzętowego wyszukiwania ROI zadanie sytemu procesorowego zostało ograniczone analizy pojedynczego ROI.  %TODO OK styl. to zawierania w sobie, poza tym - dalczego akurat tylko jednego. 
-Kamera termowizyjna, będąca źródłem sygnału dla wzorca probabilistycznego, pracuje z prędkością 9 klatek na sekundę co zapewnia 111 ms na analizę jednej rami obrazu. Z racji że analiza jednego okna zajmuje 75ms powoduje iż jest możliwe sprawdzenie tylko jednego ROI na ramkę. Na rysunku ref\{fig:workingSystem} przedstawiono zdjęcie działającego systemu.
+Kamera termowizyjna, będąca źródłem sygnału dla wzorca probabilistycznego, pracuje z prędkością 9 klatek na sekundę co zapewnia 111 ms na analizę jednej rami obrazu. Z racji że analiza jednego okna zajmuje 75ms powoduje iż jest możliwe sprawdzenie tylko jednego ROI na ramkę. Na rysunku \ref{fig:workingSystem} przedstawiono zdjęcie działającego systemu.
 %TODO OK dając - słabe słowo
 
 \begin{figure}
