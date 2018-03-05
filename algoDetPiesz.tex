@@ -2,27 +2,27 @@
 \chapter{Algorytmy detekcji pieszych}
 \label{cha:algoDetPiesz}
 
-W cyfrowej analizie obrazu rozpoznawanie pieszych jest jedną z najbardziej aktywnie rozwijanych dziedzin. 
-W przeciągu kilkudziesięciu lat powstało ponad tysiąc artykułów poruszających to zagadnienie \cite{zhang2015filtered}, w~których zaproponowano wiele różnych metod. 
-Większość metod opiera się o analizę obrazu tylko w jednym spektrum: widzialnym albo podczerwieni. 
-Praca \cite{hwang2015multispectral} pokazała, iż połączenie obu obrazów może dać lepsze wyniki. 
-Podobnie w artykule \cite{gonzalez2016pedestrian} wykazano, że analiza multispektralna jest skuteczniejsza w dzień niż w nocy (o około 5\% AMR (ang. \textit{Avrange Miss Rate}). 
-W artykule \cite{benenson2014ten} autorzy podsumowują osiągnięcia w dziedzinie detekcji pieszych w latach 2004 -- 2014. 
-Wyróżniono ponad 40 różnych podejść do problemu. 
-Eksperymenty w artykule są oparte o bazę danych Caltech-USA, która zawiera obrazy w~kolorze. 
-%TODO OK Eksperymenty w artykule.... 
-Jednym z wniosków jest to, że przez ostanie dziesięć lat największy postęp został osiągnięty głównie dzięki dopracowaniu cech, które są wyodrębniane z obrazu, niż ulepszanie klasyfikatora. 
+W cyfrowej analizie obrazu rozpoznawanie pieszych jest jedną z najbardziej aktywnie rozwijanych dziedzin.
+W ciągu kilkudziesięciu lat powstało ponad tysiąc artykułów poruszających to zagadnienie \cite{zhang2015filtered}, w~których zaproponowano wiele różnych metod.
+Większość metod opiera się o analizę obrazu tylko w jednym spektrum: widzialnym albo podczerwieni.
+Praca \cite{hwang2015multispectral} pokazała, iż połączenie obu obrazów może dać lepsze wyniki.
+Podobnie w artykule \cite{gonzalez2016pedestrian} wykazano, że analiza multispektralna jest skuteczniejsza w dzień niż w nocy (o około 5\% AMR (ang. \textit{Avrange Miss Rate}).
+W artykule \cite{benenson2014ten} autorzy podsumowują osiągnięcia w dziedzinie detekcji pieszych w latach 2004 -- 2014.
+Wyróżniono ponad 40 różnych podejść do problemu.
+Eksperymenty w artykule są oparte o bazę danych Caltech-USA, która zawiera obrazy w~kolorze.
+%TODO OK Eksperymenty w artykule....
+Jednym z wniosków jest to, że przez ostanie dziesięć lat największy postęp został osiągnięty głównie dzięki dopracowaniu cech, które są wyodrębniane z obrazu, niż ulepszanie klasyfikatora.
 Dodatkowo autorzy połączyli cechy dające najlepsze wyniki i stworzyli własną metodę, która uzyska 12\% zysk AMR względem najlepszej badanej wcześniej metody.
 
 %TODO a coś o głębokich sieciach ? Jakoś pominął Pan ten temat.
 
 Dla typowego algorytmu detekcji pieszych można wyróżnić trzy podstawowe etapy:
 
-\section{Ustalenie regionu zainteresowań} 
+\section{Ustalenie regionu zainteresowań}
 
-Jest to obszar zwany ROI (ang. \textit{Region Of Interest}), w którym potencjalnie mogą znajdować się piesi. 
-Wiele podejść uznaje cały obraz jako ROI i stosuje okno przesuwne, sprawdzając każdy możliwy fragment obrazu. 
-Jeżeli scena jest rejestrowana przez nieruchomą kamerę, ROI można określić poprzez różnicę między zapamiętanym tłem, a aktualnym obrazem (tzn. modelowanie i~odejmowanie tła). Analiza przepływu optycznego również pozwala na wyodrębnienie obszaru, który swoim ruchem różni się od reszty. Inną metodą jest zastosowanie słabszego, bardziej ogólnego klasyfikatora ale mniej wymagającego obliczeniowo.
+Jest to obszar zwany ROI (ang. \textit{Region Of Interest}), w którym potencjalnie mogą znajdować się piesi.
+Wiele podejść uznaje cały obraz jako ROI i stosuje okno przesuwne, sprawdzając każdy możliwy fragment obrazu.
+Jeżeli scena jest rejestrowana przez nieruchomą kamerę, ROI można określić poprzez różnicę między zapamiętanym tłem a aktualnym obrazem (tzn. modelowanie i~odejmowanie tła). Analiza przepływu optycznego również pozwala na wyodrębnienie obszaru, który swoim ruchem różni się od reszty. Inną metodą jest zastosowanie słabszego, bardziej ogólnego klasyfikatora, ale mniej wymagającego obliczeniowo.
 Wyodrębnienie ROI jest bardzo istotne w przypadku pracy w czasie rzeczywistym, ze względu na ograniczony czas analizy pojedynczego obrazu.
 
 %TODO OK A jakieś inne metody wyodrębniania ROI
@@ -34,31 +34,31 @@ Do najbardziej popularnych cech można zaliczyć:
 \begin{enumerate}
 %TODO proszę to sprawdzić, bo zmieniłem gramatykę.
 \item Histogramy zorientowanych gradientów (HOG ang. \textit{Histogram of Oriented Gradients }). %TODO OK ang. skrót
-Algorytm został zaproponowany przez N.Dalala i B. Triggs w pracy \cite{dalal2005histograms} i~stał się jednym z najbardziej popularnych technik w dziedzinie detekcji ludzi. %TODO OK nie rozpozawania, tylko detekcji
+Algorytm został zaproponowany przez N.Dalala i B. Triggs w pracy \cite{dalal2005histograms} i~stał się jednym z najbardziej popularnych metod w dziedzinie detekcji ludzi. %TODO OK nie rozpozawania, tylko detekcji
 Jest cały czas rozwijany i modyfikowany w wielu pracach naukowych.
-Technika polega na zliczeniu kierunków gradientów, uzyskanych z 2 masek kierunkowych \(\begin{bmatrix}-1 & 0 & 1\end{bmatrix} \) i \( \begin{bmatrix}-1 & 0 & 1 \end{bmatrix}^T\), w komórkach o określonych wymiarach. 
-Komórki te są organizowane w bloki, w obrębie których następuje normalizacja. 
+Technika polega na zliczeniu kierunków gradientów, uzyskanych z 2 masek kierunkowych \(\begin{bmatrix}-1 & 0 & 1\end{bmatrix} \) i \( \begin{bmatrix}-1 & 0 & 1 \end{bmatrix}^T\), w komórkach o określonych wymiarach.
+Komórki te są organizowane w bloki, w obrębie których następuje normalizacja.
 Wektorem cech jest połączeniem wszystkich histogramów z wszystkich bloków.
 
 %TODO Ciut więcej detali o tej metodzie (interpolacja, po co normalizacja itp.)
 %TT w dalszym rozdziale jest to szczegółowo opsane.
 
 \item Lokalne wzorce binarne LBP (ang. \textit{Local Binary Paterns}).
-Oryginalnie deskryptory te zaproponowane zostały do opisu tekstur. %TODO \cite też coś ojala 
-Analizowany obraz zostaje podzielony na bloki. 
-Następnie, do każdego piksela w bloku zostaje przypisany wzorzec binarny na podstawie wartości pikseli w jego sąsiedztwie. 
-Jeżeli wartość sąsiadującego piksela jest większa od centralnego to przyjmuje on wartość 1. W ten sposób do każdego piksela przypisywany jest wzorzec binarny (np. 100110).
+Oryginalnie deskryptory te zaproponowane zostały do opisu tekstur. %TODO \cite też coś ojala
+Analizowany obraz zostaje podzielony na bloki.
+Następnie, do każdego piksela w bloku zostaje przypisany wzorzec binarny na podstawie wartości pikseli w jego sąsiedztwie.
+Jeżeli wartość sąsiadującego piksela jest większa od centralnego, to przyjmuje on wartość 1. W ten sposób do każdego piksela przypisywany jest wzorzec binarny (np. 100110).
 %TODO OK Tu coś dodac, że w ten sposobó...
-Następnie zostaje obliczony histogram dla każdego bloku. 
+Następnie zostaje obliczony histogram dla każdego bloku.
 Histogramy z wszystkich bloków wchodzących w skład obrazu tworzą wektor cech \cite{ojala2002multiresolution}.
 
 \item Falki Haara.
 Określają różnicę w kontraście między dwoma przylegającymi prostokątnymi obszarami. W oryginalnej pracy P.Viola i M.Jones z 2001 \cite{viola2001rapid} autorzy rozważali 3 rodzaje cech: Dwa obszary mające ten sam rozmiar i kształt oraz przylegają do siebie horyzontalnie bądź wertykalnie, gdzie cechę stanowi różnica sumy pikseli zawartych w każdym z regionów. Obszar składający się z 3 prostokątów przylegających do siebie gdzie od sumy środkowego elementu jest odejmowana suma dwóch zewnętrznych oraz układ 4 prostokątów, gdzie suma jest różnicą między obszarami po przekątnej.
-Cechy są łatwe do skalowania i nie wymagają dużych nakładów obliczeniowych. 
+Cechy są łatwe do skalowania i nie wymagają dużych nakładów obliczeniowych.
 %TODO OK coś więcej
 
-\item Kolor. W analizie obrazów wykorzystuje różne przestrzenie barw np. RGB, HSV oraz LUV. Wykorzystywane głównie gdy kolor wykrywanego obiektu jest kluczowy(np. znaki drogowe, światła na skrzyżowniu). Jako cecha można go wykorzystać w kilku formach. Momenty koloru (ang. \textit{Color Moments}) jest to średnia, wariancja i odchylenie standardowe występowania danego koloru w obrazie. Histogram określa częstość występowania danego koloru na obrazie. Wektor koherencji koloru (CCV ang. \textit{ Color Coherence Vectors}) określa w jakim stopniu piksele danego koloru są częścią obszaru o podobnym kolorze (np. obraz zielonej łąki na którym pasie się jedna fioletowa krowa. Kolor zielony na obrazie byłby rozłożony równomiernie natomiast fioletowy byłby skupiony w pojedynczym rejonie koherencji - krowy) \cite{kodituwakku2004comparison}.
-%TODO OK też coś więcej. 
+\item Kolor. W analizie obrazów wykorzystuje różne przestrzenie barw np. RGB, HSV oraz LUV. Wykorzystywane głównie, gdy kolor wykrywanego obiektu jest kluczowy (np. znaki drogowe, światła na skrzyżowaniu). Jako cecha można go wykorzystać w kilku formach. Momenty koloru (ang. \textit{Color Moments}) jest to średnia, wariancja i odchylenie standardowe występowania danego koloru w obrazie. Histogram określa częstość występowania danego koloru, a wektor koherencji koloru (CCV ang. \textit{ Color Coherence Vectors}) określa w jakim stopniu piksele danego koloru są częścią obszaru o podobnym kolorze (np. obraz zielonej łąki na którym pasie się jedna fioletowa krowa. Kolor zielony na obrazie byłby rozłożony równomiernie natomiast fioletowy byłby skupiony w pojedynczym rejonie koherencji -- krowy) \cite{kodituwakku2004comparison}.
+%TODO OK też coś więcej.
 
 \end{enumerate}
 
@@ -67,21 +67,21 @@ Otrzymany wektor cech jest poddany klasyfikacji, której wynik decyduje czy obra
 W pracy \cite{benenson2014ten} autorzy wyróżnili 3 dominujące rodziny metod:
 
 \begin{enumerate}
-\item Rodzina DPM (ang. \textit{Deformable Part Model}) 
-%TODO OK a nie Deformable Part Model 
+\item Rodzina DPM (ang. \textit{Deformable Part Model})
+%TODO OK a nie Deformable Part Model
 
-Technika zakłada że obiekty mogą być zamodelowane poprzez części ułożone w deformowanych konfiguracjach. Model składa się z głównego, globalnego filtra, który stanowi punkt odniesienia dla pozostałych części. Każda część zawiera swój własny filtr wraz z zestawem dozwolonych pozycji względem okna detekcyjnego, oraz koszt deformacji dla każdej z tych pozycji. Suma wyniku uzyskanego z filtra głównego wraz z jego częściami stanowi o wyniku detekcji \cite{felzenszwalb2008discriminatively}.
+Technika zakłada, że obiekty mogą być zamodelowane poprzez części ułożone w deformowanych konfiguracjach. Model składa się z głównego, globalnego filtra, który stanowi punkt odniesienia dla pozostałych części. Każda część zawiera swój własny filtr wraz z zestawem dozwolonych pozycji względem okna detekcyjnego oraz koszt deformacji dla każdej z tych pozycji. Suma wyniku uzyskanego z filtra głównego wraz z jego częściami stanowi o wyniku detekcji \cite{felzenszwalb2008discriminatively}.
 %TODO OK ale ogólnie to prosze doczytać.
 
 \item Deep networks.
 
-Głębokie sieci neuronowe posiadają kilkanaście warstw ukrytych między warstwą wejściową i wyjściową. Jej działanie polega na tym że po podaniu wektora cech na warstwę wejściową wytrenowanej sieci, w warstwie wyjściowej aktywuje się neutron odpowiedzialny za daną klasę. W analizie obrazu szczególnie chętnie są wykorzystywane sieci konwolucyjne. Neurony pierwszej warstwy ukrytej są podłączone jedynie do wybranego fragmentu warstwy wejściowej (np. okna 5x5 obrazu albo pojedynczego histogramu w komórce). Jest to tzw. warstwa konwolucyjna. Neurony w tej warstwie dzielą wspólne wagi dla swoich wejść i bias. Sieć posiada zazwyczaj kilkanaście takich warstw każda wykrywająca pojedynczą cehę. Pozwala to na redukcję ilości potrzebnych neutronów i mniejszą ilość parametrów potrzebnych do uzyskania w procesie uczenia. Do warstw konwlucyjnych dochodzą warstwy sumujące (ang. \textit{Poling Layers}). Zadaniem warstwy jest generalizacja informacji z poprzedniej warstwy. Sieć zamyka w pełni połączona z poprzednimi, warstwa wyjściowa.
+Głębokie sieci neuronowe posiadają kilkanaście warstw ukrytych między warstwą wejściową i wyjściową. Jej działanie polega na tym, że po podaniu wektora cech na warstwę wejściową wytrenowanej sieci, w warstwie wyjściowej aktywuje się neutron odpowiedzialny za detekcję danej klasy. W analizie obrazu szczególnie chętnie są wykorzystywane sieci konwolucyjne. Neurony pierwszej warstwy ukrytej są podłączone jedynie do wybranego fragmentu warstwy wejściowej (np. okna 5x5 obrazu albo pojedynczego histogramu w komórce). Jest to tzw. warstwa konwolucyjna. Neurony w tej warstwie dzielą wspólne wagi dla swoich wejść i bias. Sieć posiada zazwyczaj kilkanaście takich warstw każda wykrywająca pojedynczą cechę. Pozwala to na redukcję ilości potrzebnych neutronów i mniejszą ilość parametrów potrzebnych do uzyskania w procesie uczenia. Do warstw konwlucyjnych dochodzą warstwy sumujące (ang. \textit{Poling Layers}). Zadaniem warstwy jest generalizacja informacji z poprzedniej warstwy. Sieć zamyka w pełni połączona z poprzednią, warstwa wyjściowa.
 
-\item Decision forests 
+\item Decision forests
 
- Lasy decyzyjne zbiór nieskorelowanych drzew decyzyjnych. Drzewo jest graficznym odwzorowaniem procesu decyzyjnego. Algorytm uczenia drzew wykorzystuje przykłady (wektor cech) i związane z nimi konsekwencje (klasyfikacja obiektu) . 
+Lasy decyzyjne zbiór nieskorelowanych drzew decyzyjnych. Drzewo jest graficznym odwzorowaniem procesu decyzyjnego. Algorytm uczenia drzew wykorzystuje przykłady (wektor cech) i związane z nimi konsekwencje (klasyfikacja obiektu) .
 
-\item inne:  np. SVM (ang. support vector machine – maszyna wektorów nośnych), AdaBoost itp. 
+\item inne: np. SVM (ang. support vector machine – maszyna wektorów nośnych), AdaBoost itp.
 
 %TODO Też trzeba rozbudować ten opis. Poza tym te sieci głębokie to trzeba by omówić osobno.
 
@@ -90,6 +90,4 @@ Głębokie sieci neuronowe posiadają kilkanaście warstw ukrytych między warst
 %TODO Nie omówił Pan specyfiki detekcji w podczerwieni.
 
 %TODO OK Po tym ogólnym omówieniu oczekwiałbym bym jednak szegółowego omówienia publikacji. Najbardziej zależy mi na 4 z Poznania (nie wiem czy Panu podsyłąłem - mogę to zrobić.) Poza tym ma Pan tam kilka publikacji we wstepnie, o tej fuzji - może coś z tego. Opiać też metodę z inzynierki itp. %TT w dalszych rozdziałach
-
-
 
