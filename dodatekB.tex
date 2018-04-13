@@ -1,8 +1,12 @@
-\chapter{Dodatek B - Instrukcja obsługi systemu}
+\chapter{Dodatek B -- Instrukcja obsługi systemu}
 
-Po podpięciu platformy Zybo przez złącze mikro USB uzyskujemy dostęp do terminalu poprzez UART. Parametry portu: baud rate 115200, 8 bitów, jeden bit stopu, brak kontroli parzystości.
+%TODO A tu nie trzeba jeszcze włożyć karty SD ? Bo rozumiem, że to tak startuje
+%TODO Jeszcz taki informtyczny opis projektu - co jest w jakim pliku.
 
-wciśnięcie klawisza 'h' powoduje pokazania się karty pomocy:
+Po podpięciu platformy Zybo przez złącze mikro USB uzyskujemy dostęp do terminalu poprzez UART. 
+Parametry portu: baud rate 115200, 8 bitów, jeden bit stopu, brak kontroli parzystości.
+
+Wciśnięcie klawisza 'h' powoduje pokazania się karty pomocy:
 
 \begin{lstlisting}
 HELP:
@@ -24,24 +28,25 @@ q get calibration image
 
 \end{lstlisting}
  
-\noindent wprowadenie znaku z powyższej listy do konsoli powoduje wykonanie następującej akcji:
+\noindent Wprowadzenie znaku z~powyższej listy do konsoli powoduje wykonanie następującej akcji:
  
 \begin{itemize}
-\item 1 - wyświtlenie statusu VDMA,
-\item 2 – rozpoczęcie detekcji przechodniów,
-\item 3 – restart DMA,
-\item 5 – wyświetlenie parametrów macierzy transformacji projekcyjnej,
-\item 6 – pozwala na wprowadzenie nowej macierzy T. Dane należy wprowadzić w postaci 9 liczb z przecinkiem (kropką) np.: wprowadzenie ''1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0'' zamienia macierz T na macierz jednostkową,
-\item 7 - pozwala na wprowadzenie progu binaryzacji dla modułu DPM,
-\item 8 - pozwala na wprowadzenie progu LP dla modułu DPM,
-\item w - zapisanie następnego wykrytego ROI w postaci pliku ROInnn.CIR gdze nnn to kolejne numery plików.
-\item s - zapisanie ROI znajdującego się na środku obrazu w postaci pliku ROInnn.CIR gdzie nnn to kolejne numery plików.
-\item x - zapisanie ROI znajdującego się na środku obrazu w postaci pliku ROInnn.CIR  oraz wektora cech w postaci pliku FVnnn.FLO nnn to kolejne numery plików.
-\item d - zapisanie całej ramki obrazu w postaci pliku FRAMEnnn.CIR gdzie nnn to kolejne numery plików.
-\item m - zamontowanie karty SD w celu zapisu plików,
-\item m - zapis obrazu kalibracyjnego w postaci pliku CALIBR.CIR. Spowoduje to zapisanie obrazu wizyjnego wraz z niepoddanym transformacji obrazem termowizyjnym.
+\item 1 -- wyświetlenie statusu VDMA,
+\item 2 -- rozpoczęcie detekcji przechodniów,
+\item 3 -- restart DMA,
+\item 5 -- wyświetlenie parametrów macierzy transformacji projekcyjnej,
+\item 6 -- pozwala na wprowadzenie nowej macierzy T. Dane należy wprowadzić w postaci 9 liczb z przecinkiem (kropką) np.: wprowadzenie ''1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0'' zamienia macierz T na macierz jednostkową,
+\item 7 -- pozwala na wprowadzenie progu binaryzacji dla modułu DPM,
+\item 8 -- pozwala na wprowadzenie progu LP dla modułu DPM,
+\item w -- zapisanie następnego wykrytego ROI w~postaci pliku ROInnn.CIR gdze nnn to kolejne numery plików.
+\item s -- zapisanie ROI znajdującego się na środku obrazu w~postaci pliku ROInnn.CIR gdzie nnn to kolejne numery plików.
+\item x -- zapisanie ROI znajdującego się na środku obrazu w~postaci pliku ROInnn.CIR  oraz wektora cech w postaci pliku FVnnn.FLO nnn to kolejne numery plików.
+\item d -- zapisanie całej ramki obrazu w~postaci pliku FRAMEnnn.CIR gdzie nnn to kolejne numery plików.
+\item m -- zamontowanie karty SD w celu zapisu plików,
+\item q -- zapis obrazu kalibracyjnego w~postaci pliku CALIBR.CIR. Spowoduje to zapisanie obrazu wizyjnego wraz z~niepoddanym transformacji obrazem termowizyjnym.
 \end{itemize}
 
-Pliki .CIR można otworzyć za pomocą funkcji [IrImage, rgbImage] = cir2image( filename ) w pakiecie MatLab (znjdującym się na płycie CD w folderze /src). Zwraca ona dwie macierze: IrImage - zapisany obraz w podczerwieni oraz rgbImage zapisany obraz wizyjny.
+Pliki .CIR można otworzyć za pomocą funkcji [IrImage, rgbImage] = cir2image( filename ) w pakiecie MatLab (znjdującym się na płycie CD w folderze /src). Zwraca ona dwie macierze: IrImage -- zapisany obraz w podczerwieni oraz rgbImage zapisany obraz wizyjny.
 
-Pliki .FLO składa się z 1584 32-bitowych liczb zmiennoprzecinkowych typu float. Reprezentuje on obliczony przez procesor wektor cech związanego z nim ROI.
+Pliki .FLO składa się z 1584 32-bitowych liczb zmiennoprzecinkowych typu float. 
+Reprezentuje on obliczony przez procesor wektor cech związanego z nim ROI.

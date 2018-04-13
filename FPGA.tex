@@ -1,14 +1,21 @@
-\chapter{Wykorzystanie FPGA w analizie obrazu}
+\chapter{Wykorzystanie układów FPGA i Zynq w~przetwarzaniu i~analizie obrazu}
 \label{cha:fpga}
-Tradycyjne systemy wizyjne zwykle bazują na architekturze sekwencyjnej.
-W tym rozwiązaniu obraz jest sukcesywnie poddawany kolejnym przekształceniom, a~wyniki pośrednie zapisywane są w pamięci operacyjnej. 
-W aplikacji procesorowej operacje te są wykonywane przez układ arytmetyczno-logiczny. 
-Kolejne kroki algorytmu są kompilowane w ciąg instrukcji dla procesora ,który oprócz operacji matematycznych dużą część pracy poświęca na pobieranie i dekodowanie rozkazów oraz na odczytywanie i zapisywanie danych do pamięci. 
-By taka aplikacja mogła pracować w czasie rzeczywistym, cała procedura musi wykonać się szybciej niż przychodzące dane obrazu, co wymusza wysokie taktowanie procesora sięgające kilku GHz. To podejście jednak ma swoje ograniczenia. Wraz z wzrostem częstotliwości pracy procesora wzrasta jego moc a tym samym ilość ciepła które która musi zostać rozproszone. Najszybsze CPU są taktowane z częstotliwością zegara sięgającą nawet 4,4 GHz (choć przy zastosowaniu chłodzenia ciekłym azotem jest możliwe uzyskanie ponad 8 GHz). Wzrost szybkości obliczeń  uzyskuje się coraz częsciej poprzez zwiększanie ilości rdzen wi procesorze. %TODO dodać, że to i tak nie zawsze pomaga. Poza tym wypada jakoś skomentować fakt istnienie procesorów wielordzeniowych.
 
-W przypadku podejścia równoległego, implementacja poszczególnych kroków algorytmu odbywa się w osobnych procesach. Jeżeli wykonywany algorytm jest głównie sekwencyjny tzn. kolejne kroki algorytmu wymagałyby danych otrzymanych z poprzednich, to zysk takiego zabiegu byłby równy zero. W celu uzyskania dobrej implementacji w układzie równoległym, istotne jest by znaczna cześć algorytmu mogła być wykonywana równolegle. 
-%TODO OK to jest dość niejednoznaczne. Musi Pan to opatrzyć jakimś lepszym komentarzem/przykładem.
-Maksymalne do uzyskania przyspieszenie jest określone przez prawo Amdahla: 
+Tradycyjne systemy wizyjne zwykle bazują na architekturze sekwencyjnej.
+W~tym rozwiązaniu obraz jest sukcesywnie poddawany kolejnym przekształceniom, a~wyniki pośrednie zapisywane są w pamięci operacyjnej lub podręcznej.
+W aplikacji procesorowej operacje te są wykonywane przez układ arytmetyczno-logiczny.
+Kolejne kroki algorytmu są kompilowane w~ciąg instrukcji dla procesora, który oprócz operacji matematycznych dużą część pracy poświęca na pobieranie i~dekodowanie rozkazów oraz na odczytywanie i~zapisywanie danych do pamięci.
+By taka aplikacja mogła pracować w~czasie rzeczywistym, cała procedura musi wykonać się szybciej niż przychodzące dane wizyjne, co wymusza wysokie taktowanie procesora sięgające kilku GHz. 
+To podejście jednak ma swoje ograniczenia. 
+Wraz ze wzrostem częstotliwości pracy procesora wzrasta jego moc a~tym samym ilość ciepła, które która musi zostać rozproszona.
+Najszybsze CPU są taktowane z częstotliwością zegara sięgającą nawet 4,4 GHz (choć przy zastosowaniu chłodzenia ciekłym azotem jest możliwe uzyskanie ponad 8 GHz). 
+Dodatkowo, efektywność energetyczna takiego rozwiązania pozostawia wiele do życzenia.
+Wzrost szybkości obliczeń uzyskuje się coraz częściej poprzez zwiększanie liczby rdzeni w procesorze. 
+
+W~przypadku podejścia równoległego, implementacja poszczególnych kroków algorytmu odbywa się w~osobnych procesach. 
+Jeżeli wykonywany algorytm jest głównie sekwencyjny, tzn. kolejne kroki algorytmu wymagałyby danych otrzymanych z~poprzednich, to zysk takiego zabiegu byłby równy zero. 
+W~celu uzyskania dobrej implementacji w~układzie równoległym istotne jest by znaczna część algorytmu mogła być wykonywana równolegle.
+Maksymalne do uzyskania przyspieszenie jest określone przez prawo Amdahla:
 \begin{equation}
 P_w =\frac{1}{ s + \frac{1-s}{n_w}}
 \end{equation}
@@ -19,64 +26,60 @@ s & cześć algorytmu niepodlegająca zrównolegleniu (wartość od zera do jede
 n_{w} & liczba elementów obliczeniowych.
 \end{conditions}
 
-Algorytmy przetwarzania obrazów są w dużej mierze równoległe, szczególnie te niskiego i średniego poziomu. W wielu przypadkach każdy piksel obrazu można obliczyć niezależnie, np. w wszelkich operacjach kontekstowych, przekształceniach przestrzeni barw, binaryzacji itp. Między innymi dlatego układy FPGA są chętnie stosowane w systemach wizyjnych. Teoretycznie jedynym ograniczaniem w możliwości zrównoleglenia obliczeń jest liczba dostępnych zasobów w układzie, jednak innym istotnym aspektem jest sposób dostarczania danych do modułów obliczeniowych. 
-%TODO OKprocesorów, czy modułów obliczeniowych no bo w sumie to musi się Pan ogólnie zdecydować, czy pisze to Pan ogólnie, czy z uwzględnieniem architektury.
+Algorytmy przetwarzania obrazów są w~dużej mierze równoległe, szczególnie te niskiego i~średniego poziomu. 
+W~wielu przypadkach, każdy piksel obrazu można przetwarzać niezależnie, np. we wszelkich operacjach kontekstowych, przekształceniach przestrzeni barw, binaryzacji itp. 
+Między innymi dlatego układy FPGA są chętnie stosowane w~systemach wizyjnych. 
+Teoretycznie jedynym ograniczaniem w~możliwości zrównoleglenia obliczeń jest liczba dostępnych zasobów w~układzie, jednak innym istotnym aspektem jest sposób dostarczania danych do modułów obliczeniowych.
+Dostęp do pamięci często wymaga czasu, a~ilość danych przekazana podczas jednego transferu jest ograniczona. 
+Stanowi to wąskie gardło w tego rodzaju rozwiązaniach.
+Z tego powodu przetwarzanie danych odebranych bezpośrednio z~czujnika wizyjnego w~czasie jego akwizycji jest chętnie wykorzystywane, gdyż zmniejsza to liczbę operacji odczytu i~zapisu \cite{garcia2014survey}.
 
-Dostęp do pamięci często wymaga czasu a ilość danych przekazana podczas jednego transferu jest ograniczona. Stanowi to wąskie gardło w tego rodzaju rozwiązaniach.
+Układy GPU (ang. \textit{Graphics Processing Unit} też dają możliwość zrównoleglania obliczeń. 
+W~odróżnieniu od FPGA mają sztywną strukturę. 
+Swoją architekturę przypominają rozwiązania SIMD (ang. \textit{Single Instruction Multiple Data}) z~tą różnicą, że zamiast pojedynczego rozkazu wykonywany jest ten sam kod (tzw. \textit{kernel}) na dużej liczbie mniejszych procesorów.
 
-% USUNIĘTE Czas i przepustowość jaka jest potrzebna do odczytania i zapisu obrazu po przetworzeniu pomiędzy pamięci jest najczęściej wąskim gardłem systemu wizyjnego. %TODO OK to z i do źle wygląda
-Z tego powodu przetwarzanie obrazu bezpośrednio z sensora w czasie jego akwizycji jest chętnie wykorzystywane, gdyż zmniejsza to liczbę operacji odczytu i zapisu. \cite{garcia2014survey}
+\section{Układ Zynq-7000}
 
-Karty GPU (ang. \textit{Graphics Processing Unit} też dają możliwość zrównoleglania obliczeń. W odróżnieniu od FPGA mają sztywną strukturę. Swoją architekturę przypominają SIMD (ang. \textit{Single Instruction Multiple Data}) z tą różnicą że zamiast pojedynczego rozkazu wykonywany jest ten sam kodu (tzw. kernel) na dużej ilości mniejszych procesorów.
-%TODO OK No i w ten sposób to Pan w rodziale o FPGA, ani razu nie użył słowa FPGA.
-%TODO OK Druga sprawa to jest GPU - tez się tu powinno pojawić.
+Rodzina układów Zynq-7000 bazuje na architekturze SoC (ang. \textit{System on Chip}). 
+W~pojedynczym układzie scalonym został zawarty kompletny system, w~skład którego wchodzą układy spełniające różne funkcje. 
+Został on podzielony na dwie główne części: system procesorowy (PS ang. \textit{Porcessing System}) bazujący na procesorze ARM Cortex-A9 oraz logikę programowalną (PL ang. \textit{Programable Logic}) -- FPGA. 
+Na rysunku \ref{fig:zynq7000} przedstawiono schemat architektury układu.
 
+Część procesorowa, oprócz samego ARM-a, posiada wbudowaną pamięć, kontroler pamięci zewnętrznej oraz szereg interfejsów dla układów peryferyjnych takich jak USB, GigEthernet, CAN, I2C, SPI. 
+W~części logiki programowalnej znajdują się bloki logiki konfigurowalnej (CLB ang. \textit{configurable logic block}), 36Kb bloki pamięci RAM, moduły DSP48, układ JTAG, układy zarządzania zegarami oraz dwa 12-bitowe przetworniki analogowo-cyfrowe.
 
-%TODO OK To trzeba wkomponować w rozdział o algorytmach. Ew. rozdział FPGA można dać przed algorytmy i wtedy omówić metody programowe oraz sprzętowe.
-
-\section{Zynq-7000}
-
-Rodzina układów Zynq-7000 bazuje na architekturze SoC (ang. \textit{System on Chip}). W pojedynczym układzie scalonym został zawarty kompletny system w skład którego wchodzą układy spełniające różne funkcje. Został on podzielony na dwie główne części: systemu procesorowy (PS ang. \textit{Porcessing System}) bazujący na procesorze ARM Cortex-A9 oraz logikę programowalną (PL ang. \textit{Programable Logic}) - FPGA. %TODO OK potworek styl. -> poprawić. + nazwy/słowa angielskie zawsze w kursywie
-Na rysunku \ref{fig:zynq7000} przedstawiono schemat architektury układu. %TODO OK czego ?
-Część procesorowa, oprócz samego ARM-a, posiada wbudowaną pamięć, kontroler pamięci zewnętrznej oraz szereg interfejsów dla układów peryferyjnych takich jak USB, GigEthernet, CAN, I2C, SPI. %TODO OK piwersza część do poprawy (styl.)
-W części logiki programowalnej znajdują się bloki logiki konfigurowalnej (CLB ang. \textit{configurable logic block}), 36Kb bloki pamięci RAM, moduły DSP48, układ JTAG, układy zarządzania zegarami oraz dwa 12-bitowe przetworniki analogowo-cyfrowe.
-%TODO 1. nie nazywałbym tego procesorem sygnałowym. 2. jednak bardziej obszerny opis obu komponentów (tak na 1/2 strony każdy)
-
-Komunikacja między częścią procesorową, a logiką programowalną odbywa się za pośrednictwem interfejsu AXI (ang. \textit{Advanced Extensible Interface}) oraz bezpośrednio wykorzystując porty ogólnego przeznaczenia oraz przerwania.
-%TODO 1. powt. oraz, 2 DMA, z tego co wiem, jest via AXI. Może chodziło Panu o ACP ? %%TT Chodziło o AXI DMA oczywicie
+Komunikacja między częścią procesorową a~logiką programowalną odbywa się za pośrednictwem interfejsu AXI (ang. \textit{Advanced Extensible Interface}), bezpośrednio wykorzystując porty ogólnego przeznaczenia oraz przerwania.
 
 \begin{figure}[h]
-    \centering
-    \includegraphics[width=1\textwidth]{images/Zynq-7000-Overview}
-    \caption{Schemat ogólny architektury układu Zynq-7000.}
-    \label{fig:zynq7000}
+\centering
+\includegraphics[width=1\textwidth]{images/Zynq-7000-Overview}
+\caption{Schemat ogólny architektury układu Zynq-7000.}
+\label{fig:zynq7000}
 \end{figure}
 
 \section{Interfejs AXI}
- AXI (ang. \textit{Advanced eXtensible Interface} --  zaawansowany rozszerzalny interfejs) jest częścią ARM AMBA (ang.\textit{ Advanced Microcontroller Bus Architecture}) -- otwartego standardu, będącego specyfikacją do zarządzania połączeniami między blokami funkcyjnymi w SoC. 
-%TODO OK gdzie kończy się nawias ?
- Aktualnie jest stosowana AMBA 4.0 która wprowadziła drugą wersję AXI -- AXI4. 
- Występują trzy typy interfejsów dla AXI4:
-\begin{itemize}
-\item AXI4 -- stosowany w wysokowydajnych transferach w przestrzeni pamięci (ang. \textit{memory-mapped}),
-\item AXI4-Lite -- stosowany dla prostszych operacji w przestrzeni pamięci (na przykład do komunikacji z rejestrami kontrolnymi i statusu),
-\item AXI4-Stream --stosowany do transmisji strumieniowych (wysokiej prędkości). 
-\end{itemize}
-Specyfikacja interfejsu zakłada komunikację pomiędzy pojedynczym AXI \textit{master} i pojedynczym AXI \textit{slave}, która ma na celu wymianę informacji. 
-Kilkanaście interfejsów AXI \textit{master} i \textit{slave} mogą zostać połączone między sobą za pomocą specjalnej struktury zwanej \textit{interconnect block} (blok międzypołączeniowy), w której odbywa się trasowanie połączeń do poszczególnych bloków. 
 
-AXI4 i AXI4-Lite składają się z 5 różnych kanałów:
+AXI (ang. \textit{Advanced eXtensible Interface} -- zaawansowany rozszerzalny interfejs) jest częścią ARM AMBA (ang.\textit{ Advanced Microcontroller Bus Architecture}) -- otwartego standardu, będącego specyfikacją do zarządzania połączeniami między blokami funkcyjnymi w SoC.
+Aktualnie jest stosowana AMBA 4.0 która wprowadziła drugą wersję AXI -- AXI4.
+Występują trzy typy interfejsów dla AXI4:
+\begin{itemize}
+\item AXI4 -- stosowany w wysokowydajnych transferach w~przestrzeni pamięci (ang. \textit{memory-mapped}),
+\item AXI4-Lite -- stosowany dla prostszych operacji w~przestrzeni pamięci (na przykład do komunikacji z~rejestrami kontrolnymi i~statusu),
+\item AXI4-Stream --stosowany do transmisji strumieniowych (wysokiej prędkości).
+\end{itemize}
+Specyfikacja interfejsu zakłada komunikację pomiędzy pojedynczym AXI \textit{master} i~pojedynczym AXI \textit{slave}, która ma na celu wymianę informacji.
+Kilkanaście interfejsów AXI \textit{master} i~\textit{slave} mogą zostać połączone między sobą za pomocą specjalnej struktury zwanej \textit{interconnect block} (blok międzypołączeniowy), w~której odbywa się trasowanie połączeń do poszczególnych bloków.
+
+AXI4 i AXI4-Lite składają się z~5~różnych kanałów:
 \begin{itemize}
 \item Kanał adresu odczytu,
 \item Kanał adresu zapisu,
-\item Kanał danych odczytanych
-\item Kanał danych do zapisania
-\item Kanał potwierdzenia zapisu
+\item Kanał danych odczytanych,
+\item Kanał danych do zapisania,
+\item Kanał potwierdzenia zapisu.
 \end{itemize}
-Dane mogą płynąć w obie strony pomiędzy \textit{master} a \textit{slave} jednocześnie.
-Ilość danych, które można przesłać w jednej transakcji w przypadku AXI4 wynosi 256 transferów, zaś AXI4-Lite pozwala na tylko 1 transmisję.
 
-%TODO te słowa master i slave to kursywą.
+Dane mogą płynąć w~obie strony pomiędzy \textit{master} a~\textit{slave} jednocześnie.
+Ilość danych, które można przesłać w~jednej transakcji w~przypadku AXI4 wynosi 256 transferów, zaś AXI4-Lite pozwala na tylko 1~transmisję.
 
-
-AXI4-Stream nie posiada pola adresowego, a dane mogą być przesyłane nieprzerwanie. 
+AXI4-Stream nie posiada pola adresowego, a~dane mogą być przesyłane nieprzerwanie.

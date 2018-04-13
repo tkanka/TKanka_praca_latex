@@ -1,37 +1,39 @@
-\chapter{System multispektralny}
+\chapter{Multispektralny system wizyjny}
 \label{cha:multispectral}
-%TODO mało inforamtywny tytuł.
 
 %TODO Kilka zdań o zawratości rozdziału - szczególnie, że jest różnorodna.
+%TODO 2 - podtrzymuję powyższe - 2-3 zdania co w rozdziale.
 
-%TODO OK Jak tam na to patrzę, to może być to podzielić dwa rozdziały:
-%TODO OK podczerwień, kamery, kalibracja itp. 
-%TODO OK detekcja osób
+
  
 \section{Podczerwień}
 
-Każde ciało, które ma temperaturę wyższą niż zero absolutne emituje swoją powierzchnią promieniowanie, którego natężenie zwiększa się wraz z jej wzrostem.
-%TODO OK wyższa + powt. emituje 
-Dla każdej temperatury danego ciała istnieje charakterystyczna długość fali o najwyższej wartości mocy promieniowania. Wraz z wzrostem temperatury ta częstotliwość przesuwa się w zakres fal widzialnych. 
-Można to zaobserwować, gdy stal osiąga wysoką temperaturę co skutkuję emisją światła. 
-Zależność ta jest opisana prawem Plancka, które opisuję emisję promieniowania elektromagnetycznego przez ciało doskonale czarne. 
-%TODO OK Tu by się przydało jakieś zdanie łączące, bo tak to się pojawia ni z gruchy...
-Ciało doskonale czarne to wyidealizowane ciało fizyczne, które całkowicie pochłania padające na nie promieniowanie oraz emituję promieniowanie ściśle związane z jego temperaturą.
-Wykres na rysunku \ref{fig:perfect_black} przedstawia tą zależność. 
+Każde ciało, które ma temperaturę wyższą niż zero absolutne, emituje swoją powierzchnią promieniowanie, którego natężenie zwiększa się wraz z jej wzrostem.
+%TODO 2 tak Pan to zamotał, że nie wiadomo do czego ,,jej,, się odnosi - temp. czy powierzchni
+Dla każdej temperatury danego ciała istnieje charakterystyczna długość fali o~najwyższej wartości mocy promieniowania. 
+Wraz z~jej wzrostem, ta częstotliwość przesuwa się w zakres fal widzialnych.
+Można to zaobserwować, gdy stal osiąga wysoką temperaturę, co skutkuję emisją światła.
+Zależność ta jest opisana prawem Plancka, które opisuję emisję promieniowania elektromagnetycznego przez ciało doskonale czarne.
+Ciało doskonale czarne to wyidealizowane ciało fizyczne, które całkowicie pochłania padające na nie promieniowanie oraz emituje promieniowanie ściśle związane z jego temperaturą.
+Wykres na rysunku \ref{fig:perfect_black} przedstawia tę zależność.
 
-Mianem podczerwieni określa się promieniowanie elektromagnetyczne w zakresie fali o długości od 0,75 $\mu m$ do 1000~$\mu m$. Wyróżnia się następujące pasma podczerwieni:
+Mianem podczerwieni określa się promieniowanie elektromagnetyczne w zakresie fali o~długości od 0,75 $\mu m$ do 1000~$\mu m$. Wyróżnia się następujące pasma podczerwieni:
 \begin{itemize}
-\item Bliska podczerwień (NIR ang. \textit{near infrared}) w zakresie 0,75 $\mu m$ do 1,4 $\mu m$.
-\item Podczerwień fal krótkich (SWIR ang. \textit{short-wawelength infrared}) w zakresie 1,4$\mu m$ do 3$\mu m$.
-\item Podczerwień fal średnich (SWIR ang. \textit{mid-wavelength infrared}) w zakresie 3$\mu m$ do 8$\mu m$.
-\item Podczerwień fal długich (LWIR ang. \textit{long-wavelength infrared}) w zakresie 8$\mu m$ do 15$\mu m$.
-\item Daleka podczerwień (FIR ang. \textit{long-wavelength infrared}) w zakresie 15$\mu m$ do 1000$\mu m$.
+\item Bliska podczerwień (NIR ang. \textit{near infrared}) w~zakresie 0,75 $\mu m$ do 1,4 $\mu m$.
+\item Podczerwień fal krótkich (SWIR ang. \textit{short-wawelength infrared}) w~zakresie 1,4$\mu m$ do 3$\mu m$.
+\item Podczerwień fal średnich (SWIR ang. \textit{mid-wavelength infrared}) w~zakresie 3$\mu m$ do 8$\mu m$.
+\item Podczerwień fal długich (LWIR ang. \textit{long-wavelength infrared}) w~zakresie 8$\mu m$ do 15$\mu m$.
+\item Daleka podczerwień (FIR ang. \textit{long-wavelength infrared}) w~zakresie 15$\mu m$ do 1000$\mu m$.
 \end{itemize}
 
-Bliska podczerwień znajduje się tuż za zakresem światła widzialnego ludzkim wzrokiem i jest możliwa do rejestracji przez typowe dla kamer sensory CCD czy CMOS (często z zastosowaniem oświetlaczy  IR). Wraz z wzmacniaczem światła jest również stosowana w noktowizji.
+Bliska podczerwień znajduje się tuż za zakresem światła widzialnego ludzkim wzrokiem i~jest możliwa do rejestracji przez typowe dla kamer sensory CCD czy CMOS (często z~zastosowaniem dodatkowych oświetlaczy IR). 
+Wraz ze wzmacniaczem światła jest również stosowana w~noktowizji.
 
-SWIR i LWIR występują także  pod nazwą termowizji. Promieniowanie podczerwone jest częściowo pochłaniane przez atmosferę ziemską. Na rysunku \ref{fig:atmosfera_int} przedstawiono tzw. transmisyjność atmosfery. W aparaturze rejestrującej w podczerwieni wykorzystuję się dwa zakresy przy których transmisyjność jest największa: 3 -- 5 $\mu m$ oraz 8 -- 14 $\mu m$ 
-\cite{niklaus2007mems}. 
+SWIR i~LWIR występują także pod nazwą termowizji. 
+Promieniowanie podczerwone jest częściowo pochłaniane przez atmosferę ziemską. 
+Na rysunku \ref{fig:atmosfera_int} przedstawiono tzw. transmisyjność atmosfery. 
+W~aparaturze rejestrującej w~podczerwieni wykorzystuje się dwa zakresy, przy których transmisyjność jest największa: 3 -- 5 $\mu m$ oraz 8 -- 14 $\mu m$ \cite{niklaus2007mems}.
+
 
 \begin{figure}
 \centering
@@ -47,30 +49,42 @@ SWIR i LWIR występują także  pod nazwą termowizji. Promieniowanie podczerwon
 \label{fig:atmosfera_int}
 \end{figure}
 
-%TODO OK Tu by się przydało coś o kamerach termowizyjnych napisać, albo nawet o kamerach wizyjnych i termowizyjnych, a dopiero potem o ich łączeniu.
 
 \section{Kamera termowizyjna}
 
 \subsection{Sensor podczerwieni}
-W kamerach do rejestracji obrazu w termowizji są wykorzystywane sensory FPA (ang. \textit{Focal Plane Array}  - płaskie zespoły ogniskujące). Najbardziej popularne typy to : InSb, InGaAs, HgCdTe (w postaci fotodiod; wymagają kriogenicznych warunków pracy) and QWIP (ang. \textit{ Quantum well infrared photodetector}). Najnowsze technologie wykorzystują niskobudżetowe, niewymagające chłodzenia mikrobolometry. 
 
-Firma Flir wykorzystuje tlenek wanadu do budowy mikrobolometrów m.in. w kamerach Lepton. Tlenek walandu cechuje się dużym temperaturowym współczynnikiem rezystancji (TWR) oraz małym szumem 1/f co zapewnia doskonałą wrażliwością oraz stabilną jednolitość. Do uzyskania obrazu zespół soczewek skupia promieniowanie z rejestrowanej sceny na macierz detektorów. W każdym z detektorów w odpowiedzi na padającą na niego wiązkę promieniowania, zmienia się temperaturę zawartego w nim tlenku wanadu. Zmiana temperatury wiąże się proporcjonalnie ze zmianą rezystancji. Rejestracja sceny polega na odczycie rezystancji każdego detektora poprzez przyłożenia napięcia i odczyt przepływającego przez nie prądu \cite{flir:lepton}. 
+W kamerach do rejestracji obrazu w termowizji są wykorzystywane sensory FPA (ang. \textit{Focal Plane Array} -- płaskie zespoły ogniskujące). 
+Najbardziej popularne typy to: InSb, InGaAs, HgCdTe (w postaci fotodiod; wymagają kriogenicznych warunków pracy) and QWIP (ang. \textit{Quantum well infrared photodetector}). 
+Najnowsze technologie wykorzystują niskobudżetowe, niewymagające chłodzenia mikrobolometry.
+%TODO 2 A co to są te mikrobolometry ? Te chemiczne symoble, też może Pan nazwać.
 
-%TODO OK To chyba bym przeniosł do rozdziału o kamerach
+Firma FLIR wykorzystuje tlenek wanadu do budowy mikrobolometrów m.in. w kamerach Lepton. 
+Tlenek wanadu cechuje się dużym temperaturowym współczynnikiem rezystancji (TWR) oraz małym szumem 1/f, co zapewnia doskonałą czułość oraz jednolitość. 
+W~celu uzyskania obrazu, zespół soczewek skupia promieniowanie z~rejestrowanej sceny na macierz detektorów. 
+W~każdym z~detektorów, w~odpowiedzi na padającą na niego wiązkę promieniowania, zmienia się temperatura zawartego w~nim tlenku wanadu. 
+Zmiana temperatury wiąże się proporcjonalnie ze zmianą rezystancji. 
+Rejestracja sceny polega na odczycie rezystancji każdego detektora poprzez przyłożenia napięcia i~odczyt przepływającego przez nie prądu \cite{flir:lepton}.
+
+%TODO 2 A może znajdzie Pan jakiś rysunek/schemat dla ożywnienia
 
 \subsection{Kamera termowizyjna FLIR Lepton}
 \begin{figure}[h]
-    \centering
-    \includegraphics[width=0.6\textwidth]{images/Lepton}
-    \caption{Widok poglądowy na kamerę FLIR Lepton.}
-    \label{fig:lepton}
+\centering
+\includegraphics[width=0.6\textwidth]{images/Lepton}
+\caption{Widok poglądowy na kamerę FLIR Lepton.}
+\label{fig:lepton}
 \end{figure}
- 
-Lepton jest miniaturową kamerą termowizyjną. W pojedynczym układzie został zintegrowany kompletny system składający się soczewki, sensora podczerwieni fal długich (ang. LWIR -- \textit{long wave infrared}) oraz elektroniki sterującej i przetwarzającej sygnał.
-Cechuje się bardzo małymi wymiarami, co czyni ją idealnym do zastosowań mobilnych. 
+
+Lepton jest miniaturową kamerą termowizyjną. 
+W~pojedynczym układzie został zintegrowany kompletny system składający się soczewki, sensora podczerwieni fal długich (ang. LWIR -- \textit{Long Wave Infrared}) oraz elektroniki sterującej i~przetwarzającej sygnał.
+Kamera cechuje się bardzo małymi wymiarami, co czyni ją idealnym rozwiązaniem do zastosowań mobilnych.
 Układ ma możliwość domontowania dodatkowej przesłony, która jest wykorzystywana do automatycznej optymalizacji procesu ujednolicania obrazu (kalibracji sensora).
-Układ jest prosty do integracji z dowolnym mikrokontrolerem dzięki zastosowaniu standardowych protokołów i interfejsów. %TODO OK styl. to nie jest zadnie (brak orzeczenia)
-Lepton po podłączeniu zasilania od razu uruchamia się w~domyślnym trybie pracy. Kamera jest konfigurowalna poprzez CCI (ang. \textit{camera control interface} – interfejs kontroli kamery), poprzez który jest dostęp do rejestrów zawierających konfigurację \cite{lepton}. %TODO OK za pomocą komend CCI czy czegoś -> coś tu brakuje
+Układ jest prosty do integracji z dowolnym mikrokontrolerem dzięki zastosowaniu standardowych protokołów i interfejsów. 
+
+Lepton po podłączeniu zasilania od razu uruchamia się w~domyślnym trybie pracy. 
+Kamera jest konfigurowalna poprzez CCI (ang. \textit{Camera Control Interface} – interfejs kontroli kamery).
+Zapewnia on dostęp do rejestrów zawierających konfigurację \cite{lepton}. 
 
 Parametry kamery:
 \begin{itemize}
@@ -79,48 +93,50 @@ Parametry kamery:
 \item Rejestrowany zakres: fale długie podczerwieni, 8$\mu m$ do 14$\mu m$,
 \item Wielkość piksela: 17 $\mu$m,
 \item Rozdzielczość: 80x60 pikseli,
-\item Liczba klatek na sekundę: 8,6,  %TODO  ułamek fps ? %TT odwołuję się do dokumentacji...
+\item Liczba klatek na sekundę: 8,6,  
 \item Zakres rejestrowanych temperatur: -10  $^\circ$  C 140  $^\circ$  C (tryb wysokiego wzmocnienia),
-\item Korekta niejednorodności matrycy: automatyczna na bazie przepływu optycznego, %TODO a jest o tym coś więcej (on tam sobie liczy OF ? )
-%TT tak, liczy, jest to dość widoczne w pierwszych kilku sekundach pracy kamery.
+\item Korekta niejednorodności matrycy: automatyczna na bazie przepływu optycznego, 
 \item Kąt widzenia horyzontalny / diagonalny: 51 $^\circ$  66 $^\circ$,
-\item Głębia ostrości: od 10cm do nieskończoności,
+\item Głębia ostrości: od 10 cm do nieskończoności,
 \item Format wyjściowy: do wyboru: 14-bit, 8-bit (z AGC (ang. \textit{automatic gain control} -- automatyczna kontrola wzmocnienia)) 24-bit RGB (z ACG i koloryzacją),
 \item Interfejs wideo: VoSPI (Video over Serial Peripherial Interface),
 \item Interfejs sterujący: CCI (zbliżony do I2C).
 \end{itemize}
 
-%TODO Może jeszzce jakiś przykładowy obraz zarejestrowany tą kamerą.
-
 
 \begin{figure}
 \centering
 \includegraphics[width=0.5\linewidth]{images/leptonTermalImage.png}
-\caption[Obraz człowieka w termowizji wykonany kamerą Lepton.]{Obraz człowieka w termowizji wykonany kamerą Lepton. W prawej ręce widać gorący obiekt (harbatę), w lewej zimny (butelka wody z lodówki).}
+\caption[Obraz człowieka w~termowizji wykonany kamerą Lepton.]{Obraz człowieka w termowizji wykonany kamerą Lepton. W~prawej ręce widać gorący obiekt (kubek herbaty), w~lewej zimny (butelka wody z lodówki).}
 \label{fig:leptonTermalImage}
 \end{figure}
+%TODO 2 OK, ale tradycyjnie - powołanie w tekśie na obraz.
 
 
 
 \section{Rejestracja obrazu multispektralnego}
-%TODO trzeba zmienić ten tytuł... %TT reorganizacja rozdziałów
 
-Widmo elektromagnetyczne docierające do kamery składa się fal o różnych długościach. Sensory w kamerach rejestrują obraz tylko w pewnym zakresie tego widma, więc aby uzyskać obraz w wymaganym paśmie należy odfiltrować niepożądane elementy widma, np. kolorowy obraz z kamery wizyjnej jest otrzymywany poprzez zastosowanie trzech filtrów: czerwonego, zielonego i niebieskiego. Ponieważ wszystkie trzy kolory mogą być zarejestrowane przez pojedynczą matrycę, filtry są nałożone bezpośrednio na sensor a wartość koloru w danym punkcie jest interpolowana z sąsiadujących ze sobą pikseli. W przypadku, gdy nie jest możliwe zastosowanie jednego sensora do wszystkich pożądanych zakresów należy rozdzielić wiązkę pomiędzy różne aparaty, albo wykorzystać równoległy układ kamer. 
+Widmo elektromagnetyczne docierające do kamery składa się fal o~różnych długościach. 
+Sensory w~kamerach rejestrują obraz tylko w~pewnym zakresie tego widma, więc aby uzyskać obraz w~wymaganym paśmie należy odfiltrować niepożądane elementy widma, np. kolorowy obraz z kamery wizyjnej jest otrzymywany poprzez zastosowanie trzech filtrów: czerwonego, zielonego i niebieskiego. 
+Ponieważ wszystkie trzy kolory mogą być zarejestrowane przez pojedynczą matrycę, filtry są nałożone bezpośrednio na sensor, a~wartość koloru w danym punkcie jest interpolowana z~sąsiadujących ze sobą pikseli (tzw. matryca Bayera). 
+W~przypadku, gdy nie jest możliwe zastosowanie jednego sensora do wszystkich pożądanych zakresów, należy rozdzielić wiązkę pomiędzy różne aparaty, albo wykorzystać równoległy układ kamer. %TODO 2 aparaty źle brzmi. Druga sprawa to są takie kamery 3x CMOS, gdzie wiązka jest rozdzialana na trzy czujniki (nie ma tej interpolacji)
 
-W przypadku rejestracji obrazu wizyjnego i termicznego większość implementacji wykorzystuje układ dwóch równoległych do siebie kamer, której przykład przedstawia rysunek \ref{dual_camera}. W tym przypadku została zastosowana kamera termowizyjna Flir Tao 2 oraz kamery wizyjnej logitech webcam c600. %TODO OK tu trzeba napisać jawnie jakie to są kamery 
-%TODO OK dlaczego od razu przejście do stereo
-Zazwyczaj obrazy z kamer różnią się, co wynika z ich budowy, różnej rozdzielczości, kąta widzenia jak oraz zniekształceń soczewkowych.
-Do poprawnego odwzorowania tej samej sceny w obu widmach należy zastosować algorytm mający na celu dopasowanie obu obrazów. Tworzony jest w ten sposób nowy obraz, na którym wszystkie piksele łączą informacje o kolorze i temperaturze.
-%TODO OK (tj. ..... /napisać co to jest dopasowanie/)
+W przypadku jednoczesnej rejestracji obrazu wizyjnego i~termicznego większość rozwiązań wykorzystuje układ dwóch równoległych do siebie kamer -- przykład przedstawia rysunek \ref{dual_camera}. 
+W tym przypadku została zastosowana kamera termowizyjna FLIR Tao 2 oraz kamera wizyjna Logitech Webcam c600. 
 
-Pierwszym z etapów poprawnego dopasowania obrazów jest kalibracja.
-Wykonuje się ją z~wykorzystaniem specjalnych plansz, które pozwalają określić położenie pewnych punktów w przestrzeni w obu rejestrowanych zakresach promieniowania. 
-Punkty te pozwalają na obliczenie relacji między obrazami. 
-Plansze mogą być aktywne (posiadają własne źródło ciepła) albo pasywne (przesłaniają obce źródło ciepła). 
-W równoległym układzie kamer występuje również zjawisko paralaksy, które powiększa się wraz z wzrostem odległości obiektu od punktu kalibracji. 
+Zazwyczaj obrazy z kamer różnią się, co wynika z ich budowy, różnej rozdzielczości, kąta widzenia oraz zniekształceń soczewkowych.
+Do poprawnego odwzorowania tej samej sceny w~obu widmach należy zastosować algorytm mający na celu dopasowanie obu obrazów.
+Tworzony jest w~ten sposób nowy obraz, na którym wszystkie piksele łączą informacje o~kolorze i temperaturze.
 
-W pracy \cite{hwang2015multispectral} autorzy zastosowali zwierciadło półprzezroczyste wykonane z wafla krzemowego pokrytego cynkiem do rozdzielenia obrazu wizyjnego od termicznego (rysunek \ref{multispectral}). Wykorzystując trójosiowy uchwyt, kamery zostały ustawione tak, by ich osie optyczne pokrywały się. Następnie obrazy z obu kamer zostały zrektyfikowane aby miały tą samą wirtualną ogniskową.
-%TODO Ten rysunek 2.3 b) jest jakiś nieczytelny i wymaga opisu/komentarza.
+Pierwszym z~etapów poprawnego dopasowania obrazów jest kalibracja systemu wizyjnego.
+Wykonuje się ją z~wykorzystaniem specjalnych plansz, które pozwalają określić położenie pewnych punktów w~przestrzeni w~obu rejestrowanych zakresach promieniowania.
+Punkty te pozwalają na obliczenie relacji między obrazami.
+Plansze mogą być aktywne (posiadają własne źródło ciepła) albo pasywne (przesłaniają obce źródło ciepła).
+W~równoległym układzie kamer występuje również zjawisko paralaksy, które powiększa się wraz ze wzrostem odległości obiektu od punktu kalibracji. %TODO 2 to zdanie jest takie na doczepkę. Może napisać co z tego wynika
+
+W~pracy \cite{hwang2015multispectral} autorzy zastosowali zwierciadło półprzezroczyste wykonane z~wafla krzemowego pokrytego cynkiem do rozdzielenia obrazu wizyjnego od termicznego (rysunek \ref{multispectral}). 
+Wykorzystując trójosiowy uchwyt, kamery zostały ustawione tak, by ich osie optyczne się pokrywały. 
+Następnie obrazy z~obu kamer zostały zrektyfikowane, aby miały tą samą wirtualną ogniskową.
 
 \begin{figure}[h]
 \centering
@@ -139,24 +155,21 @@ W pracy \cite{hwang2015multispectral} autorzy zastosowali zwierciadło półprze
 
 
 \subsection{Model geometryczny}
-%TODO To chyba powinien być podrozdział - bo to jest wszczegółowienie tego ogólnego modelu integracji kamer.
 
-Do opisu matematycznego systemu wykorzystuje się model kamery otworkowej. 
-Dzięki niemu można opisać relację między trójwymiarową przestrzenią a dwuwymiarowym obrazem za pomocą projekcji perspektywicznej. %TODO OK chyba perspektywicznej (projekcja jest jedna)
-Nie stanowi on najdokładniejszego opisu matematycznego kamery, nie ma w nim uwzględnionych zakłóceń soczewkowych, jednakże zapewnia dobre rezultaty w wielu aplikacjach. %TODO OK czegoś brakuje np. jednakże zapewnie dobre
-Model składa się z 2 zestawów parametrów: zewnętrznych oraz wewnętrznych.
-%TODO OK Co to jest "ona" ale chyba trzeba już po prostu napisać Model, czy Transformacja
-Parametry zewnętrzne definiują lokację kamery względem zewnętrznego układu współrzędnych. 
-Są reprezentowane przez wektor translacji \(T\) między układem związanym z kamerą \( \left ( X_{c},Y_{c},Z_{c}\right ) \)
-a zewnętrznym \(\left ( X,Y,Z\right )\). 
+Do opisu matematycznego systemu wykorzystuje się model kamery otworkowej.
+Dzięki niemu można opisać relację między trójwymiarową przestrzenią a~dwuwymiarowym obrazem za pomocą projekcji perspektywicznej. Nie stanowi on najdokładniejszego opisu matematycznego kamery, nie ma w nim uwzględnionych zakłóceń soczewkowych, jednakże zapewnia dobre rezultaty w~większości aplikacji.
+Model składa się z~2 zestawów parametrów: zewnętrznych oraz wewnętrznych.
+Parametry zewnętrzne definiują lokację kamery względem zewnętrznego układu współrzędnych.
+Są reprezentowane przez wektor translacji \(T\) między układem związanym z~kamerą \( \left ( X_{c},Y_{c},Z_{c}\right ) \)
+a~zewnętrznym \(\left ( X,Y,Z\right )\).
 Drugim parametrem jest macierz rotacji \( R \) (między osiami tych dwóch układów).
-Punkt \(P = \left [ X,Y,Z \right ]^T \) będący w zewnętrznym układzie współrzędnym ma swój odpowiednik w układzie wewnętrznym, który można określić zależnością 
+Punkt \(P = \left [ X,Y,Z \right ]^T \) będący w~zewnętrznym układzie współrzędnym ma swój odpowiednik w~układzie wewnętrznym, który można określić zależnością:
 
 \begin{equation}
 P_{c} = RP+T
 \end{equation}
 
-Właściwości optyczne kamery można przedstawić w postaci macierzy kamery.
+Właściwości optyczne kamery można przedstawić w~postaci macierzy kamery:
 \begin{equation}
 K = \begin{bmatrix}
 f_x & 0 & x_0 \\ 
@@ -170,7 +183,7 @@ f_{x}, f_{y} & ogniskowa kamery wyrażona w liczbie pikseli, \\
 x_{0},y_{0} & współrzędne punktu głównego. 
 \end{conditions}
 
-Macierz $K$ określa związek między znormalizowanymi współrzędnymi w układzie odniesienia kamery danych wzorem \(x_n = \frac{X_c}{Z_c}, y_n = \frac{Y_c}{Z_c}\)  a~odpowiadającym im współrzędnymi punktów na obrazie \(u,v\):
+Macierz $K$ określa związek między znormalizowanymi współrzędnymi w~układzie odniesienia kamery danych wzorem \(x_n = \frac{X_c}{Z_c}, y_n = \frac{Y_c}{Z_c}\)  a~odpowiadającym im współrzędnymi punktów na obrazie \(u,v\):
 
 \begin{equation}
 \begin{bmatrix}
@@ -185,7 +198,9 @@ y_n \\
 \end{equation}
 
 \subsection{Kalibracja}
-Obrazy które przedstawiają tę samą scenę ale zostały wykonane dwoma różnymi kamerami w innych położeniach, różnią się. Na rysunku \ref{fig:oneSceaneTwoCameras} czarna szachownica jest uchwycona przez dwie kamery ustawione w punktach $C_A$  (na wprost obiektu) oraz $C_B$ (po skosie i lekko obrócona). 
+
+Obrazy, które przedstawiają tę samą scenę, ale zostały wykonane dwoma różnymi kamerami w~innych położeniach różnią się. 
+Na rysunku \ref{fig:oneSceaneTwoCameras} czarna szachownica jest uchwycona przez dwie kamery ustawione w~punktach $C_A$ (na wprost obiektu) oraz $C_B$ (po skosie i~lekko obrócona).
 
 \begin{figure}
 \centering
@@ -194,7 +209,9 @@ Obrazy które przedstawiają tę samą scenę ale zostały wykonane dwoma różn
 \label{fig:oneSceaneTwoCameras}
 \end{figure}
 
-Aby dopasować te dwa obrazy, tak by szachownice były ujęte tak samo, należy na jednym z nich przeprowadzić  transformację projekcyjną. Jest to przekształcenie pomiędzy dwoma płaszczyznami, które wykorzystuje model geometryczny kamery. Wymaga to obliczenia macierzy transformacji $A$ na podstawie co najmniej 4 punktów kalibracyjnych. 
+Aby dopasować te dwa obrazy, tak by szachownice były ujęte tak samo (tj. w~tym samym miejscu na obrazie), należy na jednym z~nich przeprowadzić transformację projekcyjną. 
+Jest to przekształcenie pomiędzy dwoma płaszczyznami, które wykorzystuje model geometryczny kamery. 
+Wymaga to uprzedniego wyznaczenia macierzy transformacji $A$ na podstawie co najmniej 4 punktów kalibracyjnych.
 
 \begin{figure}[h]
 \centering
@@ -211,7 +228,7 @@ Aby dopasować te dwa obrazy, tak by szachownice były ujęte tak samo, należy 
 \caption{\label{fig:camImages}Zarejestrowane obrazy: \protect\subref{fig:camAimage} przez kamerę $C_A$, \protect\subref{fig:camBimage} przez kamerę $C_B$. Punkty $A$ i $B$ są punktami kalibracyjnymi.}
 \end{figure}
 
-Na rysunkach \ref{fig:camAimage} i \ref{fig:camBimage} punkty $A_1$ do $A_4$, będące czterema rogami zarejestrowanej szachownicy przez kamerę $C_A$, odpowiadają punktom $B_1$ do $B_4$ będącymi tymi samymi czterema rogami zarejestrowanymi kamerą $C_B$. Macierz transformacji $A$ można obliczyć rozwiązując równanie \eqref{transformMatrix}.
+Na rysunkach \ref{fig:camAimage} i~\ref{fig:camBimage} punkty $A_1$ do $A_4$, będące czterema rogami zarejestrowanej szachownicy przez kamerę $C_A$, odpowiadają punktom $B_1$ do $B_4$, będącymi tymi samymi czterema rogami zarejestrowanymi kamerą $C_B$. Macierz transformacji $A$ można obliczyć rozwiązując równanie \eqref{transformMatrix}:
 \begin{equation}
 \label{transformMatrix}
 A = \begin{bmatrix}
@@ -269,11 +286,8 @@ u_{n},v_{n} & współrzędne punktu kalibracji $n$, na obrazie bazowym\\
 x_{n},y_{n} & współrzędne punktu kalibracji $n$, na obrazie dopasowywanym 
 \end{conditions}
 
-Transformację projekcyjną można zinterpretować jako rzutowanie płaszczyzny, co obrazuję rysunek \ref{fig:projection}. Wynikiem transformacji (a zarazem rzutowania) jest obraz dopasowany do obrazu bazowego (\ref{fig:projectionImage})
-%TODO OK To jest wszystko OK, ale nie ma tutaj wprost powiedziane jak dopasować dwa obrazy. Może jakiś przykład, ilustracja itp. Ogólnie omówienie jak wykonać taką kalibrację.
-
-
-
+Transformację projekcyjną można zinterpretować jako rzutowanie płaszczyzny, co obrazuję rysunek \ref{fig:projection}. 
+Wynikiem transformacji (a~zarazem rzutowania) jest obraz dopasowany do obrazu bazowego (\ref{fig:projectionImage})
 
 
 \begin{figure}

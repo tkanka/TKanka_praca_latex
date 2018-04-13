@@ -152,7 +152,7 @@ maxbibnames=3,
 %\faculty{Faculty of Electrical Engineering, Automatics, Computer Science and Biomedical Engineering}
 
 %TODO uzupełnić lub usunąć
-\acknowledgements{Serdecznie dziękuję siostrze i ojcu za użyczenie swojego ciepła.}
+\acknowledgements{Serdecznie dziękuję siostrze i ojcu i Ani za użyczenie swojego ciepła.}
 
 
 \setlength{\cftsecnumwidth}{10mm}
@@ -166,19 +166,28 @@ maxbibnames=3,
 
 \begin{abstractpage}
 	\begin{abstract}{polish}
-Dobry system detekcji pieszych jest istotny w wielu aplikacjach takich jak system wspomagania kierowcy. W tej pracy został zaproponowany sprzętowo-programowy system wizyjny bazujący na obrazie multispektralnym. Obraz multispektralny jest otrzymywany z połączenia obrazów z kamery termowizyjnej i wizyjnej. Obszar zainteresowania jest wybierany na podstawie klasyfikatora wykorzystującego wzorzec probabilistycznego w termowizji. Następnie wskazany obszar jest ponownie klasyfikowany z wykorzystaniem HOG i SVM w przestrzeni multispektralnej by potwierdzić obecność przechodnia.
-		
+Dobry system detekcji pieszych znajduje przykładowo zastosowanie w~zaawansowanym wspomaganiu kierowcy. 
+W~niniejszej pracy został zaproponowany sprzętowo-programowy system wizyjny bazujący na obrazie multispektralnym. 
+Obraz multispektralny jest otrzymywany z połączenia obrazów z~kamery termowizyjnej i wizyjnej. 
+Obszar zainteresowania jest wybierany na podstawie klasyfikatora wykorzystującego wzorzec probabilistyczny w~termowizji. 
+Następnie wskazany obszar jest ponownie klasyfikowany z~wykorzystaniem HOG i SVM w przestrzeni multispektralnej by potwierdzić obecność przechodnia.
+%TODO Gdzie został zaimplementowany i jaka wyjadność dla jakiej rozdzielczości. Ew. jeszcze skuteczność. No i to też w ang.
+%TODO Na pewno w mulit ten HOG a nie tylko wizyjnej		
 		\textbf{Słowa kluczowe:} 
 termowizja, ARM, FPGA, detekcja przechodniów, obraz multispektralny, HOG SVM, wzorzec probabilistyczny
 		
 	\end{abstract}
 	
 	\begin{abstract}{english}
-Robust pedestrians detection system is crucial in many applications such as driver-assistance systems. In this thesis hardware-software vision system based on multispectral image is proposed. The multispectral image is obtained by combining visible and thermal infrared cameras. The ROIs (Regions of interest) are selected based on probability template classifier from infrared image. HOG and SVM classifier working in multispectral imaging domain is used to ensure if the selected area contain pedestrian.
-
+A robust pedestrian detection system is crucial in many applications such as advances driver-assistance or video surveillance. 
+In this thesis a multispectral image based hardware-software vision system is proposed. 
+The multispectral image is obtained by combining outputs of vision and infrared cameras. 
+The ROIs (Regions of interest) are selected using a~probabilistic template classifier from infrared image. 
+The HOG descriptor and SVM classifier working in multispectral imaging domain is used to confirm that the selected area contains pedestrian.
+%TODO uzgonić z wersją PL.
 		
 		\textbf{Keywords:} 
-infrared, ARM, FPGA, pedestrian detection, multispectral image, HOG SVM, probability template	
+infrared vision, ARM, FPGA, pedestrian detection, multispectral images, HOG SVM, probabilistic template	
 	\end{abstract}
 \end{abstractpage}
 
