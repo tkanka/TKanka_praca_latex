@@ -12,10 +12,11 @@ Dodatkowa funkcja zapisania obrazów na karcie SD dała możliwość stworzenia 
 
 Zastosowana kamera termowizyjna umożliwia akwizycję 9 klatek na sekundę i~jest źródłem obrazu dla modułu odpowiedzialnego za określanie ROI. 
 Ponieważ system procesorowy potrzebuje 75 ms na klasyfikację pojedynczego ROI, a~kolejne ramki obrazu pojawiają się co około 111 ms możliwa jest tylko jedna detekcja na klatkę obrazu IR. 
-Wynik ten jest znacznie słabszy od tych uzyskanych w podobnych rozwiązaniach. %TODO słabszy to złe słowo, poza tym... co to są inne.
+Nie jest to imponujący wynik. %OK TODO słabszy to złe słowo, poza tym... co to są inne.
 
 W~celu poprawy szybkości działania można by przenieść obliczanie deskryptora HOG związaną z~systemu procesorowego do logiki programowalnej, ale nie pozwalają na to ograniczone zasoby logiczne używanego układu Zynq. 
-Na podstawie modelu programowego można stwierdzić, że w porównaniu do
-poprzedniego systemu spadła liczba fałszywych pozytywnych detekcji.
+Na podstawie modelu programowego można stwierdzić, że w porównaniu do poprzedniego systemu spadła liczba fałszywych pozytywnych detekcji. 
+
+Dalszym kierunkiem rozwoju byłoby dodanie drugiej kamery termowizyjnej Lepton, co pozwoliłoby na otrzymanie obrazu stereoskopowego, by estymować odległość od obiektu. Mając tę informację można automatycznie dopasowywać wielkość wzorca odpowiadającą sylwetce przechodnia w danej odległości od kamery. Mała rozdzielczość czujnika również zachęca do analizy ruchu. Poprzednią ramkę obrazu można przechować bezpośrednio w pamięci BRAM układu FPGA i wykorzystać do strumieniowego obliczania lokalnego przepływu optycznego. Na jego podstawie system wspomagania kierowcy mógłby wykryć czy wykryty przechodzień może wtargnąć przed pojazd.
 %TODO 2 1. Raczej, że fuzja danych czy coś.
-%TODO 2. Proszę już coś wymyleć inna kamera, analiza ruchu, śledzenie, itp. No na pewno ma Pan jakieś pomysły.
+%OK TODO 2. Proszę już coś wymyleć inna kamera, analiza ruchu, śledzenie, itp. No na pewno ma Pan jakieś pomysły.

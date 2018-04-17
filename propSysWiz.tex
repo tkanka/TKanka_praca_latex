@@ -1,4 +1,4 @@
-\chapter{Zrealizowany system wizyjny} %TODO 2 napisać do czego...
+\chapter{Zrealizowany system wizyjny do detekcji ludzi} %OK TODO 2 napisać do czego...
 \label{cha:propSysWiz}
 
 \begin{figure}
@@ -62,8 +62,8 @@ Przestawia on pomieszczenie, po którym porusza się od 1~do 5~aktorów.
 Obraz został nagrany dwoma kamerami: termowizyjną FLIR Thermovision A40M oraz wizyjną Sony XCD-710CR. 
 Rozdzielczość obu klipów wynosi 480x360 piksele. 
 W~pierwszym etapie obraz z~kamery termowizyjnej został pomniejszony do rozmiarów 80x60 piksele. 
-Następnie, za pomocą wzorca probabilistycznego o~wymiarze 30x12 piksele została obliczona mapa rozkładu LP na obrazie jak na rysunku \ref{fig:sampleLP}. %TODO 2 co to jest LP ? 
-Maksima lokalne występujące w tym rozkładzie stanową środki ROI do dalszej analizy (rysunek \ref{fig:sampleTemplateDetection}).
+Następnie, za pomocą wzorca probabilistycznego o~wymiarze 30x12 piksele została obliczona mapa rozkładu LP (ang. \textit{Logarithmic Probability}) na obrazie jak na rysunku \ref{fig:sampleLP}. %TODO 2 co to jest LP ? 
+Maksima lokalne występujące w tym rozkładzie stanową punkty środkowe ROI do dalszej analizy (rysunek \ref{fig:sampleTemplateDetection}).
 \begin{figure}[h]
 \centering
 \begin{subfigure}{0.32\textwidth}
@@ -81,9 +81,9 @@ Maksima lokalne występujące w tym rozkładzie stanową środki ROI do dalszej 
 \end{figure}
 
 Obraz termowizyjny został dopasowany do obrazu wizyjnego, tworząc obraz multispektralny. 
-Punkty kalibracyjne zostały wyznaczone na podstawie elementów sylwetek (stopy, dłonie i głowa) od aktorów których wysokość na obrazie wynosiła około 180 pikseli. 
-Zmniejsza to do minimum dysparycję dla obiektów poszukiwanych wzorcem o~wysokości 30 pikseli. %TODO 2 dla mnie to zdanie jest niejasne
-Następnie punkty znalezione podczas badania wzorcem probabilistycznym zostały przeniesione na obraz multispektralny z~wykorzystaniem parametrów transformacji uzyskanej podczas kalibracji. 
+Punkty kalibracyjne zostały wyznaczone na podstawie elementów sylwetek (stopy, dłonie i głowa), od których aktorów wysokość na obrazie wizyjnym wynosiła około 180 pikseli, uzyskując minimum dysparycji między dwoma obrazami dla obiektów poszukiwanych wzorcem o wysokości 30 pikseli. %OK TODO 2 dla mnie to zdanie jest niejasne
+
+Następnie wspołrzędne znalezionych kandydatów podczas badania wzorcem probabilistycznym zostały przeniesione na układ współrzędnych obrazu multispektralnego z~wykorzystaniem parametrów transformacji uzyskanej podczas kalibracji. 
 Wokół tych punktów zostały wyznaczone ROI o~wymiarach 80x192 pikseli.
 %TODO 2 a można zdanie więcej jak dokładnie... 
 Dalej został obliczony wektor cech HOG w każdym z okien, które następnie zostały poddane klasyfikacji za pomocą liniowego SVM.
@@ -172,17 +172,17 @@ Po drugie, w~przypadku błędnego pakietu zawiera wartość 0xXFXX (X to obojęt
 Zawartość pakietu stanowi 160 bajtów zawierających wartości 80 pikseli linii. 
 W~systemie wykorzystywany jest format RAW14, zatem każdy piksel jest przesyłany w~postaci 2~bajtów zawierających 14 bitową wartość piksela.
 Cała ramka obrazu składa się z~63 pakietów. 
-60 pierwszych pakietów stanowią linie obrazu zaś ostatnie 3 są przeznaczone na telemetrię, która zawiera m.in. temperaturę FPA i~obudowy, 32-bitowy licznik ramek obrazu i bity stanu. %TODO 2 FPA ??
+60 pierwszych pakietów stanowią linie obrazu zaś ostatnie 3 są przeznaczone na telemetrię, która zawiera m.in. temperaturę matrycy  i~obudowy, 32-bitowy licznik ramek obrazu i bity stanu. %OK TODO 2 FPA Focal plane array z poprzedniego rozdziału??
 Pierwsze 3 przesłane pakiety są błędne i~służą do synchronizacji transmisji.
 W~przypadku prawidłowego pakietu kontroler szczytuje numer linii obrazu i~wystawia go na wyjściu \textit{row}. 
 Następnie na wyjściu \textit{data} wystawiane są wartości kolejnych 80 bitów wraz z~ich pozycją na wyjściu \textit{column}. 
 Wysoki stan \textit{we} informuje, że dane są poprawne i~powinny być zapisane.
-Wartości \textit{row} i~\textit{column} są zamieniane na adres w~pamięci dwuportowej BRAM, będącą buforem ramki IR, do której są zapisywana wartość piksela z wyjścia \textit{data}. %TODO 2 coś zamotane to zdanie...
+Wartości \textit{row} i~\textit{column} są zamieniane na adres w~pamięci dwuportowej BRAM, będącą bufor ramki IR. Do zaadresowanej komurki pamięci zapisywana jest wartość piksela z wyjścia \textit{data}. %OK TODO 2 coś zamotane to zdanie...
 
 \subsection {Transformata projekcyjna}
 
-Moduł ma na celu dopasowanie obrazu IR do RGB. 
-W~tym celu zamienia współrzędne w~układzie odniesienia obrazu RGB na odpowiadające im w układzie IR. %TODO 2 powt. celu
+Moduł służy do dopasowania obrazu IR do RGB. 
+W~tym celu zamienia współrzędne w~układzie odniesienia obrazu RGB na odpowiadające im w układzie IR. %OK TODO 2 powt. celu
 Na wejściu podawany jest strumień AXI4-Stream służący do synchronizacji ramek oraz 12-bitowe współrzędne X i~Y. 
 Moduł realizuję operację:
 \begin{equation}
@@ -209,7 +209,7 @@ gdzie $x$, $y$ to współrzędne obrazu w~układzie odniesienia kamery wizyjnej,
 $T$ to macierz transformacji.
 
 Moduł wystawia na wyjściu strumień wizyjny AXI4-Stream, 12-bitowe wartości U i V oraz ich części ułamkowe w~U\_fraction i~V\_fraction (14 bitów). 
-W~module zostały wykorzystane 34 z~80 dostępnych w~układzie Zynq (wersji na karcie Zybo) modułów DSP48 do wykonania operacji arytmetycznych, z~czego większość wychodzi w~skład IP-Core dzielarki dostarczonej przez producenta układu.
+W~module zostały wykorzystane 34 z~80 dostępnych w~układzie Zynq (wersji na karcie Zybo) modułów DSP48 do wykonania operacji arytmetycznych, z~czego większość wychodzi w~skład IP-Core dzielarki dostarczonej przez producenta układu (14 na pojedyńczą dzielarkę).
 %% Do implementacji jednej dzielarki zostało wykorzystane 14 modułów DSP. %TODO OK powt. to jakoś trzeba złączyć z poprzednim
 Dzielenie nie odbywa się w~pełni potokowo. 
 Użyty w dzielarce algorytm \textit{High\_Radix} wymaga zatrzymania strumienia na czas obliczeń. 
@@ -316,8 +316,8 @@ Brak kandydatów wskazuje czarna ramka w~miejscu ostatniej detekcji.
 
 \section{Proces kalibracji}
 W~celu kalibracji, zostaje wykonane zdjęcie specjalnej planszy kalibracyjnej za pomocą obu kamer (rysunki \ref{fig:calibrationThermal}, \ref{fig:calibrationRGB}). 
-%TODO 2 a co to ,,świeci'' na tej planszy...
-Pozwala to na identyfikację czterech punktów kalibracyjnych w~obu przestrzeniach: RGB i~IR. 
+%OK TODO 2 a co to ,,świeci'' na tej planszy...
+Pozwala to na identyfikację czterech punktów kalibracyjnych w~obu przestrzeniach: RGB i~IR. W użytej planszy zastosowano rozgrzane kawałki metalu jako punkty odniesienia.
 Następnie na ich podstawie zostaje obliczona macierz transformacji projekcyjnej. 
 Na rysunku \ref{fig:calibrationCorrectedGrey} przedstawiono obraz z~kamery termowizyjnej po transformacji, który pokrywa się z obrazem wizyjnym (rysunek \ref{fig:calibrationSum}).
 
@@ -348,17 +348,19 @@ Na rysunku \ref{fig:calibrationCorrectedGrey} przedstawiono obraz z~kamery termo
 \end{figure}
 
 \section{HOG i SVM}
-%TODO 2 coś nie halo 1. Gradienty. 2. Potem podział.
-Okno detekcji zostaje podzielone na 60 komórek o wielkości 16x16 pikseli. %TODO 2 jakieś zdanie wprowadzenia ?
-Następnie obliczane są gradienty dla poszczególnych pikseli. 
+W pierwszym etapie tworzony jest wektor cech HOG. Dla każdego piksela w ROI zostaje obliczony gradient składający się z kierunku oraz modułu.
+Następnie okno detekcji zostaje podzielone na 60 komórek o wielkości 16x16 pikseli. 
 
-Pojedynczy gradient składa się z kierunku oraz wartości wypadkowej.
+%OK TODO 2 coś nie halo 1. Gradienty. 2. Potem podział.
+%TODO 2 jakieś zdanie wprowadzenia ?
+
 %TODO Gradient dla pojedynczego piskela ma amplitude (moduł) i kierunek.
 
 %TODO Teraz podział i obliczanie histogramu w komórkach
 
-Wykorzystany jest histogram ważony o 9 przedziałach. 
-Oznacza to, że wartość wypadkowa gradientu jest dzielona na dwa przedziały, pomiędzy którymi się znajduje w proporcjach określonych wzorem \eqref{equ:bin1}, \eqref{equ:bin2}.
+Dla każdej z komórek zostaje obliczony histogram ważony o 9 przedziałach. 
+
+Oznacza to, że wartość moduł gradientu jest dzielona na dwa przedziały, pomiędzy którymi się znajduje w proporcjach określonych wzorem \eqref{equ:bin1}, \eqref{equ:bin2}.
 %TODO wypadkowa -> moduł !!
 \begin{equation}\label{equ:bin0}
 Bin1_{dir} < G_{dir} < Bin2_{dir}
@@ -369,8 +371,8 @@ Bin1_{mag} = \frac{Bin2_{dir} - G_{dir}}{Bin2_{dir} - Bin1_{dir}}
 \begin{equation}\label{equ:bin2}
 Bin2_{mag} = \frac{G_{dir}- Bin1_{dri}}{Bin2_{dir} - Bin1_{dir}}
 \end{equation}
-\noindent gdzie: $G_{dir}$ to kierunek badanego gradient, $G_{mag}$ to wypadkowa badanego gradientu, $Bin1_{dir}$,$Bin2_{dir}$ to kierunki gradientów powiązane z danym przedziałem histogramu, $Bin1_{mag}$,$Bin2_{mag}$ to wypadkowa gradientu przypisana do poszczególnego z przedziału.
-%TODO wypadkowe.... 
+\noindent gdzie: $G_{dir}$ to kierunek badanego gradient, $G_{mag}$ to wypadkowa badanego gradientu, $Bin1_{dir}$,$Bin2_{dir}$ to kierunki gradientów powiązane z danym przedziałem histogramu, $Bin1_{mag}$,$Bin2_{mag}$ to wypadkowe gradientu przypisana do poszczególnego z przedziału.
+%ok TODO wypadkowe.... 
 
 Dla każdej z komórek dodatkowo obliczana jest suma kwadratów wartości przedziałów histogramu.
 Następnie komórki są łączone w~bloki 2 na 2, w~których obrębie dokonywana jest normalizacja, wykorzystując wcześniej obliczone sumy kwadratów. 
@@ -383,11 +385,12 @@ Następnie wartości wszystkich 36 przedziałów w~4 histogramach są dzielone p
 Bloki nakładają się na siebie, zatem w~pojedynczym oknie można wyodrębnić 44 bloki. 
 Suma histogramów z~wszystkich bloków tworzy 1584-elementowy wektor cech.
 
-W~celu wytrenowania klasyfikatora SVM zostało wykonane 60 obrazów -- 30 pozytywnych zawierających przechodnia i~30 przedstawiają elementy tła lub niekompletnej sylwetki człowieka (np. sama ręka).
-Jest to klasyfikator liniowy. %TODO 2 a to zdanie do czego... nie pasuje kompletnie... i nieco szerszy opis SVM.
-Do każdej z cech jest przypisana jej waga. 
-Po zsumowaniu wszystkich wag dodawany jest $bias$. %TODO iloczyn wagi i cechy jak już.
-Jeżeli wynik jest większy od zera świadczy to o~pozytywnym wyniku klasyfikacji.
+
+%OK TODO 2 a to zdanie do czego... nie pasuje kompletnie... i nieco szerszy opis SVM.
+Maszyna wektorów nośnych jest modelem służącym do określanie przynależności wektora cech do jednej z klas. W procesie nauczania tworzona jest superpłaszczyzna oddzielająca przykładowe próbki tych dwóch klasy z największym możliwym marginesem między nimi. Próbki znajdujące się na marginesie nazywane są wektorami nośnymi. W~celu wytrenowania klasyfikatora zostało wykonane 60 obrazów -- 30 pozytywnych zawierających przechodnia i~30 przedstawiają elementy tła lub niekompletnej sylwetki człowieka (np. sama ręka). Po nauczeniu do każdego elementu wektora cech przypisana jest jego waga oraz wartość progowa -- $bias$.
+Wynik sumy iloczynów wag i cech wektora oraz $biasu$ stanowi podstawę do klasyfikacji. Jeżeli jest większy od zera świadczy to o~pozytywnym wyniku klasyfikacji.
+
+%OK TODO iloczyn wagi i cechy jak już. 
 
 \section{Wyniki}
 
@@ -410,8 +413,8 @@ Na rysunku \ref{fig:workingSystem} przedstawiono zdjęcie działającego systemu
 \end{figure}
 
 %TODO no ale jakby to dla 30/60 fps... to już tak pięknie nie jest %% TT Mam w zapasie moduł który liczy gradienty oraz przedział i histogram pojedynczego piksela, tylko dodanie go powoduje że układ jest niesyntezowalny
-%TODO 2 to to w future work...
-W~tabeli \ref{tab:fpgautilization} zostało przedstawione wykorzystanie zasobów logiki programowalnej.
+%OK TODO 2 to to w future work...
+W~tabeli \ref{tab:fpgautilization} zostało przedstawione wykorzystanie zasobów logiki programowalnej. Najwięcej zasobów LUT zostało wykorzystane w module DPM. Spowodowane jest to dużym oknem kontekstowym wraz z drzewem sumacyjnym. Z kolei większość modułów DSP48 została wykorzystana do dzielarek w module transformaty projekcyjnej, gdzie odbywa się najwięcej obliczeń arytmetycznych.
 \begin{table}[]
 \centering
 \caption{Wykorzystane zasoby logiki programowalnej.}
@@ -431,4 +434,6 @@ PLL & 1 & 2 & 50,00 \\ \hline
 \end{tabular}
 \end{table}
 
-%TODO 2 Tu mogłby Pan kilka zdań komentarza do tabelki. Co jest przyczyną takiego, a nie innego wykorzystania.
+
+
+%OK TODO 2 Tu mogłby Pan kilka zdań komentarza do tabelki. Co jest przyczyną takiego, a nie innego wykorzystania.

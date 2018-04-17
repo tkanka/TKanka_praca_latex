@@ -166,25 +166,29 @@ maxbibnames=3,
 
 \begin{abstractpage}
 	\begin{abstract}{polish}
-Dobry system detekcji pieszych znajduje przykładowo zastosowanie w~zaawansowanym wspomaganiu kierowcy. 
+Dobry system detekcji pieszych znajduje przykładowo zastosowanie w~zaawansowanym wspomaganiu kierowcy badź monitoringu. 
 W~niniejszej pracy został zaproponowany sprzętowo-programowy system wizyjny bazujący na obrazie multispektralnym. 
-Obraz multispektralny jest otrzymywany z połączenia obrazów z~kamery termowizyjnej i wizyjnej. 
-Obszar zainteresowania jest wybierany na podstawie klasyfikatora wykorzystującego wzorzec probabilistyczny w~termowizji. 
-Następnie wskazany obszar jest ponownie klasyfikowany z~wykorzystaniem HOG i SVM w przestrzeni multispektralnej by potwierdzić obecność przechodnia.
-%TODO Gdzie został zaimplementowany i jaka wyjadność dla jakiej rozdzielczości. Ew. jeszcze skuteczność. No i to też w ang.
-%TODO Na pewno w mulit ten HOG a nie tylko wizyjnej		
+Obraz multispektralny jest otrzymywany z połączenia obrazów z~kamery termowizyjnej i wizyjnej.   
+Obszar zainteresowania jest wybierany na podstawie klasyfikatora wykorzystującego wzorzec probabilistyczny w~termowizji.  
+Następnie wskazany obszar jest ponownie klasyfikowany z~wykorzystaniem HOG i SVM w przestrzeni multispektralnej by potwierdzić obecność przechodnia. 
+
+W pracy wykorzystano miniaturową kamerę termowizyjną Lepton o rozdzielczości 80x60 pikseli oraz wizyjną o rozdzielczości 640x480 px. Do realizacji systemu został użyty układ heterogeniczny Zynq-7000 firmy Xilinx, który zawiera układ FPGA oraz procesor ARM w jednej obudowie. Logika programowalna została wykorzystana do połączenia obrazów w multispektralny oraz do wykrycia przechodniów za pomocą wzorca probabilistycznego, natomiast w systemie procesorowym został zrealizowany HOG i SVM.
+%OK TODO Gdzie został zaimplementowany i jaka wyjadność dla jakiej rozdzielczości. Ew. jeszcze skuteczność. No i to też w ang.
+%TODO Na pewno w mulit ten HOG a nie tylko wizyjnej %TT napewno.		
 		\textbf{Słowa kluczowe:} 
 termowizja, ARM, FPGA, detekcja przechodniów, obraz multispektralny, HOG SVM, wzorzec probabilistyczny
 		
 	\end{abstract}
 	
 	\begin{abstract}{english}
-A robust pedestrian detection system is crucial in many applications such as advances driver-assistance or video surveillance. 
+A robust pedestrian detection system is crucial in many applications such as advances driver-assistance or surveillance. 
 In this thesis a multispectral image based hardware-software vision system is proposed. 
-The multispectral image is obtained by combining outputs of vision and infrared cameras. 
+The multispectral image is obtained by combining outputs of vision and infrared cameras. Small 80x60 pixels resolution 
 The ROIs (Regions of interest) are selected using a~probabilistic template classifier from infrared image. 
 The HOG descriptor and SVM classifier working in multispectral imaging domain is used to confirm that the selected area contains pedestrian.
-%TODO uzgonić z wersją PL.
+
+The system is based on Lepton miniature infrared camera with a resolution of 80x60 pixels and color vision camera (640x480 pixels). To implement the system, Xilinx's SoC Zynq-7000, which integrates an FPGA and an ARM processor in a single device, is used. Programmable logic is used to combine images into a multispectral domain and to detect pedestrian with probabilistic pattern, while HOG and SVM  is been implemented in processing system.
+%OK TODO uzgonić z wersją PL.
 		
 		\textbf{Keywords:} 
 infrared vision, ARM, FPGA, pedestrian detection, multispectral images, HOG SVM, probabilistic template	

@@ -3,13 +3,12 @@
 
 %TODO Kilka zdań o zawratości rozdziału - szczególnie, że jest różnorodna.
 %TODO 2 - podtrzymuję powyższe - 2-3 zdania co w rozdziale.
-
-
+Rozdział rozpoczyna się od charakterystyki promieniowania podczerwonego oraz jego podział na zakresy. Następnie został zaprezentowany sposób rejestracji obrazu termowizyjnego na podstawie kamery Lepton firmy FLIR. Dalej został omówiony dwa sposoby uzyskiwania obrazu poprzez rozdzieleniem wiązki świetlnej na dwa sensory oraz za pomocą układu dwóch kamer równoległych. Następnie został przedstawiony model geometryczny kamery otworkowej oraz sposób kalibracji obrazów zarejestrowanych dwa różnymi kamerami.
  
 \section{Podczerwień}
 
-Każde ciało, które ma temperaturę wyższą niż zero absolutne, emituje swoją powierzchnią promieniowanie, którego natężenie zwiększa się wraz z jej wzrostem.
-%TODO 2 tak Pan to zamotał, że nie wiadomo do czego ,,jej,, się odnosi - temp. czy powierzchni
+Każde ciało, które ma temperaturę wyższą niż zero absolutne, emituje swoją powierzchnią promieniowanie cieplne. Im wyższa temperatura ciała tym większe natężenie togo promieniowania.
+%OK TODO 2 tak Pan to zamotał, że nie wiadomo do czego ,,jej,, się odnosi - temp. czy powierzchni
 Dla każdej temperatury danego ciała istnieje charakterystyczna długość fali o~najwyższej wartości mocy promieniowania. 
 Wraz z~jej wzrostem, ta częstotliwość przesuwa się w zakres fal widzialnych.
 Można to zaobserwować, gdy stal osiąga wysoką temperaturę, co skutkuję emisją światła.
@@ -55,9 +54,9 @@ W~aparaturze rejestrującej w~podczerwieni wykorzystuje się dwa zakresy, przy k
 \subsection{Sensor podczerwieni}
 
 W kamerach do rejestracji obrazu w termowizji są wykorzystywane sensory FPA (ang. \textit{Focal Plane Array} -- płaskie zespoły ogniskujące). 
-Najbardziej popularne typy to: InSb, InGaAs, HgCdTe (w postaci fotodiod; wymagają kriogenicznych warunków pracy) and QWIP (ang. \textit{Quantum well infrared photodetector}). 
-Najnowsze technologie wykorzystują niskobudżetowe, niewymagające chłodzenia mikrobolometry.
-%TODO 2 A co to są te mikrobolometry ? Te chemiczne symoble, też może Pan nazwać.
+Najbardziej popularne typy to: InSb (Ind Arsen), InGaAs (Ind Gal Arsen), HgCdTe (Rtęć Kadm Tellur) (w postaci fotodiod; wymagają kriogenicznych warunków pracy) and QWIP (ang. \textit{Quantum well infrared photodetector}). 
+Najnowsze technologie wykorzystują niskobudżetowe, niewymagające chłodzenia mikrobolometry. Mikrobolometr jest czujnikiem do pomiaru energii przenoszonej promieniowaniem elektromagnetycznym.
+%OK TODO 2 A co to są te mikrobolometry ? Te chemiczne symoble, też może Pan nazwać.
 
 Firma FLIR wykorzystuje tlenek wanadu do budowy mikrobolometrów m.in. w kamerach Lepton. 
 Tlenek wanadu cechuje się dużym temperaturowym współczynnikiem rezystancji (TWR) oraz małym szumem 1/f, co zapewnia doskonałą czułość oraz jednolitość. 
@@ -80,7 +79,7 @@ Lepton jest miniaturową kamerą termowizyjną.
 W~pojedynczym układzie został zintegrowany kompletny system składający się soczewki, sensora podczerwieni fal długich (ang. LWIR -- \textit{Long Wave Infrared}) oraz elektroniki sterującej i~przetwarzającej sygnał.
 Kamera cechuje się bardzo małymi wymiarami, co czyni ją idealnym rozwiązaniem do zastosowań mobilnych.
 Układ ma możliwość domontowania dodatkowej przesłony, która jest wykorzystywana do automatycznej optymalizacji procesu ujednolicania obrazu (kalibracji sensora).
-Układ jest prosty do integracji z dowolnym mikrokontrolerem dzięki zastosowaniu standardowych protokołów i interfejsów. 
+Układ jest prosty do integracji z dowolnym mikrokontrolerem dzięki zastosowaniu standardowych protokołów i interfejsów. Na rysunku /ref{fig:leptonTermalImage} zaprezetowano przykładowy obraz usyskany za pomocą kamery.
 
 Lepton po podłączeniu zasilania od razu uruchamia się w~domyślnym trybie pracy. 
 Kamera jest konfigurowalna poprzez CCI (ang. \textit{Camera Control Interface} – interfejs kontroli kamery).
@@ -119,7 +118,7 @@ Parametry kamery:
 Widmo elektromagnetyczne docierające do kamery składa się fal o~różnych długościach. 
 Sensory w~kamerach rejestrują obraz tylko w~pewnym zakresie tego widma, więc aby uzyskać obraz w~wymaganym paśmie należy odfiltrować niepożądane elementy widma, np. kolorowy obraz z kamery wizyjnej jest otrzymywany poprzez zastosowanie trzech filtrów: czerwonego, zielonego i niebieskiego. 
 Ponieważ wszystkie trzy kolory mogą być zarejestrowane przez pojedynczą matrycę, filtry są nałożone bezpośrednio na sensor, a~wartość koloru w danym punkcie jest interpolowana z~sąsiadujących ze sobą pikseli (tzw. matryca Bayera). 
-W~przypadku, gdy nie jest możliwe zastosowanie jednego sensora do wszystkich pożądanych zakresów, należy rozdzielić wiązkę pomiędzy różne aparaty, albo wykorzystać równoległy układ kamer. %TODO 2 aparaty źle brzmi. Druga sprawa to są takie kamery 3x CMOS, gdzie wiązka jest rozdzialana na trzy czujniki (nie ma tej interpolacji)
+W~przypadku, gdy nie jest możliwe zastosowanie jednego sensora do wszystkich pożądanych zakresów, należy rozdzielić wiązkę pomiędzy kilka różnych matryc aparaty, albo wykorzystać równoległy układ kamer. %OK TODO 2 aparaty źle brzmi. Druga sprawa to są takie kamery 3x CMOS, gdzie wiązka jest rozdzialana na trzy czujniki (nie ma tej interpolacji)
 
 W przypadku jednoczesnej rejestracji obrazu wizyjnego i~termicznego większość rozwiązań wykorzystuje układ dwóch równoległych do siebie kamer -- przykład przedstawia rysunek \ref{dual_camera}. 
 W tym przypadku została zastosowana kamera termowizyjna FLIR Tao 2 oraz kamera wizyjna Logitech Webcam c600. 
@@ -132,7 +131,7 @@ Pierwszym z~etapów poprawnego dopasowania obrazów jest kalibracja systemu wizy
 Wykonuje się ją z~wykorzystaniem specjalnych plansz, które pozwalają określić położenie pewnych punktów w~przestrzeni w~obu rejestrowanych zakresach promieniowania.
 Punkty te pozwalają na obliczenie relacji między obrazami.
 Plansze mogą być aktywne (posiadają własne źródło ciepła) albo pasywne (przesłaniają obce źródło ciepła).
-W~równoległym układzie kamer występuje również zjawisko paralaksy, które powiększa się wraz ze wzrostem odległości obiektu od punktu kalibracji. %TODO 2 to zdanie jest takie na doczepkę. Może napisać co z tego wynika
+W~równoległym układzie kamer występuje również zjawisko paralaksy, które powiększa się wraz ze wzrostem odległości obiektu od punktu kalibracji. Ogranicza to zakres w jakim może działać taki system. %OK TODO 2 to zdanie jest takie na doczepkę. Może napisać co z tego wynika
 
 W~pracy \cite{hwang2015multispectral} autorzy zastosowali zwierciadło półprzezroczyste wykonane z~wafla krzemowego pokrytego cynkiem do rozdzielenia obrazu wizyjnego od termicznego (rysunek \ref{multispectral}). 
 Wykorzystując trójosiowy uchwyt, kamery zostały ustawione tak, by ich osie optyczne się pokrywały. 

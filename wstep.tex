@@ -9,7 +9,7 @@ Dzisiejsza technologia daje możliwość rejestracji poza tym widmem.
 Przykładem są kamery termowizyjne, które stają się coraz tańsze i przez to bardziej popularne.
 Dostarczają one informację o temperaturze obserwowanych obiektów.
 Jest to coraz chętniej wykorzystywane np. w weterynarii do określenia miejsc urazów zwierząt, w~przemyśle do kontroli jakości artykułów spożywczych, w~budownictwie do analizy strat cieplnych w budynkach, w~systemach wspomagania kierowcy do detekcji obiektów w~pobliży drogi, przez ratowników do odnajdywania zasypanych ludzi w~gruzowiskach, straż graniczną do monitorowania granic, przez wojsko do odnajdywania celów i~zagrożeń podczas misji m.in. z wykorzystaniem dronów \cite{gade2014thermal}.
-%TODO 2 A tak sobie myślę, czy nie do urazów u ludzi ... 
+%TODO 2 A tak sobie myślę, czy nie do urazów u ludzi 
 
 Większość systemów wizyjnych służących do detekcji przechodniów jest oparta o~analizę obrazów z~zakresu światła widzialnego bądź podczerwieni.
 W przypadku światła widzialnego można uzyskać bardzo dobre wyniki pod warunkiem, że wyszukiwane obiekty są dobrze oświetlone i~wyróżniają się swoim kolorem od tła.
@@ -33,8 +33,8 @@ Dodatkową zaletą układów FPGA jest mały pobór mocy, co czyni je niezwykle 
 
 Układy heterogeniczne łączą w~jednej obudowie dwa układy (zasoby obliczeniowe) o~różanej architekturze i funkcjonalności.
 Przykładem takiego połączenia jest Zynq-7000 firmy Xilinx, który integruje w~sobie układ FPGA oraz procesor ARM.
-Największą zaletą takiego rozwiązania jest wysoka przepustowość transferu danych między procesorem, a~logiką programowalną.
-%TODO 2 Tu może jeszcze coś o możliwości podzialu algorymu HW/SW
+Największą zaletą takiego rozwiązania jest wysoka przepustowość transferu danych między procesorem, a~logiką programowalną, co pozwala na wydajniejszą pracę w przypadku rozdzielenia algorytmu między te dwa układy.
+%TODO 2 Tu może jeszcze coś o możliwości podzialu algorymu HW/SW %TT ok
 
 Niniejsza praca stanowi kontynuację i rozwinięcie pracy inżynierskiej autora.
 
@@ -60,7 +60,7 @@ W~rozdziale \ref{cha:multispectral} zostały omówione sposoby uzyskania obrazu 
 Rozdział rozpoczyna się od scharakteryzowania promieniowania podczerwonego oraz metody jego rejestracji. 
 Następnie został zaprezentowany model kamery otworkowej oraz transformacja projekcyjna, które stanowią podstawę teoretyczną do prawidłowego połączenia obrazów z dwóch różnych kamer.
 W~rozdziale \ref{cha:algoDetPiesz} przedstawiono ogólny przegląd algorytmów służących do detekcji pieszych. 
-W~poszczególnych sekcjach zostały omówione poszczególne etapy przetwarzania obrazu i~klasyfikacji wraz z~ogólnie stosowanymi rozwiązaniami.%TODO 2 powt. poszczególnych
+W~poszczególnych sekcjach zostały omówione kolejne etapy przetwarzania obrazu i~klasyfikacji wraz z~ogólnie stosowanymi rozwiązaniami.%TODO 2 powt. poszczególnych OK
 Następnie w~rozdziale \ref{cha:fpga} zostały omówione sposoby zrównoleglenia obliczeń i~możliwość FPGA na przykładzie układu heterogenicznego Zynq-7000 firmy Xilinx.
 Kolejny rozdział \ref{cha:przegLiter} zawiera streszczenia kilku wybranych artykułów, które poruszają tematykę związaną z~niniejszą pracą.
 W~rozdziale \ref{cha:propSysWiz} przedstawiono koncepcję zaproponowanego rozwiązania wraz ze szczegółami dotyczącymi jego wykonania.

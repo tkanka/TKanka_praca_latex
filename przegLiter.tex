@@ -55,6 +55,8 @@ Odległość jest ustalana na podstawie mapy dysparycji (ang. \textit{Disparity 
 Do obliczania dysparycji, wykorzystywana jest różnica między oryginalnym oknem a oknem przesuwnym w drugim obrazie -- algorytm SAD (ang. Sum of Absolute Difference). 
 Na koniec każde okno zostaje przeskalowane do wielkości 64x128, wyznaczony deskryptor HOG i~poddane klasyfikacji za pomocą liniowego SVM. 
 
+
+
 W~pracy autorzy skupili się na optymalnym doborze parametrów deskryptora HOG. 
 Wykorzystany zestaw danych zawierał 4400 obrazów: 2200 próbek z pieszymi oraz 2200 bez pieszych. 
 Autorzy przeprowadzili po 10 procedur uczenia klasyfikatora dla każdej kombinacji wykorzystując różne zestawy danych do nauki i~testów. 
@@ -142,11 +144,11 @@ Następnie dwa oryginalne obrazy oraz obliczona mapa głębi są przesyłane do 
 Moduł \textit{frame grabbera} przechwytywał ten obraz i~wykorzystując DMA (ang. \textit{Direct Memeory Acces}) zapisywał do pamięci systemu.
 System pracował w~rozdzielczości 752x480 pikseli i~60 klatkach na sekundę.
 Całość, włącznie z~kamerami, układem FPGA, CPU oraz konwerterami napięcia pobierał mniej niż 5W mocy.
-Całkowita latencja podana przez autorów rozwiązania wynosi około 2ms.
+Całkowita latencja podana przez autorów rozwiązania wynosi około 2ms. W opisywanej wersji systemu CPU nie realizowało żadnego algorytmu detekcji.
 
 %TODO ale to coś jeszcze robiło ? Bo rozumiem, że FPGA liczyło stereo (pytanie jak) i do CPU trafiały te obrazy. Ale coś więcej się działo ?
 %TT niestety nie, po prostu szybko liczyło obraz stereo z wykorzystaniem fpga
-%TODO 2 To proszę napisać takie zdanie, że w opisanej wersji systemu CPU nie realizowało...
+%OK TODO 2 To proszę napisać takie zdanie, że w opisanej wersji systemu CPU nie realizowało...
 
 \section{Podejście sprzętowo-programowe. System wspomagania kierowcy.}
 
@@ -204,31 +206,30 @@ Wartości $L_p$ i~$L_b$ odnoszą się do sum prawdopodobieństw przynależności
 $K$~jest parametrem, którym określono minimalną wartość dla której klasyfikator daje poprawne pozytywne wyniki.
 
 W~omawianej pracy autorzy opracowali wzorce dla 3 różnych wielkości okna: 10x15, 8x12 i 6x9 pikseli. 
-Do ich stworzenia wykorzystali jedynie górne połówki obrazu termicznego ludzkiej sylwetki, co miało na celu bardziej niezawodnego wzorca wobec różnych postur przechodniów.
-%TODO 2 coś w tym zdaniu nie jest OK...
+Do ich stworzenia wykorzystali jedynie górne połówki obrazu termicznego ludzkiej sylwetki, co miało na celu uzyskanie bardziej niezawodnego wzorca dla różnych wysokości zarejestrowanych przechodniów.
+%OK TODO 2 coś w tym zdaniu nie jest OK...
 
 \section{Praca Inżynierska}
 
-Praca inżynierska \cite{kankaing} oraz artykuł opracowany na jej podstawie\cite{kanka2016fpga}, której kontynuacją jest mniejsza praca, rozwinęła koncepcję zaproponowaną w~rozdziale \ref{sec:xiao_2015}. 
-%TODO 2 Coś to zdanie jest zbyt zamotoane... Może Niniejsze praca magisterska jest....
-Zastosowano 4 wzorce o wymiarach 48x120, 32x80, 24x60 oraz19x48. 
+Niniejsza praca magisteska jest kontynuacją pracy inżynierskiej \cite{kankaing} oraz artykuł opracowany na jej podstawie\cite{kanka2016fpga}. W pracy inżynierskiej została rozwinięta koncepcja systemu zaproponowana w~rozdziale \ref{sec:xiao_2015}. 
+%OK TODO 2 Coś to zdanie jest zbyt zamotoane... Może Niniejsze praca magisterska jest....
+Zastosowano 4 wzorce o wymiarach 48x120, 32x80, 24x60 oraz 19x48. 
 Wzorzec został podzielony na 4 części: górną, dolną, prawą i~lewą. 
 Następnie, podobnie jak w~DPM, układ tych 4 części decydował o~wyniku klasyfikacji. 
 Każda część tworzyła maskę wielkości całego okna. 
 Jeżeli co najmniej 3 takie maski pokrywały się, obszar ten był klasyfikowany pozytywnie. 
-Pozwoliło to na znaczną poprawę działania algorytmu, co pokazuje wykres ROC przedstawiony na rysunku \ref{fig:analiza_wykres}.
-%TODO 2 skórt ROC
+Pozwoliło to na znaczną poprawę działania algorytmu, co pokazuje wykres ROC (ang. \textit{Receiver Operating Characteristic}) przedstawiony na rysunku \ref{fig:analiza_wykres}.
+%OK TODO 2 skórt ROC
 \begin{figure}
 \centering
 \includegraphics[width=0.8\linewidth]{images/Analiza_wykres}
-\caption[Wykres REC]{Wyniki symulacji przy różnych wartościach parametru K.\cite{kankaing}}
+\caption[Wykres ROC]{Wyniki symulacji przy różnych wartościach parametru K.\cite{kankaing}}
 \label{fig:analiza_wykres}
 \end{figure}
 
 Poprawiło to również detekcję w~różnych skalach. 
-Poprzednio \textit{muliscale} osiągnięto dzięki zastosowaniu kilku wzorców. %TODO 2 może uniknąć tego muliscale jakoś.. połączyć z poprzednim zdaniem ...
 Pojedynczy wzorzec zapewniał detekcję w~pewnym zakresie wysokości przechodniów. 
-Im dalej odbiegał od swojej nominalnej wysokości, tym bardziej należało zmniejszyć parametr $K$, by w pojedynczym oknie było możliwe wykrycie mniejszych i~większych sylwetek. %TODO 2 K to próg ? może to napisać w nawiasie/
+Im dalej odbiegał od swojej nominalnej wysokości, tym bardziej należało zmniejszyć próg detekcji $K$, by w pojedynczym oknie było możliwe wykrycie mniejszych i~większych sylwetek. %OK TODO 2 K to próg ? może to napisać w nawiasie/
 Powodowało to również zwiększenie liczby fałszywych detekcji. 
 Po wprowadzeniu modyfikacja każda część ma możliwość deformacji, co w~dynamiczny sposób pozwala na zmianę wysokości wzorca.
 
