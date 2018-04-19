@@ -1,0 +1,33 @@
+\chapter{Dodatek C -- Opis informatyczny projektu}
+
+Projekt w pakiecie Matlab:
+\begin{itemize}
+\item cir2image.m -- funkcja odczytująca pliki obrazu multispektralnego .CIR,
+\item cir2imageLegacy.m -- funkcja odczytująca pliki obrazu multispektralnego .CIR w starszej wersji,
+\item cir2bmp -- skrypt tworzący obraz RGB z nałożonym obrazem termowizyjnym w pseudokolorze,
+\item /PHOTOS -- przykładowe zdjęcia,
+\item /KALIBRACJA -- folder zawierający skrypt do kalibracji wraz z przykładowym obrazem,
+\item /HOGSVM -- folder zawierający skrypty do obliczania deskryptora, oraz do nauki na przykładowym zestawie danych,
+\subitem HOGSVM.m -- skrypt do nauki klasyfikatora,
+\subitem extractFeatVectfromROI.m -- funkcja do obliczania wektora cech z ROI,
+\subitem getHistogram.m -- funkcja do obliczania histogramów,
+\subitem showCIR.m -- funkcja do szybkiego podglądu pliku .CIR,
+\subitem HOGverification.m -- skrypt do sprawdzenia różnicy między wektorami cech obliczonymi przez ZYBO a PC,
+\subitem /ROIs -- folder zawierający ROI do nauki klasyfikatora,
+\subitem /Verification -- folder zawierający pliki do sprawdzenia przez skrypt HOGverification,
+\item /SampleCIR -- folder zawierający przykładowe pliki .CIR,
+\end{itemize}
+
+Projek w śrdowisku Vivado:
+\begin{itemize}
+\item IRcam\_Driver.v -- kontroler kamery termowizyjnej Lepton,
+\item box.v -- moduł dodający do strumienia wizyjnego kolorowe, prostokątne obramowanie wokół wskazanego obszaru,
+\item ir12\_rgb24\_to\_rgb24\_colorised.v -- moduł zamieniający obraz strumień obrazu RGBIr na RGB z nałożonym Ir w pseudokolorze,
+\item axis\_video\_combiner.v -- moduł łączący strumień RGB z IR,
+\item AXI\_projection\_module -- IP-Core zawierający moduł realizujący transformację projekcyjną,
+\item PDM40 -- IP-Core realizujący detekcję za pomocą wzorca probabilistycznego,
+\item DPM\_data\_graber.v -- moduł przygotowujący dane dla modułu DPM40,
+\item bilinear\_interpolation -- IP-Core realizujący interpolację obrazu IR,
+\item coordinates\_counter.v -- moduł generujący strumień współrzędnych dla modułu transformacji projekcyjnej,
+\item mono16b\_signal\_normaliser -- IP-Core realizujący moduł normalizujący strumień IR.
+\end{itemize}

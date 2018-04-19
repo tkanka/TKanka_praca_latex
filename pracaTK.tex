@@ -152,7 +152,7 @@ maxbibnames=3,
 %\faculty{Faculty of Electrical Engineering, Automatics, Computer Science and Biomedical Engineering}
 
 %TODO uzupełnić lub usunąć
-\acknowledgements{Serdecznie dziękuję siostrze i ojcu i Ani za użyczenie swojego ciepła.}
+\acknowledgements{Serdecznie dziękuję siostrze i ojcu i Ani za użyczenie swojego ciepła, oraz dr. inż. Tomaszowi Kryjakowi  za stałą opiekę i nieocenioną pomoc w trakcie pisania pracy.}
 
 
 \setlength{\cftsecnumwidth}{10mm}
@@ -175,7 +175,8 @@ Następnie wskazany obszar jest ponownie klasyfikowany z~wykorzystaniem HOG i SV
 W pracy wykorzystano miniaturową kamerę termowizyjną Lepton o rozdzielczości 80x60 pikseli oraz wizyjną o rozdzielczości 640x480 px. Do realizacji systemu został użyty układ heterogeniczny Zynq-7000 firmy Xilinx, który zawiera układ FPGA oraz procesor ARM w jednej obudowie. Logika programowalna została wykorzystana do połączenia obrazów w multispektralny oraz do wykrycia przechodniów za pomocą wzorca probabilistycznego, natomiast w systemie procesorowym został zrealizowany HOG i SVM.
 %OK TODO Gdzie został zaimplementowany i jaka wyjadność dla jakiej rozdzielczości. Ew. jeszcze skuteczność. No i to też w ang.
 %TODO Na pewno w mulit ten HOG a nie tylko wizyjnej %TT napewno.		
-		\textbf{Słowa kluczowe:} 
+		
+\textbf{Słowa kluczowe:} 
 termowizja, ARM, FPGA, detekcja przechodniów, obraz multispektralny, HOG SVM, wzorzec probabilistyczny
 		
 	\end{abstract}
@@ -183,11 +184,11 @@ termowizja, ARM, FPGA, detekcja przechodniów, obraz multispektralny, HOG SVM, w
 	\begin{abstract}{english}
 A robust pedestrian detection system is crucial in many applications such as advances driver-assistance or surveillance. 
 In this thesis a multispectral image based hardware-software vision system is proposed. 
-The multispectral image is obtained by combining outputs of vision and infrared cameras. Small 80x60 pixels resolution 
+The multispectral image is obtained by combining outputs of vision and infrared cameras.
 The ROIs (Regions of interest) are selected using a~probabilistic template classifier from infrared image. 
 The HOG descriptor and SVM classifier working in multispectral imaging domain is used to confirm that the selected area contains pedestrian.
 
-The system is based on Lepton miniature infrared camera with a resolution of 80x60 pixels and color vision camera (640x480 pixels). To implement the system, Xilinx's SoC Zynq-7000, which integrates an FPGA and an ARM processor in a single device, is used. Programmable logic is used to combine images into a multispectral domain and to detect pedestrian with probabilistic pattern, while HOG and SVM  is been implemented in processing system.
+The system is based on Lepton miniature infrared camera with a resolution of 80x60 pixels and color vision camera (640x480 pixels). To implement the system, Xilinx's SoC Zynq-7000, which integrates an FPGA and an ARM processor in a single device, is used. Programmable logic is used to combine images into a multispectral domain and to detect pedestrian with probabilistic template, while HOG and SVM  is been implemented in processing system.
 %OK TODO uzgonić z wersją PL.
 		
 		\textbf{Keywords:} 
@@ -221,7 +222,7 @@ infrared vision, ARM, FPGA, pedestrian detection, multispectral images, HOG SVM,
 \appendix
 \include{dodatekA}
 \include{dodatekB}
-
+\include{dodatekC}
 
 
 

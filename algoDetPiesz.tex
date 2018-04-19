@@ -12,7 +12,7 @@ Eksperymenty w~artykule są oparte o~bazę danych Caltech-USA, która zawiera ob
 Jednym z wniosków jest to, że przez ostanie dziesięć lat największy postęp został osiągnięty głównie dzięki dopracowaniu cech, które są wyodrębniane z obrazu, niż ulepszanie klasyfikatora.
 Dodatkowo autorzy połączyli cechy dające najlepsze wyniki i~stworzyli własną metodę, która pozwoliła poprawić o~ok 12\% AMR względem najlepszej badanej wcześniej metody.
 
-Coraz większą popularnością cieszą się rozwiązania oparte o głębokie sieci neuronowe  (DNN ang. \textit{Deep Neural Networks}). W artykule \ref{du2017fused} został zaprezentowany system wykrywania pieszych operaty na fuzji kilkunastu dobrze wyuczonych sieci neuronowych, dając jeden z lepszych wyników detekcji z wykorzystaniem bazy Caltech-USA. 
+Coraz większą popularnością cieszą się rozwiązania oparte o głębokie sieci neuronowe  (DNN ang. \textit{Deep Neural Networks}). W artykule \cite{du2017fused} został zaprezentowany system wykrywania pieszych operaty na fuzji kilkunastu dobrze wyuczonych sieci neuronowych, dając jeden z lepszych wyników detekcji z wykorzystaniem bazy Caltech-USA. 
 %ok TODO a coś o głębokich sieciach ? Jakoś pominął Pan ten temat.
 %ok TODO 2 jw. ? chociaż jeden przykład - bo to jest teraz na topie....
 
@@ -36,7 +36,7 @@ Do najbardziej popularnych cech można zaliczyć:
 Algorytm został zaproponowany przez N.Dalala i B. Triggsa w~pracy \cite{dalal2005histograms} i~stał się jedną z~najbardziej popularnych metod w~dziedzinie detekcji ludzi. 
 Jest cały czas rozwijany i~modyfikowany w~wielu pracach naukowych.
 W pierwszej kolejności zostają obliczone gradienty dla obrazu, za pomocą dwóch masek kierunkowych [-1 0 1] i [-1 0 1]$^T$. Gradienty mogą być ze znakiem lub bez. Na rysunku \ref{fig:hog} przedstawiono przykład uzyskiwania gradientów. Następnie tworzone są histogramy orientacji na podstawie gradientów uzyskanych z pkt. 1. Histogram ma z~góry zadaną liczbę przedziałów i zawiera dane z komórki (ang. \textit{cell}) o określonej wielkości (np. kwadrat 6x6). Wagi orientacji poszczególnych pikseli wynikają z wartości wypadkowej gradientu. Na rysunku \ref{fig:hog2} zaprezentowano przykładowe histogramy.
-Komórki łączone są w bloki, w obrębie których następuje normalizacja. Ma ona na celu wyrównanie kontrastów pomiędzy sąsiadującymi blokami komórek. Bloki mają z góry ustalony rozmiar i nakładają się na siebie.Połączenie wszystkich histogramów we wszystkich blokach w jeden wektor cech.
+Komórki łączone są w bloki, w obrębie których następuje normalizacja. Ma ona na celu wyrównanie kontrastów pomiędzy sąsiadującymi blokami komórek. Bloki mają z góry ustalony rozmiar i nakładają się na siebie. Połączenie wszystkich histogramów we wszystkich blokach w jeden wektor cech.
 
 \begin{figure}
 \centering
@@ -68,23 +68,23 @@ Histogramy z wszystkich bloków wchodzących w~skład obrazu (okna detekcji) two
 Określają różnicę w~kontraście między dwoma przylegającymi prostokątnymi obszarami. 
 W~oryginalnej pracy P.Viola i M.Jones z~2001 \cite{viola2001rapid} autorzy rozważali 3 rodzaje cech: 
 \begin{itemize}
-	\item dwa obszary mające ten sam rozmiar i~kształt oraz przylegające do siebie horyzontalnie bądź wertykalnie, gdzie cechę stanowi różnica sumy pikseli zawartych w~każdym z regionów ( Układ A i B na rysunku \ref(fig:haar)), 
-	\item obszar składający się z 3 prostokątów przylegających do siebie, gdzie od sumy środkowego elementu jest odejmowana suma dwóch zewnętrznych (układ C),
-	\item układ 4 prostokątów, gdzie suma jest różnicą między obszarami po przekątnej (układ D). %TODO 2 niejasne...
+	\item dwa obszary mające ten sam rozmiar i~kształt oraz przylegające do siebie horyzontalnie bądź wertykalnie, gdzie cechę stanowi różnica sumy pikseli zawartych w~każdym z regionów ( Układ A i B na rysunku \ref{fig:haar}), 
+	\item obszar składający się z 3 prostokątów przylegających do siebie, gdzie od sumy środkowego elementu jest odejmowana suma dwóch zewnętrznych (układ~C),
+	\item układ 4 prostokątów, gdzie suma jest różnicą między obszarami po przekątnej (układ~D). %OK TODO 2 niejasne...
 \end{itemize}
 
 \begin{figure}
 \centering
-\includegraphics[width=0.5\linewidth]{images/haar}
+\includegraphics[width=0.4\linewidth]{images/haar}
 \caption[Falki Harrra.]{Przykładowe prostokąty służące do określenia cech. Od sumy pikseli zawartych w~białym prostokącie zostaje odjęta suma pikseli w~szarym. \cite{viola2001rapid}.}
 \label{fig:haar}
 \end{figure}
 %OK TODO 2 obrazek by bardzo pomógł
-Cechy są łatwe do skalowania i~nie wymagają dużych nakładów obliczeniowych. W celu szybkiego obliczania tych cech stosuje się tzw. \textit{intergral image}. Dla każdego puntu o~współrzędnych x,y zostaje obliczona suma wartości pikseli znajdujących się na lewo i~nad od lokacji~x,y. Dzięki temu, aby obliczyć sumę pikseli w~danym kwadracie wystarczą jedynie cztery punkty referencyjne. Na przykład, by obliczyć sumę pikseli w~prostokącie D na rysunku \ref{fig:integralImage} wystarczy rozwiązać równanie $D = 4 + 1 -(2 + 3)$.
+Cechy są łatwe do skalowania i~nie wymagają dużych nakładów obliczeniowych. W celu szybkiego obliczania tych cech stosuje się tzw. \textit{intergral image}. Dla każdego puntu o~współrzędnych x,y zostaje obliczona suma wartości pikseli znajdujących się na lewo i~nad pozycją~x,y. Dzięki temu, aby obliczyć sumę pikseli w~danym kwadracie wystarczą jedynie cztery punkty referencyjne. Na przykład, by obliczyć sumę pikseli w~prostokącie D na rysunku \ref{fig:integralImage} wystarczy rozwiązać równanie $D = 4 + 1 -(2 + 3)$.
 
 \begin{figure}
 \centering
-\includegraphics[width=0.5\linewidth]{images/integralImage}
+\includegraphics[width=0.4\linewidth]{images/integralImage}
 \caption[IntegralImage.]{Obliczanie sumy pikseli za pomocą \textit{integral image}.  \cite{viola2001rapid}.}
 \label{fig:integralImage}
 \end{figure}
@@ -118,7 +118,7 @@ Suma wyniku uzyskanego z~filtra głównego wraz z~jego częściami stanowi o~wyn
 
 \begin{figure}
 \centering
-\includegraphics[width=0.5\linewidth]{images/DNN}
+\includegraphics[width=0.8\linewidth]{images/DNN}
 \caption[IntegralImage.]{Schemat przykładowej sieci konwolucyjnej.}
 \label{fig:DNN}
 \end{figure}
@@ -133,21 +133,47 @@ Sieć posiada zazwyczaj kilkanaście takich warstw -- każda wykrywająca pojedy
 Pozwala to na redukcję liczby neutronów i~parametrów potrzebnych do uzyskania w procesie uczenia. 
 Do warstw konwlucyjnych dochodzą warstwy sumujące (ang. \textit{Polling Layers}). 
 Ich zadaniem jest generalizacja informacji z poprzedniej warstwy. 
-Sieć zamyka w pełni połączona z poprzednią, warstwa wyjściowa. Na rysunku \ref{fig:DNN} przedstawiono schemat przykładowej sieci konwolucyjnej.
+Sieć zamyka warstwa wyjściowa. Na rysunku \ref{fig:DNN} przedstawiono schemat przykładowej sieci konwolucyjnej.
 %OK TODO 2 to ostatnie zdanie do uzupełnienia - niejasne.
 
 \item Decision forests
 
 Lasy decyzyjne to zbiory nieskorelowanych drzew decyzyjnych. 
-Pojedyncze drzewo jest graficznym odwzorowaniem procesu decyzyjnego. 
+Pojedyncze drzewo jest graficznym odwzorowaniem procesu decyzyjnego. Na podstawie wektora cech drzewo zwraca rozkład prawdopodobieństwa przynależności obiektu do klas. Wynikiem ostatecznym jest średnia prawdopodobieństw z wszystkich drzew w lesie. Rysunek \ref{fig:forest} przedstawia schemat koncepcyjny dla lasu o trzech drzewach.
 Algorytm uczenia drzew wykorzystuje przykłady (wektor cech) i związane z nimi konsekwencje (klasyfikacja obiektu).
 
+\begin{figure}
+\centering
+\includegraphics[width=0.9\linewidth]{images/forest}
+\caption[Las decyzyjny.]{Schemat lasu decyzyjnego składającego się z trzech drzew \cite{criminisi2011decision}.}
+\label{fig:forest}
+\end{figure}
 %TODO 2 też może rysunek
 
 \item inne: np. SVM (ang. Support Vector Machine -- maszyna wektorów nośnych), AdaBoost itp.
 
 
 \end{enumerate}
+
+\section{Specyfikacja detekcji w podczerwieni}
+
+Człowiek jest istotą żyjącą, co za tym idzie, wytwarza ciepło. Przeważnie ciało człowieka ma wyższą temperaturę niż otoczenie, co jest wyraźnie widoczne na obrazie termowizyjnym. Termowizja najlepiej sprawdza się w nocy, kiedy kontrast między człowiekiem a otoczeniem jest największy. Ta cecha powoduje, że podczerwień jest chętnie wykorzystywana do systemów wspomagania kierowcy, aby zwiększyć bezpieczeństwo poruszania się po drodze w nocy.  Sylwetka przechodnia może zostać w bardzo prosto wyodrębniona, wykonując prostą operację binaryzacji. Rysunek \ref{fig:binaryzacja} przedstawia przykładowy proces binaryzacji. Daje to możliwość zastosowania wielu algorytmów, które opierają się na kształcie obiektu (np. wzorzec probabilistyczny albo obliczenie proporcji wysokości do szerokości).
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}{0.47\textwidth}
+		\centering
+		\includegraphics[width=0.9\linewidth]{images/Example_Oryginal}
+		\subcaption{\label{fig:Example_Oryginal}}
+	\end{subfigure}
+	\begin{subfigure}{0.47\textwidth}
+		\centering
+		\includegraphics[width=0.9\linewidth]{images/Example_BW}
+		\subcaption{\label{fig:Example_BW}}
+	\end{subfigure}
+	\caption[Przykład binaryzacji]{Binaryzacja: \protect\subref{fig:Example_Oryginal} Obraz zarejestrowany kamerą termowizyjną, \protect\subref{fig:Example_BW} Obraz po binaryzacji\cite{kankaing}.}
+	\label{fig:binaryzacja}
+\end{figure}
 
 %TODO Nie omówił Pan specyfiki detekcji w podczerwieni.
 %TODO 2 Czy specyfika detekcji w podczerwieni gdzies jest ?

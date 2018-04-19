@@ -83,7 +83,7 @@ Układ jest prosty do integracji z dowolnym mikrokontrolerem dzięki zastosowani
 
 Lepton po podłączeniu zasilania od razu uruchamia się w~domyślnym trybie pracy. 
 Kamera jest konfigurowalna poprzez CCI (ang. \textit{Camera Control Interface} – interfejs kontroli kamery).
-Zapewnia on dostęp do rejestrów zawierających konfigurację \cite{lepton}. 
+Zapewnia on dostęp do rejestrów zawierających konfigurację \cite{flir:lepton}. 
 
 Parametry kamery:
 \begin{itemize}
@@ -109,7 +109,7 @@ Parametry kamery:
 \caption[Obraz człowieka w~termowizji wykonany kamerą Lepton.]{Obraz człowieka w termowizji wykonany kamerą Lepton. W~prawej ręce widać gorący obiekt (kubek herbaty), w~lewej zimny (butelka wody z lodówki).}
 \label{fig:leptonTermalImage}
 \end{figure}
-%TODO 2 OK, ale tradycyjnie - powołanie w tekśie na obraz.
+%OK TODO 2 , ale tradycyjnie - powołanie w tekśie na obraz.
 
 
 
@@ -291,14 +291,15 @@ Wynikiem transformacji (a~zarazem rzutowania) jest obraz dopasowany do obrazu ba
 
 \begin{figure}
 \centering
-\includegraphics[width=0.6\linewidth]{images/projection}
+\begin{subfigure}{0.47\textwidth}
+\includegraphics[width=0.9\linewidth]{images/projection}
 \caption[Interpretacja transformacji projekcyjnej: rzutowanie płaszczyzny. ]{Interpretacja transformacji projekcyjnej: rzutowanie płaszczyzny.}
 \label{fig:projection}
-\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics[width=0.30\linewidth]{images/projectionImage}
+\end{subfigure}
+\begin{subfigure}{0.47\textwidth}
+\includegraphics[width=0.9\linewidth]{images/projectionImage}
 \caption[Wynik transformacji. ]{Wynik transformacji.}
 \label{fig:projectionImage}
+\end{subfigure}
+\caption[Transformacja projekcyjna ]{Transformacja projekcyjna.}
 \end{figure}

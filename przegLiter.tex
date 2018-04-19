@@ -84,41 +84,6 @@ Badanie parametrów dla klasyfikacji SVM wykazało, że im większy zestaw uczą
 \end{table}
 
 
-
-
-
-%TODO Opis tego trzeciego algorytmu jest to poprawki !!! %TT  usunięty
-% \section{Do wywalenia}
-% Autorzy pracy \cite{nanda_2002} przedstawili metodę opartą o wzorzec probabilistyczny i klasyfikator Bayesa. 
-% Obraz wejściowy zostaje zbinaryzowany z zadanym progiem. 
-% Próg ten nie jest stały i zależy od wielu czynników. 
-% %TODO a można konkretniej ? Np., że zostało to omóione poniżej
-% Autorzy bazując na danych uczących stanowiących 1000 prostokątnych okien o rozmiarze 48x128 pikseli zawierających przechodnia średnią oraz odchylenie standardowe wartości dla pikseli należących do obrazu przechodnia \( \mu_1 \sigma_1 \) bądź tła \( \mu_2 \sigma_2 \) a następnie obliczyli próg binaryzacji za pomocą równia \eqref{eq:treshold_nanda}. %TODO OK odwołania do równiań poprzez eqref. , te symbole jakoś w tekście nie są w nawiasie
-% %TODO To zadnie to jest jakiś "potworek" proszę poprawić.
-% 
-% \begin{equation} \label{eq:treshold_nanda}
-% threshold = \frac{\sigma_1 \sigma_2}{ \sigma_1 + \sigma_2} \ln\left ( \frac{\sigma_1}{\sigma_2} \right ) + \frac{\sigma_1\mu_1 + \sigma_2\mu_1}{\sigma_1+\sigma_2}\end{equation}
-% 
-% Aby uzyskać wzorzec prawdopodobieństwa, zbiór testowy został zbinaryzowany z uprzednio wyliczonym progiem. 
-% Następnie zostało obliczone prawdopodobieństwo przynależności piksela do przechodnia we wzorcu. %TODO To jest ciut niejasne.
-% Mając już wzorzec, został obliczony combinedpropability ze wzoru \eqref{eq:combo_nanda} dla 1000 okien zawierających i nie zawierających człowieka oraz wyciągnięta średnia i odchylenie standardowe dla nich. 
-% 
-% %TODO To com.... to trzeba na coś zamienić !!!
-% 
-% Dało to podstawę do obliczenia progu dla wartości combinedpropability z wzoru \eqref{eq:treshold_nanda}. 
-% %TODO to jest jakieś niejasne.
-% 
-% \begin{equation} \label{eq:combo_nanda} combinedprobability(i,j)=\sum_{x=1}^{48}\sum_{y=1}^{128}(th(x,y)*p(x,y)+(1-th(x,y))*(1-p(x,y)))\end{equation}
-% \noindent
-% gdzie \(th(x,y)\) to okno wokół piksela \((i,j)\), a \(p(x,y)\) to wzorzec prawdopodobieństwa wystąpienia pieszego.
-% 
-% Badana klatka obrazu jest badana poprzez okno przesuwne tworząc mapę prawdopodobieństwa. %TODO badana klatka jest badana ? 
-% Wartości które przekroczą próg wskazują, że w danym oknie znajduje się człowiek. 
-% 
-% %TODO ale jakie wartości ? 
-% Autorzy zbadali algorytm na 6 sekwencjach filmowych i uzyskali wynik między 75\%-90\% wykrycia przy jednym fałszywym wykryciu na ramkę. %TODO chyba średnio jednym...
-
-
 \section{Podejście sprzętowo-programowe. Stereowizja dla robotów.}
 
 W~pracy \cite{honegger2014real} autorzy wykorzystali układ FPGA oraz CPU małej mocy do skonstruowania systemu wizyjnego dla robotów.
